@@ -117,7 +117,7 @@ info:
   version: "20160101"  
   x-logo:
     url: 'ts-logo.png'
-  termsOfService: http://elasticbeanstalk-us-east-1-525856068889.s3.amazonaws.com/wp-content/uploads/2014/03/Guidelines_For_Acceptance.pdf
+  termsOfService: https://developer.tradestation.com/agreements/
   contact:
     name: TradeStation API Team
     email: webapi@tradestation.com
