@@ -4,7 +4,7 @@ info:
   title: Tradestation API v2
   description: | 
     This document describes the resources that make up the official TradeStation
-    API v2. If you have any problems or requests please contact [support](mailto:webapi@tradestation.com).
+    API v2. If you have any problems or requests please contact [support](mailto:api@tradestation.com).
 
     Overview
     ========
@@ -201,10 +201,11 @@ info:
   x-logo:
     url: 'ts-logo.png'
   termsOfService: https://developer.tradestation.com/agreements/
+
   contact:
     name: TradeStation API Team
-    email: webapi@tradestation.com
-    url: https://developer.tradestation.com/webapi
+    email: api@tradestation.com
+    url: https://api.tradestation.com/docs/contact
   license:
     name: TradeStation Commercial License 1.0
     url: https://api.tradestation.com/docs/license
@@ -1657,6 +1658,57 @@ paths:
           description: Account not found
           schema:
             $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+################################################################################
+  /orders/confirm:
+    post:
+      summary: |
+        Confirm Order
+      description: |
+        Returns estimated cost and commission information for an order without the order actually being placed 
+      operationId: postOrderConfirm
+      tags:
+        - order-execution
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrderRequestDefinition'
+      responses:
+        200:
+          description: Order Confirm Response
+          schema:
+            $ref: '#/definitions/OrderConfirmResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -3359,6 +3411,58 @@ definitions:
         - Symbol
     type: object  
 
+  OrderConfirmResponseDefinition:
+    description: 'Base Order Confirm definition. The response will also contain asset-specific fields'
+    type: object
+    properties:
+      Route:
+        type: string
+      Duration:
+        type: string
+      Account:
+        type: string
+      OrderConfirmId:
+        type: string
+        description: 'Unique id generated per order per API Key and User'      
+      EstimatedPrice:
+        type: number
+      EstimatedPriceDisplay:
+        type: string
+        description: 'Equity and Futures Orders; Estimated price formatted for display'
+      EstimatedCost:
+        type: number
+        description: 'Equity and Futures Orders; '
+      EstimatedCostDisplay:
+        type: string
+        description: 'Equity Orders; Estimated cost formatted for display'
+      EstimatedCommission:
+        type: number
+        description: 'Equity and Futures Orders; '
+      EstimatedCommissionDisplay:
+        type: string
+        description: 'Equity and Futures Orders; Estimated commission formatted for display'  
+      BaseCurrency:
+        type: string
+        description: 'Forex Orders; '
+      CounterCurrency:
+        type: string
+        description: 'Forex Orders; Estimated cost formatted for display'
+      InitialMarginDisplay:
+        type: string
+        description: 'Forex and Futures Orders; Initial margin cost formatted for display in currency of asset'
+      ProductCurrency:
+        type: string
+        description: 'Futures Orders; '
+      AccountCurrency:
+        type: string
+        description: 'Futures Orders; '
+    required:
+      - Route
+      - Duration
+      - Account
+      - OrderConfirmId 
+      - EstimatedPrice
+        
   OrderResponseDefinition:
     description: ''
     type: object
