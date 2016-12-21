@@ -27,7 +27,7 @@ info:
     https://api.tradestation.com/v2/data/quote/msft?APIVersion=20160101
     ```
 
-    Note: This will ensure your application will not break broken when we deprecate
+    Note: This will ensure your application will not be broken when we deprecate
     the 20101026 version in favor of 20160101 or newer versions.
 
     SIM vs LIVE
