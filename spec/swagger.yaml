@@ -9,47 +9,51 @@ info:
     Overview
     ========
 
+    The TradeStation API is reachable at the base-url:
+    ```
+    https://api.tradestation.com/v2
+    ```
+
     Current Version
     ---------------
 
     The latest version is 20160101, but currently we are in transition, so by
     default all requests receive the 20101026 version for backwards compatibility.
 
-    We encourage you to explicitly request this version by adding the `APIVersion`
-    querystring parameter.
+    Always explicitly request this version by adding the `APIVersion`
+    querystring parameter as shown below:
 
     ```
     https://api.tradestation.com/v2/data/quote/msft?APIVersion=20160101
     ```
 
-    Note: This will ensure your application is not broken when we fully deprecate
+    Note: This will ensure your application will not break broken when we deprecate
     the 20101026 version in favor of 20160101 or newer versions.
 
     SIM vs LIVE
     -----------
 
-    The TradeStation API is reachable at the base-url:
-    ```
-    https://api.tradestation.com/v2
-    ```
+    We also offer a Simulator(SIM) API for "Paper Trading" that is identical 
+    to the Live API in all ways except it uses fake trading accounts seeded with 
+    fake money and orders are not actually executed - only simulated executions 
+    occur with instant "fills".
 
-    We also offer a Simulator(SIM) API that is identical in all ways with the "Live"
-    API except it uses fake bank accounts seeded with fake money and orders are not
-    actually executed - only simulated executions occur with instant "fills".
-
-    The SIM API is reachable at an alternative base-url:
+    To access the SIM environment, you must change your base-url to: 
     ```
     https://sim.api.tradestation.com/v2
     ```
 
+    **WARNING:** TradeStation is not liable for mistakes made by applications 
+    that allow users to switch between SIM and Live environments.
+
     ### Why offer a Simulator?
 
-    Stateful operations such as Order Execution and Brokerage Services that are
-    transactional offer users or applications the ability to experiment within
-    a Simulated trading system so that real accounts and money are not affected
-    and trades are not actually executed.
+    Transactional API calls such as Order Execution offers users or applications 
+    the ability to experiment within a Simulated trading system so that real 
+    accounts and money are not affected and trades are not actually executed.
 
     Other potential use-cases:
+    - Learning how to use applications via Paper Trading.
     - Exploring TradeStation API behavior without financial ramifications
     - Testing apps and websites before making them Live to customers
     - Enabling users to "Try-before-they-buy" with apps that use the TradeStation API
@@ -85,29 +89,29 @@ info:
     - All timestamps are returned in [Epoch time](https://en.wikipedia.org/wiki/Unix_time) format unless stated otherwise.
 
 
-    Parameters
-    ----------
+# Parameters
+# ----------
 
-    HTTP Errors
-    -----------
+# HTTP Errors
+# -----------
 
-    HTTP Redirects
-    --------------
+# HTTP Redirects
+# --------------
 
-    HTTP Verbs
-    ----------
+# HTTP Verbs
+# ----------
 
-    REST Flavor
-    -----------
+# REST Flavor
+# -----------
 
-    Rate Limiting
-    -------------
+# Rate Limiting
+# -------------
 
-    Cross Origin Resoure Sharing
-    ----------------------------
+# Cross Origin Resoure Sharing
+# ----------------------------
 
-    Timezones
-    ---------
+# Timezones
+# ---------
 
 
   version: "20160101"  
