@@ -1,0 +1,3750 @@
+---
+swagger: "2.0"
+info:
+  title: Tradestation API v2
+  description: | 
+    This document describes the resources that make up the official TradeStation
+    API v2. If you have any problems or requests please contact [support](mailto:api@tradestation.com).
+
+    Overview
+    ========
+
+    Current Version
+    ---------------
+
+    The latest version is 20160101, but currently we are in transition, so by
+    default all requests receive the 20101026 version for backwards compatibility.
+
+    We encourage you to explicitly request this version by adding the `APIVersion`
+    querystring parameter.
+
+    ```
+    https://api.tradestation.com/v2/data/quote/msft?APIVersion=20160101
+    ```
+
+    Note: This will ensure your application is not broken when we fully deprecate
+    the 20101026 version in favor of 20160101 or newer versions.
+
+    SIM vs LIVE
+    -----------
+
+    The TradeStation API is reachable at the base-url:
+    ```
+    https://api.tradestation.com/v2
+    ```
+
+    We also offer a Simulator(SIM) API that is identical in all ways with the "Live"
+    API except it uses fake bank accounts seeded with fake money and orders are not
+    actually executed - only simulated executions occur with instant "fills".
+
+    The SIM API is reachable at an alternative base-url:
+    ```
+    https://sim.api.tradestation.com/v2
+    ```
+
+    ### Why offer a Simulator?
+
+    Stateful operations such as Order Execution and Brokerage Services that are
+    transactional offer users or applications the ability to experiment within
+    a Simulated trading system so that real accounts and money are not affected
+    and trades are not actually executed.
+
+    Other potential use-cases:
+    - Exploring TradeStation API behavior without financial ramifications
+    - Testing apps and websites before making them Live to customers
+    - Enabling users to "Try-before-they-buy" with apps that use the TradeStation API
+    - Hosting trading competitions or games
+
+
+    Schema
+    ------
+
+    All API access is over HTTPS, and accessed from the https://api.tradestation.com.
+    All data is sent and received as JSON, with some limited support for XML.
+
+    Example Request:
+    ```
+    curl -i https://api.tradestation.com/v2/data/quote/msft?APIVersion=20160101
+
+    HTTP/1.1 200 OK
+    Cache-Control: private
+    Content-Length: 1545
+    Content-Type: application/default+json; charset=utf-8
+    Access-Control-Allow-Origin: *
+    APIVersion: 20160101
+    Date: Wed, 30 Nov 2016 01:51:45 GMT
+
+    [
+    ...json...
+    ]
+    ```
+
+    ### Common Conventions
+
+    - Blank fields may either be included as null or omitted, so please support both.
+    - All timestamps are returned in [Epoch time](https://en.wikipedia.org/wiki/Unix_time) format unless stated otherwise.
+
+
+    Parameters
+    ----------
+
+    HTTP Errors
+    -----------
+
+    HTTP Redirects
+    --------------
+
+    HTTP Verbs
+    ----------
+
+    REST Flavor
+    -----------
+
+    Rate Limiting
+    -------------
+
+    Cross Origin Resoure Sharing
+    ----------------------------
+
+    Timezones
+    ---------
+
+
+  version: "20160101"  
+  x-logo:
+    url: 'ts-logo.png'
+  termsOfService: https://api.tradestation.com/docs/terms-of-service
+  contact:
+    name: TradeStation API Team
+    email: api@tradestation.com
+    url: https://api.tradestation.com/docs/contact
+  license:
+    name: TradeStation Commercial License 1.0
+    url: https://api.tradestation.com/docs/license
+
+################################################################################
+host: api.tradestation.com
+basePath: /v2
+schemes:
+  - https
+consumes:
+  - application/json; charset=utf-8
+produces:
+  - application/json; charset=utf-8
+################################################################################  
+securityDefinitions:
+  'OAuth2-Auth-Code':
+    description: |
+      The authorization code grant type is used to obtain both access tokens 
+      and refresh tokens and is optimized for confidential clients. Since 
+      this is a redirection-based flow, the client must be capable of 
+      interacting with the resource owner’s user-agent (typically a web browser) 
+      and capable of receiving incoming requests (via redirection) from the 
+      authorization server.
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: "https://api.tradestation.com/v2/security/authorize"
+    tokenUrl: "https://api.tradestation.com/v2/security/authorize"
+    scopes:
+      marketdata: |
+        Requests access to lookup or stream Market Data
+      readaccount: |
+        Requests access to view Brokerage Accounts belonging to the End-User
+      trade: |
+        Requests access to execute orders on behalf of the End-User
+      news: |
+        Requests access to view Market News
+      hotlists: |
+        Requests access to be allowed to execute HotList symbol scans    
+    # grant_type=authorization_code&code=K29qbmpGSEFDMLS0c=&client_id=42545245&redirect_uri=/webapi/authorize/authcodetest.aspx&client_secret=2452345
+  'OAuth2-Refresh-Token':
+    description: |
+      Refresh tokens are credentials used to obtain access tokens. Refresh
+      tokens are used to obtain a new access token when the current access token
+      becomes invalid or expires, or to obtain additional access tokens
+      with identical or narrower scope.
+    type: oauth2
+    flow: application
+    tokenUrl: "https://api.tradestation.com/v2/security/authorize"
+    scopes:
+      marketdata: |
+        Requests access to lookup or stream Market Data
+      readaccount: |
+        Requests access to view Brokerage Accounts belonging to the End-User
+      trade: |
+        Requests access to execute orders on behalf of the End-User
+      news: |
+        Requests access to view Market News
+      hotlists: |
+        Requests access to be allowed to execute HotList symbol scans        
+    # grant_type=refresh_token&client_id=123456&redirect_uri=http://www.myredirect.com&client_secret=789456&refresh_token=1234myRefreshToken56789                
+
+################################################################################    
+tags:
+  - name: marketdata
+    description: |
+      Snapshots and live streams of market data from supported exchanges.
+  - name: brokerage
+    description: |
+      Access to bank accounts, order transactions, and market positions for 
+      the given user account.
+  - name: order-execution
+    description: |
+      Trading tools for order submission, cancellation, and pre-order confirmation.
+
+################################################################################
+paths:
+  /data/symbol/{symbol}:
+    get:
+      summary: |
+        Get Symbol Info
+      description: |
+        Finds the given symbol and returns a collection of fields describing the 
+        symbol, its origin exchange, and other pertinant information.
+      operationId: getSymbol
+      tags:
+        - marketdata
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: symbol
+          in: path
+          type: string
+          description: Symbol to lookup
+          required: true
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/data/symbol/AMZN?access_token=1JUjFiNFFGWEdDM"
+      responses:
+        200:
+          description: symbol response
+          schema:
+            $ref: "#/definitions/SymbolDefinition"
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'      
+
+  ################################################################################
+  /data/symbols/suggest/{text}:
+    get:
+      summary: |
+        Suggest Symbols
+      description: |
+        Suggests symbols semantically based upon partial input of symbol name,
+        company name, or description
+      operationId: suggestsymbols
+      tags:
+        - marketdata      
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/data/symbols/suggest/A?access_token=1JUjFiNFFGWEdDM"
+      parameters:
+        - name: "$top"
+          in: query
+          type: integer
+          description: The top number of results to return
+          required: true
+        - name: "$filter"
+          in: query
+          type: string
+          description: An OData filter to apply to the results
+          required: true
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: text
+          in: path
+          type: string
+          description: Symbol text for suggestion
+          required: true
+      responses:
+        200:
+          description: symbol suggest response
+          schema:
+            $ref: '#/definitions/SymbolSuggestDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /data/symbols/search/{criteria}:
+    get:
+      summary: |
+        Search for Symbols
+      description: |
+        Searches symbols based upon input criteria including Name, Category and 
+        Country.
+      operationId: searchSymbols
+      tags:
+        - marketdata      
+      parameters:
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: criteria
+          in: path
+          type: string
+          description: | 
+            Criteria are represented as Key/value pairs (`&` separated):    
+              
+            `N`: Name of Symbol. (Optional)  
+              
+            `C`: Asset categories. (Optional) Possible values:  
+              - `Future` or `FU`  
+              - `FutureOption` or `FO`  
+              - `Stock` or `S` (Default)  
+              - `StockOption` or `SO` (If root is specified, default category)  
+              - `Index` or `IDX`  
+              - `CurrencyOption` or `CO`  
+              - `MutualFund` or `MF`  
+              - `MoneyMarketFund` or `MMF`   
+              - `IndexOption` or `IO`   
+              - `Bond` or `B`  
+              - `Forex` or `FX`  
+                
+            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:  
+              - `ALL` if not presented (Default)  
+              - `US`  
+              - `DE`  
+              - `CA`  
+
+            #### For Equities Lookups:  
+               
+            `N`: partial/full symbol name, will return all symbols that contain the provided name value
+                
+            `Desc`: Name of the company  
+                
+            `Flg`: indicates whether symbols no longer trading should be included in the results returned. (Optional) This criteria is not returned in the symbol data. Possible values:  
+              - `true`  
+              - `false` (Default)  
+
+            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:  
+              - `ALL` if not presented (Default)  
+              - `US`  
+              - `DE`  
+              - `CA`  
+
+            #### For Options Lookups:  
+            (Category=StockOption, IndexOption, FutureOption or CurrencyOption)  
+              
+            `R`: Symbol root. Required field, the symbol the option is a derivative of, this search will not return options based on a partial root.
+
+            `Stk`: Number of strikes prices above and below the underlying price
+              - Default value 3  
+
+            `Spl`: Strike price low  
+
+            `Sph`: Strike price high 
+
+            `Exd`: Number of expiration dates.  
+              - Default value 3
+            
+            `Edl`: Expiration date low, ex: 01-05-2011
+            
+            `Edh`: Expiration date high, ex: 01-20-2011
+            
+            `OT`: Option type. Possible values:
+              - `Both` (Default)
+              - `Call`
+              - `Put`
+
+            `FT`: Future type for FutureOptions. Possible values:
+              - `Electronic` (Default)
+              - `Pit`
+
+            `ST`: Symbol type: Possible values:
+              - `Both`
+              - `Composite` (Default)
+              - `Regional`
+
+            #### For Futures Lookups:  
+            (Category = Future)  
+
+            `Desc`: Description of symbol traded
+           
+            `R`: Symbol root future trades
+           
+            `FT`: Futures type. Possible values:
+              - `None`
+              - `PIT`
+              - `Electronic` (Default)
+              - `Combined`
+
+            `Cur`: Currency. Possible values:
+              - `All`
+              - `USD` (Default)
+              - `AUD`
+              - `CAD`
+              - `CHF`
+              - `DKK`
+              - `EUR`
+              - `DBP`
+              - `HKD`
+              - `JPY`
+              - `NOK`
+              - `NZD`
+              - `SEK`
+              - `SGD`
+
+            `Exp`: whether to include expired contracts
+              - `false` (Default)
+              - `true`
+
+            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:
+              - `ALL` if not presented (Default)
+              - `US`
+              - `DE`
+              - `CA`
+
+            #### For Forex Lookups:  
+
+            `N`: partial/full symbol name. Use all or null for a list of all forex symbols
+            
+            `Desc`: Description
+            
+            Note:
+              - The exchange returned for all forex searches will be `FX`
+              - The country returned for all forex searches will be `FOREX`
+
+          required: true  
+      responses:
+        200:
+          description: symbol search response
+          schema:
+              $ref: '#/definitions/SymbolSearchDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+              $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+              $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+              $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+              $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+              $ref: '#/definitions/Error'     
+
+  ################################################################################
+  /data/quote/{symbols}:
+    get:
+      summary: |
+        Get Quote
+      description: |
+        Gets the latest Level2 Quote for the given Symbol
+      operationId: getQuotes
+      tags:
+        - marketdata      
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/data/quote/AMZN?access_token=1JUjFiNFFGWEdDM"
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: symbols
+          in: path
+          description: 1 or more Symbol Names (comma-separated)
+          type: string          
+          items:
+            type: string
+          collectionFormat: csv
+          required: true
+      responses:
+        200:
+          description: Quote response
+          schema:
+              $ref: '#/definitions/QuoteDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+              $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+              $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+              $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+              $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+              $ref: '#/definitions/Error'     
+
+  ################################################################################
+  /stream/quote/changes/{symbols}: 
+    get:
+      summary: |
+        Stream Quote Changes
+      description: |
+        Streams the latest Level2 Quote for the given Symbols. The first chunk in the stream is a full quote snapshot - subsequent chunks only contain fields of the quote object that have changed since the last chunk.
+        
+        An invalid symbol name will result in a response of this form - {"Symbol":"BADEXAMPLESYMBOL","Error":"FAILED, EX_INVALID_SYMBOL"}
+
+        If the user is not entitled for the symbol requested, response will be of this form - {"Symbol":"EXAMPLESYMBOL","Error":"FAILED, EX_NOT_ENTITLED"}
+      operationId: streamQuotesChanges
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: symbols
+          in: path
+          description: 1 or more Symbol Names (comma-separated)
+          type: string          
+          items:
+            type: string
+          collectionFormat: csv
+          required: true
+      responses:
+        200:
+          description: Quote Stream response
+          schema:
+            $ref: '#/definitions/QuoteStreamDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'    
+
+  ################################################################################                     
+  /stream/quote/snapshots/{symbols}: 
+    get:
+      summary: |
+        Stream Quote Snapshots
+      description: |
+        Streams the latest Level2 Quote for the given Symbols. Each chunk is a full quote object.
+        
+        An invalid symbol name will result in a response of this form - {"Symbol":"BADSYMBOLEXAMPLE","Error":"FAILED, EX_INVALID_SYMBOL"}
+
+        If the user is not entitled for the symbol requested, response will be of this form - {"Symbol":"EXAMPLESYMBOL","Error":"FAILED, EX_NOT_ENTITLED"}
+      operationId: streamQuotesSnapshots
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: symbols
+          in: path
+          description: 1 or more Symbol Names (comma-separated)
+          type: string          
+          items:
+            type: string
+          collectionFormat: csv
+          required: true
+      responses:
+        200:
+          description: Quote Stream response
+          schema:
+            $ref: '#/definitions/QuoteStreamDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /stream/barchart/{symbol}/{interval}/{unit}/{startDate}: 
+    get:
+      summary: |
+        Stream BarChart - Starting on Date
+      description: |
+        Streams barchart data starting from startDate, each bar filling quantity of unit.
+      operationId: streamBarchartsFromStartDate
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: SessionTemplate
+          in: query
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          type: string
+          enum:
+            - USEQPre
+            - USEQPost
+            - USEQPreAndPost
+            - Default
+          required: false
+        - name: symbol
+          in: path
+          description: A Symbol Name
+          type: string
+          required: true
+        - name: interval
+          in: path
+          description: Interval that each bar will consist of. **For Daily, Weekly, and Monthly units this value must be 1.**
+          type: integer
+          minimum: 1
+          maximum: 1440
+          required: true
+        - name: unit
+          in: path
+          description: Unit of time for each bar interval.
+          type: string
+          enum:
+            - Minute
+            - Daily
+            - Weekly
+            - Monthly
+          required: true
+        - name: startDate
+          in: path
+          description: The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600 
+          type: string
+          required: true
+      responses:
+        200:
+          description: Barchart response
+          schema:
+            $ref: '#/definitions/BarchartDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BarchartError400'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/BarchartError404'    
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error' 
+
+  ################################################################################
+  /stream/barchart/{symbol}/{interval}/{unit}/{startDate}/{endDate}: 
+    get:
+      summary: |
+        Stream BarChart - Date Range
+      description: |
+        Streams barchart data starting from startDate to end date, each bar filling interval of unit.
+      operationId: streamBarchartsFromStartDateToEndDate
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: SessionTemplate
+          in: query
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          type: string
+          enum:
+            - USEQPre
+            - USEQPost
+            - USEQPreAndPost
+            - Default
+          required: false
+        - name: symbol
+          in: path
+          description: A Symbol Name
+          type: string
+          required: true
+        - name: interval
+          in: path
+          description: Interval that each bar will consist of. **For Daily, Weekly, and Monthly units this value must be 1.**
+          type: integer
+          minimum: 1
+          maximum: 1440
+          required: true
+        - name: unit
+          in: path
+          description: Unit of time for each bar interval.
+          type: string
+          enum:
+            - Minute
+            - Daily
+            - Weekly
+            - Monthly
+          required: true
+        - name: startDate
+          in: path
+          description: The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600 
+          type: string
+          required: true
+        - name: endDate
+          in: path
+          description: The ending date for bars streamed. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600 
+          type: string
+          required: true
+      responses:
+        200:
+          description: Barchart response
+          schema:
+            $ref: '#/definitions/BarchartDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BarchartError400'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/BarchartError404'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error' 
+
+  ################################################################################
+  /stream/barchart/{symbol}/{interval}/{unit}/{barsBack}/{lastDate}/...: 
+    get:
+      summary: |
+        Stream BarChart - Bars Back
+      description: |
+        Streams barchart data starting from a number of bars back from last date, each bar filling interval of unit.
+      operationId: streamBarchartsBarsBack
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: SessionTemplate
+          in: query
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          type: string
+          enum:
+            - USEQPre
+            - USEQPost
+            - USEQPreAndPost
+            - Default
+          required: false
+        - name: symbol
+          in: path
+          description: A Symbol Name
+          type: string
+          required: true
+        - name: interval
+          in: path
+          description: Interval that each bar will consist of. **For Daily, Weekly, and Monthly units this value must be 1.**
+          type: integer
+          minimum: 1
+          maximum: 1440
+          required: true
+        - name: unit
+          in: path
+          description: Unit of time for each bar interval.
+          type: string
+          enum:
+            - Minute
+            - Daily
+            - Weekly
+            - Monthly
+          required: true
+        - name: barsBack
+          in: path
+          description: The number of bars to stream, going back from time 00:00:00 of the day specified in lastDate
+          type: integer
+          minimum: 1
+          maximum: 57600
+          required: true
+        - name: lastDate
+          in: path
+          description: The date to use as the end point when getting bars back. Date is of form MM-DD-YYYY, and is for time 00:00:00 of that day. 
+          type: string
+          required: true
+      responses:
+        200:
+          description: Barchart response
+          schema:
+            $ref: '#/definitions/BarchartDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BarchartError400'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/BarchartError404'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /stream/barchart/{symbol}/{interval}/{unit}: 
+    get:
+      summary: |
+        Stream BarChart - Days Back
+      description: |
+        Streams barchart data starting from a number of days back from last date, each bar filling interval of unit.
+      operationId: streamBarchartsDaysBack
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: SessionTemplate
+          in: query
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          type: string
+          enum:
+            - USEQPre
+            - USEQPost
+            - USEQPreAndPost
+            - Default
+          required: false
+        - name: symbol
+          in: path
+          description: A Symbol Name
+          type: string
+          required: true
+        - name: interval
+          in: path
+          description: Interval that each bar will consist of. **For Daily, Weekly, and Monthly units this value must be 1.**
+          type: integer
+          minimum: 1
+          maximum: 1440
+          required: true
+        - name: unit
+          in: path
+          description: Unit of time for each bar interval.
+          type: string
+          enum:
+            - Minute
+            - Daily
+            - Weekly
+            - Monthly
+          required: true
+        - name: daysBack
+          in: query
+          description: The number of bars to stream, going back from time 00:00:00 of the day specified in lastDate. Cannot exceed greater than 57600 if unit is Minute.
+          type: integer
+          minimum: 1
+          required: true
+        - name: lastDate
+          in: query
+          description: The date to use as the end point when getting days back. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600
+          type: string
+          required: false
+      responses:
+        200:
+          description: Barchart response
+          schema:
+            $ref: '#/definitions/BarchartDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BarchartError400'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/BarchartError404'    
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'  
+
+  ################################################################################
+  /stream/tickbars/{symbol}/{interval}/{barsBack}: 
+    get:
+      summary: |
+        Stream Tick Bars
+      description: |
+        Streams tick bars data from a number of bars back, each bar returned separated by interval number of ticks.
+      operationId: streamTickBars
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata 
+      x-code-samples: 
+        - lang: 'shell'
+          source: |
+            curl "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: symbol
+          in: path
+          description: A Symbol Name
+          type: string
+          required: true
+        - name: interval
+          in: path
+          description: Interval for each bar returned (in ticks)
+          type: integer
+          minimum: 1
+          maximum: 10
+          required: true
+        - name: barsBack
+          in: path
+          description: The number of bars to stream, going back from current time
+          type: integer
+          minimum: 1
+          maximum: 64999
+          required: true
+      responses:
+        200:
+          description: Tickbar response
+          schema:
+            $ref: '#/definitions/TickbarDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+  /data/symbollists:
+    get:
+      summary: |
+        Get all Symbol Lists 
+      description: |
+        Gets a list of all Symbol Lists
+      operationId: getSymbolLists
+      tags:
+        - marketdata      
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+      responses:
+        200:
+          description: SymbolLists response
+          schema:
+            $ref: "#/definitions/SymbolListsDefinition"
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'    
+
+  ################################################################################
+  /data/symbollists/{symbol_list_id}: 
+    get:
+      summary: |
+        Get Symbol List
+      description: |
+        Gets a specific Symbol List
+      operationId: getSymbolListByID
+      tags:
+        - marketdata      
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: symbol_list_id
+          in: path
+          description: A valid Symbol List ID
+          type: string
+          required: true
+      responses:
+        200:
+          description: SymbolList response
+          schema:
+            $ref: '#/definitions/SymbolListDefinition'
+        400:          
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol List not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'                                                   
+
+  ################################################################################
+  /data/symbollists/{symbol_list_id}/symbols:
+    get:
+      summary: |
+        Get Symbols in a Symbol List
+      description: |
+        Gets the Symbols for a specific Symbol List
+      operationId: getSymbolListSymbolsByID
+      tags:
+        - marketdata      
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource          
+          type: string
+          required: true
+        - name: symbol_list_id
+          in: path
+          description: A valid Symbol List ID
+          type: string
+          required: true
+      responses:
+        200:
+          description: SymbolList Symbols response
+          schema:
+            $ref: '#/definitions/SymbolListSymbolsDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol List not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'                                                   
+
+  ################################################################################
+  /users/{user_id}/accounts:
+    get:
+      summary: |
+        Get User Accounts
+      description: |
+        Returns all accounts for the given user
+      operationId: getAccountsByUserID
+      tags:
+        - brokerage
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: user_id
+          in: path
+          type: string
+          description: User ID for Accounts Lookup
+          required: true
+      responses:
+        200:
+          description: Accounts Response
+          schema:
+            $ref: '#/definitions/UserAccountsDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: User not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'                            
+
+  ################################################################################
+  /accounts/{account_keys}/balances:
+    get:
+      summary: |
+        Get Account Balances
+      description: |
+        Returns the Balance for the given accounts
+      operationId: getBalancesByAccounts
+      tags:
+        - brokerage
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: account_keys
+          in: path
+          description: 1 or more Account Keys          
+          type: array
+          items:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Account Balances Response
+          schema:
+            $ref: "#/definitions/AccountBalancesDefinition"
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Account not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /accounts/{account_keys}/positions:
+    get:
+      summary: |
+        Get Account Positions
+      description: |
+        Returns the Positions for the given accounts
+      operationId: getPositionsByAccounts
+      tags:
+        - brokerage
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: account_keys
+          in: path
+          description: 1 or more Account Keys          
+          type: array
+          items:
+            type: string
+          required: true
+        - name: $filter
+          in: query
+          type: string
+          description: |
+            An OData v2.0 filter.  
+              
+            Available Fields:
+              - `Symbol`: Symbol Name for Position
+
+      responses:
+        200:
+          description: Account Positions Response
+          schema:
+            $ref: "#/definitions/AccountPositionsDefinition"
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Account not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /accounts/{account_keys}/orders:
+    get:
+      summary: |
+        Get Account Orders
+      description: |
+        Returns the Orders for the given accounts       
+      operationId: getOrdersByAccounts
+      tags:
+        - brokerage
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+        - name: since
+          in: query
+          type: string
+          description: Start Date from which to pull older orders. `MM-DD-YYYY` format
+          required: false          
+        - name: account_keys
+          in: path
+          description: 1 or more Account Keys          
+          type: array
+          items:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Account Orders Response
+          schema:
+            $ref: "#/definitions/AccountOrdersDefinition"
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Account not found
+          schema:
+            $ref: '#/definitions/Error'              
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /orders:
+    post:
+      summary: |
+        Submit Order
+      description: |
+        Submits 1 or more orders  
+      operationId: postOrder
+      tags:
+        - order-execution
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrderRequestDefinition'
+      responses:
+        200:
+          description: Orders Response
+          schema:
+            $ref: '#/definitions/OrderResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ################################################################################
+  /orders/{order_id}:            
+    delete:
+      summary: |
+        Cancel Order
+      description: |
+        Cancels an open order. You cannot update an order that has been filled.  
+      operationId: cancelOrder
+      tags:
+        - order-execution
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+        - name: order_id
+          in: path
+          type: string
+          description: An existing Order ID
+          required: true
+      responses:
+        200:
+          description: Cancel Order Response
+          schema:
+            $ref: '#/definitions/OrderResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'            
+     
+    put:
+      summary: |
+        Update Order
+      description: |
+         Updates (Cancels & Replaces) an open order. You cannot update an order 
+         that has been filled.  
+
+         Rules: 
+
+          | Original order type              | Fields to update                 | Can only change order type to |
+          | -------------------------------- | -------------------------------- | ----------------------------- |
+          | Limit Orders                     | Quantity, Stop Price             | Market                        |
+          | Stop Orders                      | Quantity, Stop Price             | Market                        |
+          | Stop Limit Orders                | Quantity, Stop Price, Stop Limit | Market                        |
+          | Stop Market Trailing Stop Orders | Quantity                         |                               |
+          | Trailing Stop Orders             | Offset type and value            |                               |
+
+      operationId: cancelReplaceOrder
+      tags:
+        - order-execution
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+        - name: order_id
+          in: path
+          type: string
+          description: An existing Order ID
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CancelReplaceDefinition'          
+      responses:
+        200:
+          description: CancelReplace Order Response
+          schema:
+            $ref: '#/definitions/OrderResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'            
+
+  ################################################################################
+  /orders/groups:
+    post:
+      summary: |
+        Submit Group Order
+      description: |
+        Submits a group order such as Bracket and OCO Orders.  
+
+        #### Order Cancels Order (OCO)  
+        An OCO order is a group of orders whereby if one of the orders is filled 
+        or partially-filled, then all of the other orders in the group are 
+        cancelled.  
+
+        #### Bracket OCO Orders
+        A bracket order is a special instance of an OCO (Order Cancel Order). 
+        Bracket orders are used to exit an existing position. They are designed 
+        to limit loss and lock in profit by “bracketing” an order with a 
+        simultaneous stop and limit order.  
+
+        Bracket orders are limited so that the orders are all for the same 
+        symbol and are on the same side of the market (either all to sell or 
+        all to cover), and they are restricted to closing transactions.   
+
+        The reason that they follow these rules is because the orders need to be 
+        able to auto decrement when a partial fill occurs with one of the orders. 
+        For example, if the customer has a sell limit order for 1000 shares and 
+        a sell stop order for 1000 shares, and the limit order is partially 
+        filled for 500 shares, then the customer would want the stop to remain 
+        open, but it should automatically decrement the order to 500 shares to 
+        match the remaining open position.  
+      operationId: postOrderGroup
+      tags:
+        - order-execution
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GroupOrderRequestDefinition'
+      responses:
+        200:
+          description: Group Orders Response
+          schema:
+            $ref: '#/definitions/GroupOrderResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+################################################################################
+definitions: 
+  Error:
+    required:
+      - StatusCode
+      - Message
+    properties:
+      TraceId:
+        type: string
+        format: uuid
+      StatusCode:
+        type: integer
+        format: int32
+      Message:
+        type: string
+    type: object
+
+  BarchartError400:
+    required:
+        - StatusCode
+        - Message
+    properties:
+        StatusCode:
+            type: integer
+            format: int32
+        Message:
+            type: string
+            enum:
+                - Not a valid date.
+                - Not a valid number.
+  BarchartError404:
+    required:
+        - StatusCode
+        - Message
+    properties:
+        StatusCode:
+            type: integer
+            format: int32
+        Message:
+            type: string
+            enum:
+                - INVALID SYMBOL
+                - Invalid bar interval quantity.
+                - Invalid bar interval unit.
+                - Invalid start date.
+                - Invalid end date.
+                - Start date can not be earlier than 1/1/1900
+                - End date cannot be earlier than start date.
+
+  SymbolDefinition:
+    description: "Symbol metatdata"
+    properties:
+        Category:
+            minLength: 1
+            type: string
+        Country: 
+            type: string
+            enum:
+              - US
+              - DE
+              - CA
+        Currency:
+            minLength: 1
+            type: string
+            enum:
+              - USD
+              - AUD
+              - CAD
+              - CHF
+              - DKK
+              - EUR
+              - DBP
+              - HKD
+              - JPY
+              - NOK
+              - NZD
+              - SEK
+              - SGD            
+        Description:
+            minLength: 1
+            type: string
+        Error: 
+            type: string
+        Exchange:
+            minLength: 1
+            type: string
+        ExchangeID:
+            type: number
+        ExpirationDate:
+            minLength: 1
+            type: string
+        FutureType:
+            minLength: 1
+            type: string
+        LotSize:
+            type: number
+        MinMove:
+            type: number
+        Name:
+            minLength: 1
+            type: string
+        OptionType:
+            minLength: 1
+            type: string
+        PointValue:
+            type: number
+        Root:
+            minLength: 1
+            type: string
+        StrikePrice:
+            type: number
+    required:
+    - Category
+    - Currency
+    - Description
+    - Exchange
+    - ExchangeID
+    - ExpirationDate
+    - FutureType
+    - LotSize
+    - MinMove
+    - Name
+    - OptionType
+    - PointValue
+    - Root
+    - StrikePrice
+    type: object
+        
+  SymbolSuggestDefinition:
+    description: ''
+    items: 
+        properties:
+            Category:
+                minLength: 1
+                type: string
+            Country:
+                minLength: 1
+                type: string
+                enum:
+                  - US
+                  - DE
+                  - CA                
+            Currency:
+                minLength: 1
+                type: string
+                enum:
+                  - USD
+                  - AUD
+                  - CAD
+                  - CHF
+                  - DKK
+                  - EUR
+                  - DBP
+                  - HKD
+                  - JPY
+                  - NOK
+                  - NZD
+                  - SEK
+                  - SGD                
+            Description:
+                minLength: 1
+                type: string
+            Error:
+                type: string
+            Exchange:
+                minLength: 1
+                type: string
+            ExchangeID:
+                type: number
+            ExpirationDate:
+                minLength: 1
+                type: string
+            FutureType:
+                minLength: 1
+                type: string
+            LotSize:
+                type: number
+            MinMove:
+                type: number
+            Name:
+                minLength: 1
+                type: string
+            OptionType:
+                minLength: 1
+                type: string
+            PointValue:
+                type: number
+            Root:
+                minLength: 1
+                type: string
+            StrikePrice:
+                type: number
+        required:
+        - Category
+        - Country
+        - Currency
+        - Description
+        - Exchange
+        - ExchangeID
+        - ExpirationDate
+        - FutureType
+        - LotSize
+        - MinMove
+        - Name
+        - OptionType
+        - PointValue
+        - Root
+        - StrikePrice
+        type: object
+    minItems: 0
+    type: array
+    uniqueItems: true
+
+  SymbolSearchDefinition:
+    description: ''
+    items:
+        properties:
+            Category:
+                minLength: 1
+                type: string
+            Country:
+                minLength: 1
+                type: string
+                enum:
+                  - US
+                  - DE
+                  - CA                 
+            Currency:
+                minLength: 1
+                type: string
+                enum:
+                  - USD
+                  - AUD
+                  - CAD
+                  - CHF
+                  - DKK
+                  - EUR
+                  - DBP
+                  - HKD
+                  - JPY
+                  - NOK
+                  - NZD
+                  - SEK
+                  - SGD                 
+            Description:
+                minLength: 1
+                type: string
+            Error: 
+                type: string
+            Exchange:
+                minLength: 1
+                type: string
+            ExchangeID:
+                type: number
+            ExpirationDate:
+                minLength: 1
+                type: string
+            FutureType:
+                minLength: 1
+                type: string
+            LotSize:
+                type: number
+            MinMove:
+                type: number
+            Name:
+                minLength: 1
+                type: string
+            OptionType:
+                minLength: 1
+                type: string
+            PointValue:
+                type: number
+            Root:
+                minLength: 1
+                type: string
+            StrikePrice:
+                type: number
+        required:
+        - Category
+        - Country
+        - Currency
+        - Description
+        - Exchange
+        - ExchangeID
+        - ExpirationDate
+        - FutureType
+        - LotSize
+        - MinMove
+        - Name
+        - OptionType
+        - PointValue
+        - Root
+        - StrikePrice
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+  
+  QuoteDefinition:
+    description: ''
+    items:
+        properties:
+            Ask:
+                type: number
+            AskPriceDisplay:
+                minLength: 1
+                type: string
+            AskSize:
+                type: number
+            AssetType:
+                minLength: 1
+                type: string
+                enum:
+                    - INDEX
+                    - STOCK
+                    - FUTURE
+                    - FOREX
+                    - UNKNOWN
+            Bid:
+                type: number
+            BidPriceDisplay:
+                minLength: 1
+                type: string
+            BidSize:
+                type: number
+            Close:
+                type: number
+            ClosePriceDisplay:
+                minLength: 1
+                type: string
+            CountryCode:
+                minLength: 1
+                type: string
+            Currency:
+                minLength: 1
+                type: string
+                enum:
+                    - USD
+                    - AUD
+                    - CAD
+                    - CHF
+                    - DKK
+                    - EUR
+                    - DBP
+                    - HKD
+                    - JPY
+                    - NOK
+                    - NZD
+                    - SEK
+                    - SGD
+            DailyOpenInterest:
+                type: number
+            DataFeed:
+                minLength: 1
+                type: string
+            Description:
+                minLength: 1
+                type: string
+            DisplayType:
+                type: number
+            Error: 
+                type: string
+            Exchange:
+                minLength: 1
+                type: string
+            FractionalDisplay:
+                type: boolean
+            High:
+                type: number
+            High52Week:
+                type: number
+            High52WeekPriceDisplay:
+                minLength: 1
+                type: string
+            High52WeekTimeStamp:
+                minLength: 1
+                type: string
+            HighPriceDisplay:
+                minLength: 1
+                type: string
+            IsDelayed:
+                type: boolean
+            Last:
+                type: number
+            LastPriceDisplay:
+                minLength: 1
+                type: string
+            Low:
+                type: number
+            Low52Week:
+                type: number
+            Low52WeekPriceDisplay:
+                minLength: 1
+                type: string
+            Low52WeekTimeStamp:
+                minLength: 1
+                type: string
+            LowPriceDisplay:
+                minLength: 1
+                type: string
+            MinMove:
+                type: number
+            NameExt:
+                type: string
+            NetChange:
+                type: number
+            NetChangePct:
+                type: number
+            Open:
+                type: number
+            OpenPriceDisplay:
+                minLength: 1
+                type: string
+            PointValue:
+                type: number
+            PreviousClose:
+                type: number
+            PreviousClosePriceDisplay:
+                minLength: 1
+                type: string
+            PreviousVolume:
+                type: number
+            Restrictions:
+                items:
+                  type: string
+                type: array
+            StrikePrice:
+                type: number
+            StrikePriceDisplay:
+                minLength: 1
+                type: string
+            Symbol:
+                minLength: 1
+                type: string
+            SymbolRoot:
+                minLength: 1
+                type: string
+            TickSizeTier:
+                type: number
+            TradeTime:
+                minLength: 1
+                type: string
+            Underlying:
+                type: string
+            Volume:
+                type: number
+        required:
+        - Symbol
+        - SymbolRoot
+        - Underlying
+        - Description
+        - AssetType
+        - Exchange
+        - FractionalDisplay
+        - DisplayType
+        - Open
+        - OpenPriceDisplay
+        - High
+        - HighPriceDisplay
+        - Low
+        - LowPriceDisplay
+        - PreviousClose
+        - PreviousClosePriceDisplay
+        - Last
+        - LastPriceDisplay
+        - Ask
+        - AskPriceDisplay
+        - AskSize
+        - Bid
+        - BidPriceDisplay
+        - BidSize
+        - NetChange
+        - NetChangePct
+        - High52Week
+        - High52WeekTimeStamp
+        - High52WeekPriceDisplay
+        - Low52Week
+        - Low52WeekTimeStamp
+        - Low52WeekPriceDisplay
+        - Volume
+        - PreviousVolume
+        - Currency
+        - CountryCode
+        - StrikePrice
+        - StrikePriceDisplay
+        - NameExt
+        - MinMove
+        - TickSizeTier
+        - PointValue
+        - Close
+        - ClosePriceDisplay
+        - DailyOpenInterest
+        - IsDelayed
+        - DataFeed
+        - Restrictions
+        - TradeTime
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  SymbolListsDefinition:
+    description: ''
+    items:
+        $ref: "#/definitions/SymbolListDefinition"
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  SymbolListDefinition:
+    description: ''
+    properties:
+        Category:
+            minLength: 1
+            type: string
+        ID:
+            minLength: 1
+            type: string
+        Name:
+            minLength: 1
+            type: string
+        Path:
+            minLength: 1
+            type: string
+        RootCategory:
+            minLength: 1
+            type: string
+        Subcategory:
+            minLength: 1
+            type: string
+    required:
+    - Category
+    - ID
+    - Name
+    - Path
+    - RootCategory
+    - Subcategory
+    type: object
+
+  SymbolListSymbolsDefinition:
+    description: ''
+    items:
+        properties:
+            Description:
+                minLength: 1
+                type: string
+            Exchange:
+                minLength: 1
+                type: string
+            Name:
+                minLength: 1
+                type: string
+        required:
+        - Description
+        - Exchange
+        - Name
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  UserAccountsDefinition:
+    description: ''
+    items:
+        properties:
+            Alias:
+                type: string
+            AltId:
+                type: string
+            DisplayName:
+                minLength: 1
+                type: string
+            IsStockLocateEligible:
+                type: boolean
+            Key:
+                type: number
+            Name:
+                minLength: 1
+                type: string
+            Type:
+                minLength: 1
+                type: string
+            TypeDescription:
+                minLength: 1
+                type: string
+        required:
+        - Alias
+        - DisplayName
+        - IsStockLocateEligible
+        - Key
+        - Name
+        - Type
+        - TypeDescription
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  AccountBalancesDefinition:
+    description: ''
+    items:
+        properties:
+            Alias:
+                type: string
+            BODAccountBalance:
+                description: (Equities)
+                type: number
+            BODDayTradingMarginableEquitiesBuyingPower:
+                description: (Equities)
+                type: number
+            BODEquity:
+                type: number
+            BODNetCash:
+                type: number
+            BODOpenTradeEquity:
+                description: (Futures)
+                type: number                  
+            BODOptionBuyingPower:
+                description: (Equities)
+                type: number
+            BODOptionValue:
+                description: (Equities)
+                type: number
+            BODOvernightBuyingPower:
+                description: (Equities)
+                type: number
+            CanDayTrade:
+                description: (Equities)
+                type: boolean
+            ClosedPositions:
+                items:
+                    type: object
+                    properties:
+                      Currency:
+                        type: number
+                      Profit:
+                        type: number
+                      Symbol:
+                        type: string
+                    required:
+                      - Currency
+                      - Profit
+                      - Symbol
+                type: array
+            Commission:
+                description: (Futures)
+                type: number
+            DayTrades:
+                description: (Equities)
+                type: number
+            DayTradingQualified:
+                description: (Equities)
+                type: boolean
+            Currency:
+                description: (Futures)
+                minLength: 1
+                type: string
+            CurrencyDetails:
+                description: (Futures)
+                items:
+                    properties:
+                        AccountOpenOrderInitMargin:
+                            type: number
+                        BODAccountCashBalance:
+                            type: number
+                        BODAccountOpenTradeEquity:
+                            type: number
+                        BODAccountSecurities:
+                            type: number
+                        BODCashBalance:
+                            type: number
+                        BODOpenTradeEquity:
+                            type: number
+                        BODSecurities:
+                            type: number
+                        Commission:
+                            type: number
+                        Currency:
+                            minLength: 1
+                            type: string
+                        OpenOrderInitMargin:
+                            type: number
+                        RealTimeAccountCashBalance:
+                            type: number
+                        RealTimeAccountInitMargin:
+                            type: number
+                        RealTimeAccountMaintenanceMargin:
+                            type: number
+                        RealTimeAccountMarginRequirement:
+                            type: number
+                        RealTimeAccountRealizedProfitLoss:
+                            type: number
+                        RealTimeAccountUnrealizedProfitLoss:
+                            type: number
+                        RealTimeCashBalance:
+                            type: number
+                        RealTimeInitMargin:
+                            type: number
+                        RealTimeMaintenanceMargin:
+                            type: number
+                        RealTimeRealizedProfitLoss:
+                            type: number
+                        RealTimeUnrealizedProfitLoss:
+                            type: number
+                        ToAccountConversionRate:
+                            type: number
+                        TodayRealTimeUnrealizedProfitLoss:
+                            type: number
+                    required:
+                        - BODAccountCashBalance
+                        - BODCashBalance
+                        - Commission
+                        - Currency
+                        - RealTimeAccountCashBalance
+                        - RealTimeAccountMarginRequirement
+                        - RealTimeAccountRealizedProfitLoss
+                        - RealTimeAccountUnrealizedProfitLoss
+                        - RealTimeCashBalance
+                        - RealTimeRealizedProfitLoss
+                        - RealTimeUnrealizedProfitLoss
+                        - ToAccountConversionRate
+                        - AccountOpenOrderInitMargin
+                        - BODAccountOpenTradeEquity
+                        - BODAccountSecurities
+                        - BODOpenTradeEquity
+                        - BODSecurities
+                        - OpenOrderInitMargin
+                        - RealTimeAccountInitMargin
+                        - RealTimeAccountMaintenanceMargin
+                        - RealTimeInitMargin
+                        - RealTimeMaintenanceMargin
+                        - TodayRealTimeUnrealizedProfitLoss
+                minItems: 1
+                type: array
+                uniqueItems: true
+            DisplayName:
+                minLength: 1
+                type: string
+            Key:
+                type: number
+            MarketValue:
+                type: number
+            Name:
+                minLength: 1
+                type: string
+            OptionApprovalLevel:
+                description: (Equities)
+                type: number
+            OpenOrderMargin:
+                description: (Futures)
+                type: number                      
+            PatternDayTrader:
+                description: (Equities)
+                type: boolean
+            RealTimeAccountBalance:
+                type: number
+            RealTimeBuyingPower:
+                type: number
+            RealTimeCostOfPositions:
+                description: (Equities)
+                type: number
+            RealTimeDayTradingMarginableEquitiesBuyingPower:
+                description: (Equities)
+                type: number
+            RealTimeEquity:
+                description: (Futures)
+                type: number
+            RealTimeInitialMargin:
+                description: (Futures)
+                type: number                  
+            RealTimeOptionBuyingPower:
+                description: (Equities)
+                type: number
+            RealTimeOptionValue:
+                description: (Equities)
+                type: number
+            RealTimeOvernightBuyingPower:
+                description: (Equities)
+                type: number
+            RealTimeMaintenanceMargin:
+                description: (Futures)
+                type: number
+            RealTimeRealizedProfitLoss:
+                type: number
+            RealTimeTradeEquity:
+                type: number
+            RealTimeUnrealizedGains:
+                type: number
+            RealTimeUnrealizedProfitLoss:
+                type: number
+            SecurityOnDeposit:
+                description: (Futures)
+                type: number
+            Status:
+                minLength: 1
+                type: string
+            StatusDescription:
+                minLength: 1
+                type: string
+            TodayRealTimeTradeEquity:
+                description: (Futures)
+                type: number
+            Type:
+                minLength: 1
+                type: string
+            TypeDescription:
+                minLength: 1
+                type: string
+            UnclearedDeposit:
+                type: number
+            UnsettledFund:
+                description: (Equities)
+                type: number
+            __type:
+                minLength: 1
+                type: string
+        required:
+            - __type
+            - Alias
+            - BODEquity
+            - BODNetCash
+            - ClosedPositions
+            - DisplayName
+            - Key
+            - MarketValue
+            - Name
+            - RealTimeAccountBalance
+            - RealTimeBuyingPower
+            - RealTimeEquity
+            - RealTimeRealizedProfitLoss
+            - RealTimeUnrealizedGains
+            - RealTimeUnrealizedProfitLoss
+            - Status
+            - StatusDescription
+            - Type
+            - TypeDescription
+            - UnclearedDeposit
+            - BODOpenTradeEquity
+            - Commission
+            - Currency
+            - CurrencyDetails
+            - OpenOrderMargin
+            - RealTimeInitialMargin
+            - RealTimeMaintenanceMargin
+            - RealTimeTradeEquity
+            - SecurityOnDeposit
+            - TodayRealTimeTradeEquity
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+  
+  AccountPositionsDefinition:
+    description: ''
+    items:
+        properties:
+            AccountID:
+                minLength: 1
+                type: string
+            AccountMarketValue:
+                type: number
+            AccountOpenProfitLoss:
+                type: number
+            AccountTotalCost:
+                type: number
+            Alias:
+                type: string
+            AskPrice:
+                type: number
+            AskPriceDisplay:
+                minLength: 1
+                type: string
+            AssetType:
+                minLength: 1
+                type: string
+            AveragePrice:
+                type: number
+            AveragePriceDisplay:
+                minLength: 1
+                type: string
+            BidPrice:
+                type: number
+            BidPriceDisplay:
+                minLength: 1
+                type: string
+            BigPointValue:
+                type: number
+            ContractExpireDate:
+                minLength: 1
+                type: string
+            ConversionRate:
+                type: number
+            Country:
+                minLength: 1
+                type: string
+            Currency:
+                minLength: 1
+                type: string
+            Description:
+                minLength: 1
+                type: string
+            DisplayName:
+                minLength: 1
+                type: string
+            InitialMargin:
+                type: number
+            Key:
+                type: number
+            LastPrice:
+                type: number
+            LastPriceDisplay:
+                minLength: 1
+                type: string
+            LongShort:
+                minLength: 1
+                type: string
+            MaintenanceMargin:
+                type: number
+            MarketValue:
+                type: number
+            OpenProfitLoss:
+                type: number
+            OpenProfitLossPercent:
+                type: number
+            OpenProfitLossQty:
+                type: number
+            Quantity:
+                type: number
+            RequiredMargin:
+                type: number
+            SettlePrice:
+                type: number
+            StrikePrice:
+                type: number
+            StrikePriceDisplay:
+                minLength: 1
+                type: string
+            Symbol:
+                minLength: 1
+                type: string
+            TimeStamp:
+                minLength: 1
+                type: string
+            TotalCost:
+                type: number
+        required:
+        - AccountID
+        - AccountMarketValue
+        - AccountOpenProfitLoss
+        - AccountTotalCost
+        - Alias
+        - AskPrice
+        - AskPriceDisplay
+        - AssetType
+        - AveragePrice
+        - AveragePriceDisplay
+        - BidPrice
+        - BidPriceDisplay
+        - BigPointValue
+        - ContractExpireDate
+        - ConversionRate
+        - Country
+        - Currency
+        - Description
+        - DisplayName
+        - InitialMargin
+        - Key
+        - LastPrice
+        - LastPriceDisplay
+        - LongShort
+        - MaintenanceMargin
+        - MarketValue
+        - OpenProfitLoss
+        - OpenProfitLossPercent
+        - OpenProfitLossQty
+        - Quantity
+        - RequiredMargin
+        - SettlePrice
+        - StrikePrice
+        - StrikePriceDisplay
+        - Symbol
+        - TimeStamp
+        - TotalCost
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  AccountOrdersDefinition:
+    description: ''
+    items:
+        properties:
+            AccountID:
+                minLength: 1
+                type: string
+            AdvancedOptions:
+                type: string
+            Alias:
+                type: string
+            AssetType:
+                minLength: 1
+                type: string
+            CommissionFee:
+                type: number
+            ContractExpireDate:
+                minLength: 1
+                type: string
+            ConversionRate:
+                type: number
+            Country: 
+                type: string            
+            Denomination:
+                minLength: 1
+                type: string
+            DisplayName: 
+                type: string            
+            DisplayType:
+                type: number
+            Duration:
+                minLength: 1
+                type: string
+            ExecuteQuantity:
+                type: number
+            FilledCanceled:
+                minLength: 1
+                type: string
+            FilledPrice:
+                type: number
+            FilledPriceText:
+                minLength: 1
+                type: string
+            GroupName:
+                type: string
+            Legs:
+                items:
+                    properties:
+                        Ask:
+                            type: number
+                        BaseSymbol:
+                            type: string
+                        Bid:
+                            type: number
+                        ExecPrice:
+                            type: number
+                        ExecQuantity:
+                            type: number
+                        ExpireDate:
+                            type: string
+                        Leaves:
+                            type: number
+                        LegNumber:
+                            type: number
+                        LimitPrice:
+                            type: number
+                        LimitPriceDisplay:
+                            minLength: 1
+                            type: string
+                        Month:
+                            type: number
+                        OpenOrClose:
+                            minLength: 1
+                            type: string
+                        OrderID:
+                            type: number
+                        OrderType:
+                            minLength: 1
+                            type: string
+                        PointValue:
+                            type: number
+                        PriceUsedForBuyingPower:
+                            type: number
+                        PutOrCall:
+                            type: string
+                        Quantity:
+                            type: number
+                        Side:
+                            minLength: 1
+                            type: string
+                        StopPrice:
+                            type: number
+                        StopPriceDisplay:
+                            type: string
+                        StrikePrice:
+                            type: number
+                        Symbol:
+                            minLength: 1
+                            type: string
+                        TimeExecuted:
+                            minLength: 1
+                            type: string
+                        Type:
+                            minLength: 1
+                            type: string
+                        Year:
+                            type: number
+                    required:
+                    - Ask
+                    - BaseSymbol
+                    - Bid
+                    - ExecPrice
+                    - ExecQuantity
+                    - ExpireDate
+                    - Leaves
+                    - LegNumber
+                    - LimitPrice
+                    - LimitPriceDisplay
+                    - Month
+                    - OpenOrClose
+                    - OrderID
+                    - OrderType
+                    - PointValue
+                    - PriceUsedForBuyingPower
+                    - PutOrCall
+                    - Quantity
+                    - Side
+                    - StopPrice
+                    - StopPriceDisplay
+                    - StrikePrice
+                    - Symbol
+                    - TimeExecuted
+                    - Type
+                    - Year
+                minItems: 1
+                type: array
+                uniqueItems: true
+            LimitPrice:
+                type: number
+            LimitPriceText:
+                minLength: 1
+                type: string
+            MinMove:
+                type: number
+            OrderID:
+                type: number
+            Originator:
+                type: number
+            Quantity:
+                type: number
+            QuantityLeft:
+                type: number
+            RejectReason:
+                type: string
+            Routing:
+                minLength: 1
+                type: string
+            Spread:
+                type: string
+            Status:
+                minLength: 1
+                type: string
+            StatusDescription:
+                minLength: 1
+                type: string
+            StopPrice:
+                type: number
+            StopPriceText:
+                minLength: 1
+                type: string
+            Symbol:
+                minLength: 1
+                type: string
+            TimeStamp:
+                minLength: 1
+                type: string
+            TriggeredBy:
+                type: string
+            Type:
+                minLength: 1
+                type: string
+            UnbundledRouteFee:
+                type: number
+        required:
+        - AccountID
+        - AdvancedOptions
+        - Alias
+        - AssetType
+        - CommissionFee
+        - ContractExpireDate
+        - ConversionRate
+        - Denomination
+        - DisplayType
+        - Duration
+        - ExecuteQuantity
+        - FilledCanceled
+        - FilledPrice
+        - FilledPriceText
+        - GroupName
+        - Legs
+        - LimitPrice
+        - LimitPriceText
+        - MinMove
+        - OrderID
+        - Originator
+        - Quantity
+        - QuantityLeft
+        - RejectReason
+        - Routing
+        - Spread
+        - Status
+        - StatusDescription
+        - StopPrice
+        - StopPriceText
+        - Symbol
+        - TimeStamp
+        - TriggeredBy
+        - Type
+        - UnbundledRouteFee
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  OrderRequestDefinition:
+    description: ''
+    properties:
+        AccountKey:
+            description: |
+              Must be a valid Account Key for that user and Asset Type
+            minLength: 1
+            type: string
+        AdvancedOptions:
+            type: object        
+            properties:
+              TrailingStop:
+                type: object
+                properties:
+                  Amount:
+                    description: | 
+                      Currency Offset from current price.  
+                      Note: Mutually exclusive with Percent.  
+                    type: number
+                  Percent:
+                    description: | 
+                      Percentage offset from current price.  
+                      Note: Mutually exclusive with Amount.
+                    type: number
+        AssetType:
+            minLength: 1
+            type: string
+            enum:
+              - EQ
+              - FU
+              - OP
+        Duration:
+            description: | 
+              Allowed durations vary by Asset Type
+            minLength: 1
+            type: string
+            enum:
+              - DAY
+              - DYP
+              - GTC
+              - GCP
+              - GTD
+              - GDP
+              - OPG
+              - CLO
+              - IOC
+              - FOK
+              - 1
+              - 1 MIN
+              - 3
+              - 3 MIN
+              - 5
+              - 5 MIN
+        GTDDate:
+            description: |
+              Date that Order is valid through. Input Format: MM/DD/YYYY  
+              Required for orders with Duration = GTD.  
+            minLength: 1
+            maxLength: 10 
+            type: string
+            format: mmddyyyy
+        LimitPrice:
+            minLength: 1
+            type: string
+        StopPrice:
+            minLength: 1
+            type: string     
+        OrderConfirmId:
+            description: | 
+               A unique identifier regarding an order used to prevent duplicates.
+                 
+               Must be unique per API key, per order, per user.  
+            minLength: 1
+            maxLength: 25
+            type: string
+        OrderType:
+            minLength: 1
+            type: string
+            enum:
+              - Limit
+              - Market
+              - StopLimit
+              - StopMarket
+        Quantity:
+            minLength: 1
+            type: string
+        Route:
+            minLength: 1
+            type: string   
+            enum:
+              - Intelligent
+              - AMEX
+              - ARCA
+              - AUTO
+              - BATS
+              - BTRD
+              - BYX
+              - CTDL
+              - EDGA
+              - EDGX
+              - GFLO
+              - MIXI
+              - NITE
+              - NQBX
+              - NSDQ
+              - NYSE      
+        Symbol:
+            description: Must be UPPERCASE
+            minLength: 1
+            type: string
+        TradeAction:
+            minLength: 1
+            type: string
+            enum:
+              - BUY
+              - SELL
+              - BUYTOCOVER
+              - SELLSHORT
+              - BUYTOOPEN
+              - BUYTOCLOSE
+              - SELLTOOPEN
+              - SELLTOCLOSE
+        OSOs:
+            items: 
+                type: object
+                properties:
+                    Type:
+                        minLength: 1
+                        type: string
+                        enum: 
+                          - NORMAL 
+                          - BRK
+                          - OCO                
+                    Orders:
+                        items:
+                          $ref: '#/definitions/OrderRequestDefinition'
+                        minItems: 1
+                        type: array
+                        uniqueItems: true
+                required:
+                - Type
+            minItems: 1
+            type: array
+            uniqueItems: true
+        Legs:
+          items:
+            type: object
+            properties:
+              Symbol:
+                  description: Must be UPPERCASE
+                  minLength: 1
+                  type: string
+              Quantity:
+                  minLength: 1
+                  type: string
+              TradeAction:
+                  minLength: 1
+                  type: string
+                  enum:
+                    - BUY
+                    - SELL
+                    - BUYTOCOVER
+                    - SELLSHORT
+                    - BUYTOOPEN
+                    - BUYTOCLOSE
+                    - SELLTOOPEN
+                    - SELLTOCLOSE                
+              Ratio:
+                description: |
+                  The ratio of this leg in relation to other legs of the order. 
+                    
+                  Find the Greatest Common Factor (GCF) between the quantities of each leg.   
+                  Divide a leg's quantity by the GCF to get the leg's ratio.                  
+                type: number                
+          minItems: 1
+          type: array
+          uniqueItems: true            
+    required:
+        - AssetType
+        - Symbol
+        - Quantity
+        - OrderType
+        - Duration
+        - AccountKey
+        - TradeAction
+    type: object
+
+  CancelReplaceDefinition:
+    description: ''
+    properties:
+        AccountKey:
+            minLength: 1
+            type: string
+        LimitPrice:
+            minLength: 1
+            type: string
+        StopPrice:
+            minLength: 1
+            type: string            
+        OrderID:
+            minLength: 1
+            type: string
+        OrderType:
+            minLength: 1
+            type: string
+        Quantity:
+            minLength: 1
+            type: string
+        Symbol:
+            minLength: 1
+            type: string
+        AdvancedOptions:
+            type: object        
+            properties:
+              TrailingStop:
+                type: object
+                properties:
+                  Amount:
+                    description: | 
+                      Currency Offset from current price.  
+                      Note: Mutually exclusive with Percent.  
+                    type: number
+                  Percent:
+                    description: | 
+                      Percentage offset from current price.  
+                      Note: Mutually exclusive with Amount.
+                    type: number            
+    required:
+        - AccountKey
+        - OrderID
+        - OrderType
+        - Quantity
+        - Symbol
+    type: object  
+
+  OrderResponseDefinition:
+    description: ''
+    type: object
+    properties:
+      Message:
+        type: string
+      OrderID:
+        type: string
+      OrderStatus:
+        type: string
+        enum:
+          - Ok
+          - Failed
+    required:
+      - Message
+      - OrderStatus
+
+  GroupOrderRequestDefinition: 
+    description: ''
+    properties:
+        Orders:
+            minItems: 1
+            type: array
+            uniqueItems: true       
+            items:
+              $ref: '#/definitions/OrderRequestDefinition'
+        Type:
+            description: |
+              Indicates how Order Execution should treat this group of orders.
+            minLength: 1
+            type: string
+            enum:
+              - NORMAL
+              - OCO
+              - BRK
+    required:
+    - Type
+    - Orders
+    type: object
+          
+
+  GroupOrderResponseDefinition:
+    description: ''
+    type: array
+    minItems: 1    
+    uniqueItems: true
+    items: 
+      $ref: '#/definitions/OrderResponseDefinition'
+
+  QuoteStreamDefinition:
+    description: 'Quote stream object used in quote/changes and quote/snapshots'
+    properties:
+        Ask:
+            type: number
+        AskSize:
+            type: number
+        AskType:
+            minLength: 1
+            type: string
+        AssetType:
+            minLength: 1
+            type: string
+            enum:
+                - INDEX
+                - STOCK
+                - FUTURE
+                - FOREX
+        Bid:
+            type: number
+        BidSize:
+            type: number
+        BidType:
+            minLength: 1
+            type: string
+        BitFlags:
+            type: number
+        Category:
+            type: number
+        Close:
+            type: number
+        ContractExpireDate:
+            type: number
+        CountryCode:
+            minLength: 1
+            type: string
+        Currency:
+            minLength: 1
+            type: string
+            enum:
+                - USD
+                - AUD
+                - CAD
+                - CHF
+                - DKK
+                - EUR
+                - DBP
+                - HKD
+                - JPY
+                - NOK
+                - NZD
+                - SEK
+                - SGD
+        CurrencyCode:
+            type: number
+        DailyDate:
+            type: number
+        DailyDateTime:
+            minLength: 1
+            type: string
+        DailyHighTime:
+            type: number
+        DailyLastTime:
+            type: number
+        DailyLowTime:
+            type: number
+        DailyOpenInterest:
+            type: number
+        DailyOpenTime:
+            type: number
+        DailyTime:
+            type: number
+        DataFeed:
+            minLength: 1
+            type: string
+        Description:
+            minLength: 1
+            type: string
+        DisplayType:
+            type: number
+        Error:
+            type: string
+        ExRightsTSE:
+            type: number
+        Exchange:
+            minLength: 1
+            type: string
+        ExchangeID:
+            type: number
+        High:
+            type: number
+        High52Week:
+            type: number
+        High52WeekDay:
+            type: number
+        High52WeekMonth:
+            type: number
+        High52WeekTimeStamp:
+            minLength: 1
+            type: string
+        HighTime:
+            minLength: 1
+            type: string
+        IndustryCode:
+            type: string
+        IsDelayed:
+            type: boolean
+        Last:
+            type: number
+        LastTime:
+            minLength: 1
+            type: string
+        LotSize:
+            type: number
+        Low:
+            type: number
+        Low52Week:
+            type: number
+        Low52WeekDay:
+            type: number
+        Low52WeekMonth:
+            type: number
+        Low52WeekTimeStamp:
+            minLength: 1
+            type: string
+        LowTime:
+            minLength: 1
+            type: string
+        MaxPrice:
+            type: number
+        MinMove:
+            type: number
+        MinPrice:
+            type: number
+        NameExt:
+            type: string
+        NetChange:
+            type: number
+        NetChangePct:
+            type: number
+        Open:
+            type: number
+        OpenTime:
+            minLength: 1
+            type: string
+        PointValue:
+            type: number
+        PreviousClose:
+            type: number
+        PreviousVolume:
+            type: number
+        Restrictions:
+            items:
+              type: string
+            type: array
+        SectorName:
+            type: string
+        StrikePrice:
+            type: number
+        Symbol:
+            minLength: 1
+            type: string
+        SymbolRoot:
+            minLength: 1
+            type: string
+        TickSizeTier:
+            type: number
+        TradeTime:
+            minLength: 1
+            type: string
+        TradeType:
+            minLength: 1
+            type: string
+        Turnover:
+            type: number
+        Underlying:
+            type: string
+        UnitOfTrade:
+            type: number
+        Volume:
+            type: number
+    required:
+        - Symbol
+        - Category
+        - Last
+        - PreviousClose
+        - BitFlags
+        - Exchange
+        - High
+        - Low
+        - Open
+        - Description
+        - Volume
+        - BidSize
+        - AskSize
+        - High52Week
+        - Low52Week
+        - CurrencyCode
+        - StrikePrice
+        - DailyOpenInterest
+        - SymbolRoot
+        - Underlying
+        - ContractExpireDate
+        - High52WeekMonth
+        - High52WeekDay
+        - Low52WeekMonth
+        - Low52WeekDay
+        - ExchangeID
+        - DailyDate
+        - DailyTime
+        - DisplayType
+        - PointValue
+        - MinMove
+        - Close
+        - PreviousVolume
+        - Bid
+        - Ask
+        - CountryCode
+        - IndustryCode
+        - SectorName
+        - DailyOpenTime
+        - DailyHighTime
+        - DailyLowTime
+        - DailyLastTime
+        - MinPrice
+        - MaxPrice
+        - UnitOfTrade
+        - Turnover
+        - BidType
+        - AskType
+        - TradeType
+        - ExRightsTSE
+        - NameExt
+        - TickSizeTier
+        - Currency
+        - AssetType
+        - NetChange
+        - NetChangePct
+        - High52WeekTimeStamp
+        - Low52WeekTimeStamp
+        - DailyDateTime
+        - IsDelayed
+        - Restrictions
+        - DataFeed
+        - LotSize
+        - OpenTime
+        - HighTime
+        - LowTime
+        - LastTime
+        - TradeTime
+    type: object
+  BarchartDefinition:
+    description: 'Standard barchart data object for streaming barchart data with stream/barchart/...'
+    properties:
+        Close:
+            type: number
+        DownTicks:
+            type: number
+        DownVolume:
+            type: number
+        High:
+            type: number
+        Low:
+            type: number
+        Open:
+            type: number
+        OpenInterest:
+            type: number
+        Status:
+            $ref: '#/definitions/StatusDefinition'
+        TimeStamp:
+            minLength: 1
+            type: string
+        TotalTicks:
+            type: number
+        TotalVolume:
+            type: number
+        UnchangedTicks:
+            type: number
+        UnchangedVolume:
+            type: number
+        UpTicks:
+            type: number
+        UpVolume:
+            type: number
+    required:
+        - Close
+        - DownTicks
+        - DownVolume
+        - High
+        - Low
+        - Open
+        - Status
+        - TimeStamp
+        - TotalTicks
+        - TotalVolume
+        - UnchangedTicks
+        - UnchangedVolume
+        - UpTicks
+        - UpVolume
+        - OpenInterest
+    type: object
+  StatusDefinition:
+    description: 'Status value for Barcharts and Tickbars. Integer value represeting values through bit mappings'
+    properties:
+        bit0:
+            type: integer
+            description: '`NEW`: Set on the first time the bar is sent'
+            minimum: 0
+            maximum: 1
+        bit1:
+            type: integer
+            description: '`REAL_TIME_DATA`: Set when there is data in the bar and the data is being built in "real time"" from a trade'
+            minimum: 0
+            maximum: 1
+        bit2:
+            type: integer
+            description: '`HISTORICAL_DATA`: Set when there is data in the bar and the data is historical data, or is built from historical data'
+            minimum: 0
+            maximum: 1
+        bit3:
+            type: integer
+            description: '`STANDARD_CLOSE`: Set when the bar is closed "normally" (e.g. a 2 tick tickchart bar was closed because of the second tick, a 10-min barchart was closed due to time, etc.)'
+            minimum: 0
+            maximum: 1
+        bit4:
+            type: integer
+            description: '`END_OF_SESSION_CLOSE`: Set when the bar was closed "prematurely" due to the end of the trading session and the particular bar type is not meant to span trading sessions'
+            minimum: 0
+            maximum: 1
+        bit5:
+            type: integer
+            description: '`UPDATE_CORPACTION`: Set when there was an update due to corporate action'
+            minimum: 0
+            maximum: 1
+        bit6:
+            type: integer
+            description: '`UPDATE_CORRECTION`:'
+            minimum: 0
+            maximum: 1
+        bit7:
+            type: integer
+            description: '`ANALYSIS_BAR`: Set when the bar should not be considered except for analysis purposes'
+            minimum: 0
+            maximum: 1
+        bit8:
+            type: integer
+            description: '`EXTENDED_BAR`'
+            minimum: 0
+            maximum: 1
+        bit19:
+            type: integer
+            description: '`PREV_DAY_CORRECTION`'
+            minimum: 0
+            maximum: 1
+        bit23:
+            type: integer
+            description: '`AFTER_MARKET_CORRECTION`'
+            minimum: 0
+            maximum: 1
+        bit24:
+            type: integer
+            description: '`PHANTOM_BAR`: Set when the bar is synthetic - thus created only to fill gaps'
+            minimum: 0
+            maximum: 1
+        bit25:
+            type: integer
+            description: '`EMPTY_BAR`'
+            minimum: 0
+            maximum: 1
+        bit26:
+            type: integer
+            description: '`BACKFILL_DATA`'
+            minimum: 0
+            maximum: 1
+        bit27:
+            type: integer
+            description: '`ARCHIVE_DATA`'
+            minimum: 0
+            maximum: 1
+        bit28:
+            type: integer
+            description: '`GHOST_BAR`: Set when the bar is empty but specifically for the end session'
+            minimum: 0
+            maximum: 1
+        bit29:
+            type: integer
+            description: '`END_OF_HISTORY_STREAM`: Set when the bar returned is the last bar in the requested history span'
+            minimum: 0
+            maximum: 1
+    required:
+    - bit0
+    - bit1
+    - bit2
+    - bit3
+    - bit4
+    - bit5
+    - bit6
+    - bit7
+    - bit8
+    - bit19
+    - bit23
+    - bit24
+    - bit25
+    - bit26
+    - bit27
+    - bit28
+    - bit29
+    type: object
+  TickbarDefinition:
+    description: 'Standard tickbar data object for streaming tick bars with stream/tickbars/...'
+    properties:
+        Close:
+            type: number
+        Status:
+            $ref: '#/definitions/StatusDefinition'
+        TimeStamp:
+            minLength: 1
+            type: string
+        TotalVolume:
+            type: number
+    required:
+    - TimeStamp
+    - Status
+    - Close
+    - TotalVolume
+    type: object
