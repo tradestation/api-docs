@@ -1677,7 +1677,39 @@ paths:
       summary: |
         Confirm Order
       description: |
-        Returns estimated cost and commission information for an order without the order actually being placed 
+        Returns estimated cost and commission information for an order without the order actually being placed. The fields that are returned in the response depend on the order type.  
+        The following shows the different fields that will be returned.  
+          
+        **Base Confirmation**  (All confirmations will have these fields)
+        * Route 
+        * Duration 
+        * Account 
+        * SummaryMessage
+        * OrderConfirmId
+
+        **Equity Confirmation** (Base Confirmation fields + the following)
+        * EstimatedPrice
+        * EstimatedPriceDisplay
+        * EstimatedCost
+        * EstimatedCostDisplay
+        * EstimatedCommission
+        * EstimatedCommissionDisplay
+
+        **Forex Confirmation** (Base Confirmation fields + the following)
+        * BaseCurrency
+        * CounterCurrency
+        * InitialMarginDisplay
+
+        **Futures Confirmation** (Base Confirmation fields + the following)
+        * ProductCurrency
+        * AccountCurrency
+        * EstimatedCost
+        * EstimatedPrice
+        * EstimatedPriceDisplay
+        * InitialMarginDisplay
+        * EstimatedCommission
+        * EstimatedCommissionDisplay
+
       operationId: postOrderConfirm
       tags:
         - order-execution
@@ -3412,7 +3444,7 @@ definitions:
     type: object  
 
   OrderConfirmResponseDefinition:
-    description: 'Base Order Confirm definition. The response will also contain asset-specific fields'
+    description: 'Order Confirm definition. The response will also contain asset-specific fields'
     type: object
     properties:
       Route:
