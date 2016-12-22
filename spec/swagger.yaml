@@ -1922,6 +1922,88 @@ paths:
           schema:
             $ref: '#/definitions/Error'            
 
+################################################################################
+  /orders/groups/confirm:
+    post:
+      summary: |
+        Confirm Group Order
+      description: |
+        Returns estimated cost and commission information for a group of orders (OCO, BRK) without the orders actually being placed
+          
+        **Base Confirmation**  (All confirmations will have these fields)
+        * Route 
+        * Duration 
+        * Account 
+        * SummaryMessage
+        * OrderConfirmId
+
+        **Equity Confirmation** (Base Confirmation fields + the following)
+        * EstimatedPrice
+        * EstimatedPriceDisplay
+        * EstimatedCost
+        * EstimatedCostDisplay
+        * EstimatedCommission
+        * EstimatedCommissionDisplay
+
+        **Forex Confirmation** (Base Confirmation fields + the following)
+        * BaseCurrency
+        * CounterCurrency
+        * InitialMarginDisplay
+
+        **Futures Confirmation** (Base Confirmation fields + the following)
+        * ProductCurrency
+        * AccountCurrency
+        * EstimatedCost
+        * EstimatedPrice
+        * EstimatedPriceDisplay
+        * InitialMarginDisplay
+        * EstimatedCommission
+        * EstimatedCommissionDisplay
+
+      operationId: postOrderGroupsConfirm
+      tags:
+        - order-execution
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GroupOrderRequestDefinition'
+      responses:
+        200:
+          description: Group Order Confirm Response
+          schema:
+            $ref: '#/definitions/GroupOrderConfirmResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
   ################################################################################
   /orders/groups:
     post:
@@ -3494,7 +3576,15 @@ definitions:
       - Account
       - OrderConfirmId 
       - EstimatedPrice
-        
+
+  GroupOrderConfirmResponseDefinition:
+    description: ''
+    type: array
+    minItems: 1    
+    uniqueItems: true
+    items: 
+      $ref: '#/definitions/OrderConfirmResponseDefinition'
+
   OrderResponseDefinition:
     description: ''
     type: object
