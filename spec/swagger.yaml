@@ -675,9 +675,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -746,9 +747,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -813,9 +815,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -909,9 +912,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1010,9 +1014,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1113,9 +1118,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1215,9 +1221,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
