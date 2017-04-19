@@ -1,0 +1,11 @@
+stages:
+  - test
+
+before_script:
+  - . ~/environment_setup  
+
+test:
+  stage: test
+  script:
+    - npm install -f
+    - npm test

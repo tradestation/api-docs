@@ -4,6 +4,11 @@ node_js:
 deploy:
   - skip_cleanup: true
     provider: script
+    script: npm test
+    on:
+      branch: master
+  - skip_cleanup: true
+    provider: script
     script: npm run deploy
     on:
       branch: master
