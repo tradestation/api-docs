@@ -1266,14 +1266,14 @@ paths:
           description: Interval for each bar returned (in ticks)
           type: integer
           minimum: 1
-          maximum: 10
+          maximum: 64999
           required: true
         - name: barsBack
           in: path
           description: The number of bars to stream, going back from current time
           type: integer
           minimum: 1
-          maximum: 64999
+          maximum: 10
           required: true
       responses:
         200:
