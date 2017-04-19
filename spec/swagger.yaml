@@ -210,7 +210,7 @@ info:
     name: Services Agreement For Application Developers
     url: https://s3.amazonaws.com/elasticbeanstalk-us-east-1-525856068889/wp-content/uploads/2016/02/Agreement-for-WebAPI-Developers_v5C.pdf
 
-################################################################################
+##############################################################################
 host: api.tradestation.com
 basePath: /v2
 schemes:
@@ -219,7 +219,7 @@ consumes:
   - application/json; charset=utf-8
 produces:
   - application/json; charset=utf-8
-################################################################################  
+##############################################################################  
 securityDefinitions:
   OAuth2-Auth-Code:
     description: |
@@ -267,7 +267,7 @@ securityDefinitions:
     #     Requests access to be allowed to execute HotList symbol scans        
     # grant_type=refresh_token&client_id=123456&redirect_uri=http://www.myredirect.com&client_secret=789456&refresh_token=1234myRefreshToken56789                
 
-################################################################################    
+##############################################################################    
 tags:
   - name: marketdata
     description: |
@@ -280,7 +280,7 @@ tags:
     description: |
       Trading tools for order submission, cancellation, and pre-order confirmation.
 
-################################################################################
+##############################################################################
 paths:
   /data/symbol/{symbol}:
     get:
@@ -346,7 +346,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'      
 
-  ################################################################################
+  ##############################################################################
   /data/symbols/suggest/{text}:
     get:
       summary: |
@@ -417,7 +417,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /data/symbols/search/{criteria}:
     get:
       summary: |
@@ -599,7 +599,7 @@ paths:
           schema:
               $ref: '#/definitions/Error'     
 
-  ################################################################################
+  ##############################################################################
   /data/quote/{symbols}:
     get:
       summary: |
@@ -666,7 +666,7 @@ paths:
           schema:
               $ref: '#/definitions/Error'     
 
-  ################################################################################
+  ##############################################################################
   /stream/quote/changes/{symbols}: 
     get:
       summary: |
@@ -688,9 +688,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -739,7 +740,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'    
 
-  ################################################################################                     
+  ##############################################################################                     
   /stream/quote/snapshots/{symbols}: 
     get:
       summary: |
@@ -761,9 +762,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -812,7 +814,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /stream/barchart/{symbol}/{interval}/{unit}/{startDate}: 
     get:
       summary: |
@@ -830,9 +832,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -910,7 +913,7 @@ paths:
           schema:
             $ref: '#/definitions/Error' 
 
-  ################################################################################
+  ##############################################################################
   /stream/barchart/{symbol}/{interval}/{unit}/{startDate}/{endDate}: 
     get:
       summary: |
@@ -928,9 +931,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1013,7 +1017,7 @@ paths:
           schema:
             $ref: '#/definitions/Error' 
 
-  ################################################################################
+  ##############################################################################
   /stream/barchart/{symbol}/{interval}/{unit}/{barsBack}/{lastDate}/...: 
     get:
       summary: |
@@ -1031,9 +1035,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1118,7 +1123,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /stream/barchart/{symbol}/{interval}/{unit}: 
     get:
       summary: |
@@ -1136,9 +1141,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1222,7 +1228,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'  
 
-  ################################################################################
+  ##############################################################################
   /stream/tickbars/{symbol}/{interval}/{barsBack}: 
     get:
       summary: |
@@ -1240,9 +1246,10 @@ paths:
       x-code-samples: 
         - lang: 'shell'
           source: |
-            curl "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
       produces:
         - text/plain
+        - application/vnd.tradestation.streams+json
       parameters:
         - name: access_token
           in: query
@@ -1352,7 +1359,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'    
 
-  ################################################################################
+  ##############################################################################
   /data/symbollists/{symbol_list_id}: 
     get:
       summary: |
@@ -1412,7 +1419,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'                                                   
 
-  ################################################################################
+  ##############################################################################
   /data/symbollists/{symbol_list_id}/symbols:
     get:
       summary: |
@@ -1472,7 +1479,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'                                                   
 
-  ################################################################################
+  ##############################################################################
   /users/{user_id}/accounts:
     get:
       summary: |
@@ -1532,7 +1539,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'                            
 
-  ################################################################################
+  ##############################################################################
   /accounts/{account_keys}/balances:
     get:
       summary: |
@@ -1594,7 +1601,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /accounts/{account_keys}/positions:
     get:
       summary: |
@@ -1665,7 +1672,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /accounts/{account_keys}/orders:
     get:
       summary: |
@@ -1732,7 +1739,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-################################################################################
+##############################################################################
   /orders/confirm:
     post:
       summary: |
@@ -1820,7 +1827,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /orders:
     post:
       summary: |
@@ -1876,7 +1883,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /orders/{order_id}:            
     delete:
       summary: |
@@ -1998,7 +2005,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'            
 
-################################################################################
+##############################################################################
   /orders/groups/confirm:
     post:
       summary: |
@@ -2085,7 +2092,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ################################################################################
+  ##############################################################################
   /orders/groups:
     post:
       summary: |
@@ -2164,7 +2171,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-################################################################################
+##############################################################################
 definitions: 
   Error:
     required:
