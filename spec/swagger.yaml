@@ -2984,11 +2984,7 @@ definitions:
             UnsettledFund:
                 description: (Equities)
                 type: number
-            __type:
-                minLength: 1
-                type: string
         required:
-            - __type
             - Alias
             - BODEquity
             - BODNetCash
