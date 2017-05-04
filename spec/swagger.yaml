@@ -2428,9 +2428,17 @@ definitions:
             ExpirationDate:
                 minLength: 1
                 type: string
+            ExpirationType:
+                type: string
             FutureType:
                 minLength: 1
                 type: string
+            IndustryCode: 
+                type: string
+            IndustryName: 
+                type: string
+            IsPreferredExchange:
+                type: boolean
             LotSize:
                 type: number
             MinMove:
@@ -2445,6 +2453,12 @@ definitions:
                 type: number
             Root:
                 minLength: 1
+                type: string
+            SectionClassCode:
+                type: string
+            SectionClassName:
+                type: string
+            SectorName:
                 type: string
             StrikePrice:
                 type: number
