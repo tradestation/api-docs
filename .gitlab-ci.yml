@@ -7,6 +7,5 @@ before_script:
 test:
   stage: test
   script:
-    - npm set strict-ssl false # this is EVIL but our Proxy is broken!
     - npm install -f
     - npm test
