@@ -2798,6 +2798,13 @@ definitions:
             TypeDescription:
                 minLength: 1
                 type: string
+            Settings: 
+                items:
+                    properties:
+                        EnrolledInRegTProgram:
+                            type:boolean
+                        RequiresRegTConfirmation:
+                            type:boolean
         required:
         - Alias
         - DisplayName
@@ -2806,6 +2813,23 @@ definitions:
         - Name
         - Type
         - TypeDescription
+        - Settings
+        type: object
+    minItems: 1
+    type: array
+    uniqueItems: true
+
+  AccountSettingsDefinition:
+    description: ''
+    items:
+        properties:
+            EnrolledInRegTProgram:
+                type: boolean
+            RequiresRegTConfirmation:
+                type: boolean
+        required:
+        - Alias
+        - DisplayName
         type: object
     minItems: 1
     type: array
