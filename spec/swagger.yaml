@@ -40,7 +40,7 @@ info:
 
     To access the SIM environment, you must change your base-url to: 
     ```
-    https://sim.api.tradestation.com/v2
+    https://sim-api.tradestation.com/v2
     ```
 
     **WARNING:** TradeStation is not liable for mistakes made by applications 
@@ -672,7 +672,7 @@ paths:
       summary: |
         Stream Quote Changes
       description: |
-        Streams the latest Level2 Quote for the given Symbols. The first chunk in the stream is a full quote snapshot - subsequent chunks only contain fields of the quote object that have changed since the last chunk.
+        Streams the latest Quote information for the given Symbols. The first chunk in the stream is a full quote snapshot - subsequent chunks only contain fields of the quote object that have changed since the last chunk.
         
         An invalid symbol name will result in a response of this form - {"Symbol":"BADEXAMPLESYMBOL","Error":"FAILED, EX_INVALID_SYMBOL"}
 
@@ -746,7 +746,7 @@ paths:
       summary: |
         Stream Quote Snapshots
       description: |
-        Streams the latest Level2 Quote for the given Symbols. Each chunk is a full quote object.
+        Streams the latest Quote for the given Symbols. Each chunk is a full quote object.
         
         An invalid symbol name will result in a response of this form - {"Symbol":"BADSYMBOLEXAMPLE","Error":"FAILED, EX_INVALID_SYMBOL"}
 
@@ -1540,6 +1540,8 @@ paths:
             $ref: '#/definitions/Error'                            
 
   ##############################################################################
+  
+  ##############################################################################
   /accounts/{account_keys}/balances:
     get:
       summary: |
@@ -1889,7 +1891,7 @@ paths:
       summary: |
         Cancel Order
       description: |
-        Cancels an open order. You cannot update an order that has been filled.  
+        Cancels an open order. You cannot cancel an order that has been filled.  
       operationId: cancelOrder
       tags:
         - order-execution
@@ -2220,6 +2222,8 @@ definitions:
                 - Start date can not be earlier than 1/1/1900
                 - End date cannot be earlier than start date.
 
+##############################################################################
+
   SymbolDefinition:
     description: "Symbol metatdata"
     properties:
@@ -2312,7 +2316,9 @@ definitions:
     - Root
     - StrikePrice
     type: object
-        
+
+##############################################################################
+
   SymbolSuggestDefinition:
     description: ''
     items: 
@@ -2412,6 +2418,8 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
+
   SymbolSearchDefinition:
     description: ''
     items:
@@ -2510,7 +2518,9 @@ definitions:
     minItems: 1
     type: array
     uniqueItems: true
-  
+
+ ##############################################################################
+
   QuoteDefinition:
     description: ''
     items:
@@ -2722,6 +2732,8 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
+
   SymbolListDefinition:
     description: ''
     properties:
@@ -2744,13 +2756,15 @@ definitions:
             minLength: 1
             type: string
     required:
-    - Category
-    - ID
-    - Name
-    - Path
-    - RootCategory
-    - Subcategory
+      - Category
+      - ID
+      - Name
+      - Path
+      - RootCategory
+      - Subcategory
     type: object
+
+##############################################################################
 
   SymbolListSymbolsDefinition:
     description: ''
@@ -2799,17 +2813,19 @@ definitions:
                 minLength: 1
                 type: string
         required:
-        - Alias
-        - DisplayName
-        - IsStockLocateEligible
-        - Key
-        - Name
-        - Type
-        - TypeDescription
+          - Alias
+          - DisplayName
+          - IsStockLocateEligible
+          - Key
+          - Name
+          - Type
+          - TypeDescription
         type: object
     minItems: 1
     type: array
     uniqueItems: true
+
+##############################################################################
 
   AccountBalancesDefinition:
     description: ''
@@ -2821,11 +2837,11 @@ definitions:
                 description: (Equities)
                 type: number
             BODDayTradingMarginableEquitiesBuyingPower:
-                description: (Equities)
+                description: (Equities) 
                 type: number
             BODEquity:
                 type: number
-            BODNetCash:
+            BODNetCash: 
                 type: number
             BODOpenTradeEquity:
                 description: (Futures)
@@ -3421,8 +3437,7 @@ definitions:
     type: array
     uniqueItems: true
 
-  OrderRequestDefinition:
-    description: ''
+  OrderRequestDefinition:    
     properties:
         AccountKey:
             description: |
@@ -3453,9 +3468,6 @@ definitions:
               - FU
               - OP
         Duration:
-            description: | 
-              Allowed durations vary by Asset Type
-            minLength: 1
             type: string
             enum:
               - DAY
@@ -3474,6 +3486,22 @@ definitions:
               - 3 MIN
               - 5
               - 5 MIN
+            description: |
+              Allowed durations vary by Asset Type
+              * DAY - Day, valid until the end of the regular trading session.
+              * DYP - Day Plus; valid until the end of the extended trading session
+              * GTC - Good till canceled
+              * GCP - Good till canceled plus
+              * GTD - Good through date
+              * GDP - Good through date plus
+              * OPG - At the opening; only valid for listed stocks at the opening session Price
+              * CLO - On Close; orders that target the closing session of an exchange.
+              * IOC - Immediate or Cancel; filled immediately or canceled, partial fills are accepted
+              * FOK - Fill or Kill; orders are filled entirely or canceled, partial fills are not accepted
+              * 1 or 1 MIN - 1 minute; expires after the 1 minute
+              * 3 or 3 MIN - 3 minutes; expires after the 3 minutes
+              * 5 or 5 MIN - 5 minutes; expires after the 5 minutes
+            minLength: 1
         GTDDate:
             description: |
               Date that Order is valid through. Input Format: MM/DD/YYYY  
@@ -3532,8 +3560,18 @@ definitions:
             minLength: 1
             type: string
         TradeAction:
-            minLength: 1
             type: string
+            description: |
+              Conveys the intent of the trade
+              * BUY - `equities` and `futures`
+              * SELL - `equities` and `futures`
+              * BUYTOCOVER - `equities`
+              * SELLSHORT - `equities`
+              * BUYTOOPEN - `options`
+              * BUYTOCLOSE - `options`
+              * SELLTOOPEN - `options`
+              * SELLTOCLOSE - `options`
+            minLength: 1
             enum:
               - BUY
               - SELL
@@ -3587,17 +3625,20 @@ definitions:
                     - BUYTOOPEN
                     - BUYTOCLOSE
                     - SELLTOOPEN
-                    - SELLTOCLOSE                
-              Ratio:
-                description: |
-                  The ratio of this leg in relation to other legs of the order. 
-                    
-                  Find the Greatest Common Factor (GCF) between the quantities of each leg.   
-                  Divide a leg's quantity by the GCF to get the leg's ratio.                  
-                type: number                
+                    - SELLTOCLOSE
+                  description: |
+                    Conveys the intent of the trade
+                    * BUY - equity and futures trades
+                    * SELL - equity and futures trades
+                    * BUYTOCOVER - equity trade to close a short position
+                    * SELLSHORT - equity trade to open a short position
+                    * BUYTOOPEN - option trades
+                    * BUYTOCLOSE - option trades
+                    * SELLTOOPEN - option trades
+                    * SELLTOCLOSE - option trades
           minItems: 1
           type: array
-          uniqueItems: true            
+          uniqueItems: true 
     required:
         - AssetType
         - Symbol
@@ -3611,18 +3652,12 @@ definitions:
   CancelReplaceDefinition:
     description: ''
     properties:
-        AccountKey:
-            minLength: 1
-            type: string
         LimitPrice:
             minLength: 1
             type: string
         StopPrice:
             minLength: 1
             type: string            
-        OrderID:
-            minLength: 1
-            type: string
         OrderType:
             minLength: 1
             type: string
@@ -3649,8 +3684,6 @@ definitions:
                       Note: Mutually exclusive with Amount.
                     type: number            
     required:
-        - AccountKey
-        - OrderID
         - OrderType
         - Quantity
         - Symbol
