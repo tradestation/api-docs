@@ -2173,6 +2173,58 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+
+##############################################################################
+  /orderexecution/activationtriggers:
+    get:
+      summary: |
+        Get Activation Triggers
+      description: |
+        Returns valid trigger types.   
+      operationId: getActivationTriggers
+      tags:
+        - order-execution
+      security:
+        - OAuth2-Auth-Code:
+          - trade 
+        - OAuth2-Refresh-Token:
+          - trade               
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+      responses:
+        200:
+          description: Activation Triggers Response
+          schema:
+            $ref: '#/definitions/ActivationTriggersDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
 ##############################################################################
 definitions: 
   Error:
@@ -3797,6 +3849,33 @@ definitions:
     uniqueItems: true
     items: 
       $ref: '#/definitions/OrderResponseDefinition'
+
+  ActivationTriggersDefinition:
+    description: 'List of available activation rules'
+    properties:
+        ActivationTriggers:
+            type: array
+            items: 
+              $ref: '#/definitions/ActivationTriggerDefinition'              
+
+
+  ActivationTriggerDefinition:
+    description: 'Order Activation rule'
+    properties:
+        Description:
+            minLength: 1
+            type: string
+        Key:
+            minLength: 1
+            type: string
+        Name:
+            minLength: 1
+            type: string                
+    required:
+        - Description
+        - Key
+        - Name
+    type: object
 
   QuoteStreamDefinition:
     description: 'Quote stream object used in quote/changes and quote/snapshots'
