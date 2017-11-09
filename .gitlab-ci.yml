@@ -9,7 +9,7 @@ test:
   script:
     - npm install -f
     - npm test
- tags:
+  tags:
     - k8s
     - linux
   image: 116738426468.dkr.ecr.us-east-2.amazonaws.com/runners/node:nvm-ubuntu    
