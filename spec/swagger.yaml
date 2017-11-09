@@ -2178,9 +2178,9 @@ paths:
   /orderexecution/activationtriggers:
     get:
       summary: |
-        Get Activation Triggers
+        Request Available Activation Triggers
       description: |
-        Returns valid trigger types.   
+        To place orders with activation triggers, a valid TriggerKey must be sent with the order.  This resource provides the available trigger methods with their corresponding key.    
       operationId: getActivationTriggers
       tags:
         - order-execution
@@ -2197,9 +2197,14 @@ paths:
           required: true     
       responses:
         200:
-          description: Activation Triggers Response
+          description: Get Activation Triggers Response
           schema:
-            $ref: '#/definitions/ActivationTriggersDefinition'
+            type: object
+            properties:
+              ActivationTriggers:
+                type: array
+                items: 
+                  $ref: '#/definitions/ActivationTriggerDefinition'
         400:
           description: Bad Request
           schema:
@@ -3850,17 +3855,8 @@ definitions:
     items: 
       $ref: '#/definitions/OrderResponseDefinition'
 
-  ActivationTriggersDefinition:
-    description: 'List of available activation rules'
-    properties:
-        ActivationTriggers:
-            type: array
-            items: 
-              $ref: '#/definitions/ActivationTriggerDefinition'              
-
-
   ActivationTriggerDefinition:
-    description: 'Order Activation rule'
+    description: 'The trigger type allows you to specify the type of tick, number, and pattern of ticks that will trigger a specific row of an activation rule.'
     properties:
         Description:
             minLength: 1
@@ -3868,6 +3864,32 @@ definitions:
         Key:
             minLength: 1
             type: string
+            description: |
+              * STT - Single Trade Tick; One trade tick must print within your stop price to trigger your stop.
+              * STTN - Single Trade Tick within NBBO;    One trade tick within the National Best Bid or Offer must print within your stop price to trigger your stop.
+              * SBA - Single Bid/Ask Tick;    Buy/Cover Orders - One Ask tick must print within your stop price to trigger your stop. Sell/Short Orders - One Bid tick must print within your stop price to trigger your stop.
+              * SAB - Single Ask/Bid Tick; Buy/Cover Orders - One Bid tick must print within your stop price to trigger your stop. Sell/Short Orders - One Ask tick must print within your stop price to trigger your stop.
+              * DTT - Double Trade Tick; Two consecutive trade ticks must print within your stop price to trigger your stop.
+              * DTTN - Double Trade Tick within NBBO; Two consecutive trade ticks within the National Best Bid or Offer must print within your stop price to trigger your stop.
+              * DBA - Double Bid/Ask Tick; Buy/Cover Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop
+              * DAB - Double Ask/Bid Tick;     Buy/Cover Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop.    
+              * TTT - Twice Trade Tick; Two trade ticks must print within your stop price to trigger your stop.
+              * TTTN - Twice Trade Tick; Two trade ticks within the National Best Bid or Offer must print within your stop price to trigger your stop.
+              * TBA - Twice Bid/Ask Tick; Buy/Cover Orders - Two Ask ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two Bid ticks must print within your stop price to trigger your stop.
+              * TAB - Twice Ask/Bid Tick; Buy/Cover Orders - Two Bid ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two Ask ticks must print within your stop price to trigger your stop.
+            enum:
+              - STT
+              - STTN
+              - SBA
+              - SAB
+              - DTT
+              - DTTN
+              - DBA
+              - DAB
+              - TTT
+              - TTTN
+              - TBA
+              - TAB              
         Name:
             minLength: 1
             type: string                
