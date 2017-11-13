@@ -1829,7 +1829,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ##############################################################################
+##############################################################################
   /orders:
     post:
       summary: |
@@ -1885,7 +1885,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ##############################################################################
+##############################################################################
   /orders/{order_id}:            
     delete:
       summary: |
@@ -2094,7 +2094,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ##############################################################################
+##############################################################################
   /orders/groups:
     post:
       summary: |
@@ -3129,6 +3129,8 @@ definitions:
     type: array
     uniqueItems: true
   
+##############################################################################
+
   AccountPositionsDefinition:
     description: ''
     items:
@@ -3265,6 +3267,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   AccountOrdersDefinition:
     description: ''
     items:
@@ -3489,6 +3492,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   OrderRequestDefinition:    
     properties:
         AccountKey:
@@ -3701,6 +3705,7 @@ definitions:
         - TradeAction
     type: object
 
+##############################################################################
   CancelReplaceDefinition:
     description: ''
     properties:
@@ -3741,6 +3746,7 @@ definitions:
         - Symbol
     type: object  
 
+##############################################################################
   OrderConfirmResponseDefinition:
     description: 'Order Confirm definition. The response will also contain asset-specific fields'
     type: object
@@ -3793,6 +3799,7 @@ definitions:
       - OrderConfirmId 
       - EstimatedPrice
 
+##############################################################################
   GroupOrderConfirmResponseDefinition:
     description: ''
     type: array
@@ -3801,6 +3808,7 @@ definitions:
     items: 
       $ref: '#/definitions/OrderConfirmResponseDefinition'
 
+##############################################################################
   OrderResponseDefinition:
     description: ''
     type: object
@@ -3818,6 +3826,7 @@ definitions:
       - Message
       - OrderStatus
 
+##############################################################################
   GroupOrderRequestDefinition: 
     description: ''
     properties:
@@ -3841,7 +3850,7 @@ definitions:
     - Orders
     type: object
           
-
+##############################################################################
   GroupOrderResponseDefinition:
     description: ''
     type: array
@@ -3850,6 +3859,7 @@ definitions:
     items: 
       $ref: '#/definitions/OrderResponseDefinition'
 
+##############################################################################
   ActivationTriggersDefinition:
     description: 'List of available activation rules'
     properties:
@@ -3858,7 +3868,7 @@ definitions:
             items: 
               $ref: '#/definitions/ActivationTriggerDefinition'              
 
-
+##############################################################################
   ActivationTriggerDefinition:
     description: 'Order Activation rule'
     properties:
@@ -3877,6 +3887,7 @@ definitions:
         - Name
     type: object
 
+##############################################################################
   QuoteStreamDefinition:
     description: 'Quote stream object used in quote/changes and quote/snapshots'
     properties:
@@ -4128,6 +4139,8 @@ definitions:
         - LastTime
         - TradeTime
     type: object
+
+##############################################################################
   BarchartDefinition:
     description: 'Standard barchart data object for streaming barchart data with stream/barchart/...'
     properties:
@@ -4179,6 +4192,8 @@ definitions:
         - UpVolume
         - OpenInterest
     type: object
+
+##############################################################################  
   StatusDefinition:
     description: 'Status value for Barcharts and Tickbars. Integer value represeting values through bit mappings'
     properties:
@@ -4286,6 +4301,7 @@ definitions:
     - bit28
     - bit29
     type: object
+##############################################################################
   TickbarDefinition:
     description: 'Standard tickbar data object for streaming tick bars with stream/tickbars/...'
     properties:
