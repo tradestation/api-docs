@@ -2847,6 +2847,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   UserAccountsDefinition:
     description: ''
     items:
@@ -3508,21 +3509,7 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            type: object        
-            properties:
-              TrailingStop:
-                type: object
-                properties:
-                  Amount:
-                    description: | 
-                      Currency Offset from current price.  
-                      Note: Mutually exclusive with Percent.  
-                    type: number
-                  Percent:
-                    description: | 
-                      Percentage offset from current price.  
-                      Note: Mutually exclusive with Amount.
-                    type: number
+            $ref: '#/definitions/AdvancedOptionsDefinition' 
         AssetType:
             minLength: 1
             type: string
@@ -3732,26 +3719,36 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            type: object        
-            properties:
-              TrailingStop:
-                type: object
-                properties:
-                  Amount:
-                    description: | 
-                      Currency Offset from current price.  
-                      Note: Mutually exclusive with Percent.  
-                    type: number
-                  Percent:
-                    description: | 
-                      Percentage offset from current price.  
-                      Note: Mutually exclusive with Amount.
-                    type: number            
+            $ref: '#/definitions/AdvancedOptionsDefinition'             
     required:
         - OrderType
         - Quantity
         - Symbol
     type: object  
+
+##############################################################################
+  AdvancedOptionsDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TrailingStop:
+        $ref: '#/definitions/TrailingStopDefinition'        
+    type: object  
+
+##############################################################################
+  TrailingStopDefinition:
+    description: 'Advanced Options for an order'      
+    type: object
+    properties:
+        Amount:
+          description: | 
+            Currency Offset from current price.  
+            Note: Mutually exclusive with Percent.  
+          type: number
+        Percent:
+          description: | 
+            Percentage offset from current price.  
+            Note: Mutually exclusive with Amount.
+          type: number            
 
 ##############################################################################
   OrderConfirmResponseDefinition:
@@ -3799,6 +3796,8 @@ definitions:
       AccountCurrency:
         type: string
         description: 'Futures Orders; '
+      TrailingStop: 
+        $ref: '#/definitions/TrailingStopDefinition'
     required:
       - Route
       - Duration
