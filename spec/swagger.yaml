@@ -3737,10 +3737,6 @@ definitions:
         type: array
         items: 
          $ref: '#/definitions/MarketActivationRuleDefinition'
-      TimeActivationRules: 
-        type: array
-        items: 
-         $ref: '#/definitions/TimeActivationRuleDefinition'         
     type: object  
 
 ##############################################################################
@@ -3789,16 +3785,6 @@ definitions:
           description: | 
             Relation with the next activation rule when given a list of MarketActivationRules. If there is not a following MarketActivationRule, is ignored. And or Or. 
           type: string                                       
-
-##############################################################################
-  TimeActivationRuleDefinition:
-    description: 'Time Activation Rule for an order'      
-    type: object
-    properties:
-        TimeUTC:
-          description: | 
-            Time Activation Rule for an order
-          type: string
 
 ##############################################################################
   TrailingStopDefinition:
@@ -3868,10 +3854,6 @@ definitions:
         type: array
         items: 
          $ref: '#/definitions/MarketActivationRuleDefinition'
-      TimeActivationRules: 
-        type: array
-        items: 
-         $ref: '#/definitions/TimeActivationRuleDefinition'         
     required:
       - Route
       - Duration
