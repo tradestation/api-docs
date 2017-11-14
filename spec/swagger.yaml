@@ -3777,10 +3777,6 @@ definitions:
           description: | 
             Valid only for Type="Price", the price at which the rule will trigger when the price hits ticks as specified by TriggerType
           type: string
-        DecimalPrice:
-          description: | 
-            Valid only for Type="Price", the price sent to OX. Formated using DisplayType information from Quote 
-          type: number   
         LogicOperator:
           description: | 
             Relation with the next activation rule when given a list of MarketActivationRules. If there is not a following MarketActivationRule, is ignored. And or Or. 
