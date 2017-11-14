@@ -2578,7 +2578,7 @@ definitions:
     type: array
     uniqueItems: true
 
- ##############################################################################
+##############################################################################
 
   QuoteDefinition:
     description: ''
@@ -2783,6 +2783,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   SymbolListsDefinition:
     description: ''
     items:
@@ -3731,8 +3732,73 @@ definitions:
     description: 'Advanced Options for an order'      
     properties:
       TrailingStop:
-        $ref: '#/definitions/TrailingStopDefinition'        
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/MarketActivationRuleDefinition'
+      TimeActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/TimeActivationRuleDefinition'         
     type: object  
+
+##############################################################################
+  MarketActivationRuleDefinition:
+    description: 'Market Activation Rules for an order'      
+    type: object
+    properties:
+        RuleType:
+          description: | 
+            Type of the activation rule. Currently only support "Price"
+          type: string
+        Symbol:
+          description: | 
+            Symbol that the rule is based on
+          type: string   
+        Predicate:
+          description: | 
+            The predicate comparison for the market rule type. E.g. Lt (less than).
+          type: string            
+        TriggerKey:
+          description: | 
+            The ticks behavior for the activation rule.
+          type: string
+          enum:
+              - STT
+              - STTN
+              - SBA
+              - SAB
+              - DTT
+              - DTTN
+              - DBA
+              - DAB
+              - TTT
+              - TTTN
+              - TBA
+              - TAB      
+        Price:
+          description: | 
+            Valid only for Type="Price", the price at which the rule will trigger when the price hits ticks as specified by TriggerType
+          type: string
+        DecimalPrice:
+          description: | 
+            Valid only for Type="Price", the price sent to OX. Formated using DisplayType information from Quote 
+          type: number   
+        LogicOperator:
+          description: | 
+            Relation with the next activation rule when given a list of MarketActivationRules. If there is not a following MarketActivationRule, is ignored. And or Or. 
+          type: string                                       
+
+##############################################################################
+  TimeActivationRuleDefinition:
+    description: 'Time Activation Rule for an order'      
+    type: object
+    properties:
+        TimeUTC:
+          description: | 
+            Time Activation Rule for an order
+          type: string
 
 ##############################################################################
   TrailingStopDefinition:
@@ -3798,6 +3864,14 @@ definitions:
         description: 'Futures Orders; '
       TrailingStop: 
         $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/MarketActivationRuleDefinition'
+      TimeActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/TimeActivationRuleDefinition'         
     required:
       - Route
       - Duration
