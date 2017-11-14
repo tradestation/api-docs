@@ -3866,6 +3866,7 @@ definitions:
     items: 
       $ref: '#/definitions/OrderResponseDefinition'
 
+##############################################################################
   ActivationTriggerDefinition:
     description: 'The trigger type allows you to specify the type of tick, number, and pattern of ticks that will trigger a specific row of an activation rule.'
     properties:
@@ -3910,6 +3911,7 @@ definitions:
         - Name
     type: object
 
+##############################################################################
   QuoteStreamDefinition:
     description: 'Quote stream object used in quote/changes and quote/snapshots'
     properties:
