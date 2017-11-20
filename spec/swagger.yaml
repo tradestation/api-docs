@@ -1955,8 +1955,8 @@ paths:
           | Limit Orders                     | Quantity, Stop Price             | Market                        |
           | Stop Orders                      | Quantity, Stop Price             | Market                        |
           | Stop Limit Orders                | Quantity, Stop Price, Stop Limit | Market                        |
-          | Stop Market Trailing Stop Orders | Quantity                         |                               |
-          | Trailing Stop Orders             | Offset type and value            |                               |
+          | Stop Market Trailing Stop Orders | Quantity                         | Market                        |
+          | Trailing Stop Orders             | Offset type and value            | Market                        |
 
       operationId: cancelReplaceOrder
       tags:
@@ -3720,11 +3720,44 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            $ref: '#/definitions/AdvancedOptionsDefinition'             
+            $ref: '#/definitions/CancelReplaceAdvancedOptionsDefinition'             
     required:
         - OrderType
         - Quantity
         - Symbol
+    type: object  
+
+##############################################################################
+  CancelReplaceAdvancedOptionsDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TrailingStop:
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules: 
+        type: array
+        items: 
+          $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
+    type: object  
+
+##############################################################################
+  CancelReplaceMarketActivationRuleDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TrailingStop:
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules:
+        properties:
+          ClearAll:
+            type: boolean
+            description: |
+              If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
+          Rules:
+            type: array
+            items:
+              $ref: '#/definitions/MarketActivationRuleDefinition'
+            description: |
+              Set of activation rules that must be met before order is sent to the exchange.
+        type: object
     type: object  
 
 ##############################################################################
@@ -3737,17 +3770,21 @@ definitions:
         type: array
         items: 
          $ref: '#/definitions/MarketActivationRuleDefinition'
+        description: |
+          Set of activation rules that must be met before order is sent to the exchange.
     type: object  
 
 ##############################################################################
   MarketActivationRuleDefinition:
-    description: 'Market Activation Rules for an order'      
+    description: 'Market Activation Rules that must be met before the order is sent to the exchange.'      
     type: object
     properties:
         RuleType:
           description: | 
             Type of the activation rule. Currently only support "Price"
           type: string
+          enum:
+            - Price
         Symbol:
           description: | 
             Symbol that the rule is based on
@@ -3756,6 +3793,11 @@ definitions:
           description: | 
             The predicate comparison for the market rule type. E.g. Lt (less than).
           type: string            
+          enum:
+            - Lt
+            - Lte
+            - Gt
+            - Gte
         TriggerKey:
           description: | 
             The ticks behavior for the activation rule.
@@ -3779,12 +3821,15 @@ definitions:
           type: string
         LogicOperator:
           description: | 
-            Relation with the next activation rule when given a list of MarketActivationRules. If there is not a following MarketActivationRule, is ignored. And or Or. 
-          type: string                                       
+            Relation with the previous activation rule when given a list of MarketActivationRules. Ignored for the first MarketActivationRule.
+          type: string               
+          enum:
+            - And
+            - Or                        
 
 ##############################################################################
   TrailingStopDefinition:
-    description: 'Advanced Options for an order'      
+    description: 'Trailing Stop offset; amount or percent'      
     type: object
     properties:
         Amount:
