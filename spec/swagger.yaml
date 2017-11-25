@@ -3419,6 +3419,12 @@ definitions:
             LimitPriceText:
                 minLength: 1
                 type: string
+            MarketActivationRules: 
+               type: array
+               items: 
+                 $ref: '#/definitions/MarketActivationRuleDefinition'
+               description: |
+                 Set of activation rules that must be met before order is sent to the exchange. 
             MinMove:
                 type: number
             OrderID:
@@ -3453,6 +3459,8 @@ definitions:
             TimeStamp:
                 minLength: 1
                 type: string
+            TrailingStop:
+              $ref: '#/definitions/TrailingStopDefinition'                
             TriggeredBy:
                 type: string
             Type:
