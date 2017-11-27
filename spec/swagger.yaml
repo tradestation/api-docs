@@ -1829,7 +1829,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ##############################################################################
+##############################################################################
   /orders:
     post:
       summary: |
@@ -1885,7 +1885,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ##############################################################################
+##############################################################################
   /orders/{order_id}:            
     delete:
       summary: |
@@ -1955,8 +1955,8 @@ paths:
           | Limit Orders                     | Quantity, Stop Price             | Market                        |
           | Stop Orders                      | Quantity, Stop Price             | Market                        |
           | Stop Limit Orders                | Quantity, Stop Price, Stop Limit | Market                        |
-          | Stop Market Trailing Stop Orders | Quantity                         |                               |
-          | Trailing Stop Orders             | Offset type and value            |                               |
+          | Stop Market Trailing Stop Orders | Quantity                         | Market                        |
+          | Trailing Stop Orders             | Offset type and value            | Market                        |
 
       operationId: cancelReplaceOrder
       tags:
@@ -2094,7 +2094,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  ##############################################################################
+##############################################################################
   /orders/groups:
     post:
       summary: |
@@ -2148,6 +2148,65 @@ paths:
           description: Group Orders Response
           schema:
             $ref: '#/definitions/GroupOrderResponseDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+
+##############################################################################
+  /orderexecution/activationtriggers:
+    get:
+      summary: |
+
+        Request Available Activation Triggers
+      description: |
+        To place orders with activation triggers, a valid TriggerKey must be sent with the order.  This resource provides the available trigger methods with their corresponding key.    
+
+      operationId: getActivationTriggers
+      tags:
+        - order-execution
+      security:
+        - OAuth2-Auth-Code:
+          - trade 
+        - OAuth2-Refresh-Token:
+          - trade               
+      parameters:  
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true     
+      responses:
+        200:
+          description: Get Activation Triggers Response
+          schema:
+            type: object
+            properties:
+              ActivationTriggers:
+                type: array
+                items: 
+                  $ref: '#/definitions/ActivationTriggerDefinition'
         400:
           description: Bad Request
           schema:
@@ -2519,7 +2578,7 @@ definitions:
     type: array
     uniqueItems: true
 
- ##############################################################################
+##############################################################################
 
   QuoteDefinition:
     description: ''
@@ -2724,6 +2783,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   SymbolListsDefinition:
     description: ''
     items:
@@ -2788,6 +2848,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   UserAccountsDefinition:
     description: ''
     items:
@@ -3077,6 +3138,8 @@ definitions:
     type: array
     uniqueItems: true
   
+##############################################################################
+
   AccountPositionsDefinition:
     description: ''
     items:
@@ -3213,6 +3276,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   AccountOrdersDefinition:
     description: ''
     items:
@@ -3355,6 +3419,12 @@ definitions:
             LimitPriceText:
                 minLength: 1
                 type: string
+            MarketActivationRules: 
+               type: array
+               items: 
+                 $ref: '#/definitions/MarketActivationRuleDefinition'
+               description: |
+                 Set of activation rules that must be met before order is sent to the exchange. 
             MinMove:
                 type: number
             OrderID:
@@ -3389,6 +3459,8 @@ definitions:
             TimeStamp:
                 minLength: 1
                 type: string
+            TrailingStop:
+              $ref: '#/definitions/TrailingStopDefinition'                
             TriggeredBy:
                 type: string
             Type:
@@ -3437,6 +3509,7 @@ definitions:
     type: array
     uniqueItems: true
 
+##############################################################################
   OrderRequestDefinition:    
     properties:
         AccountKey:
@@ -3445,21 +3518,7 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            type: object        
-            properties:
-              TrailingStop:
-                type: object
-                properties:
-                  Amount:
-                    description: | 
-                      Currency Offset from current price.  
-                      Note: Mutually exclusive with Percent.  
-                    type: number
-                  Percent:
-                    description: | 
-                      Percentage offset from current price.  
-                      Note: Mutually exclusive with Amount.
-                    type: number
+            $ref: '#/definitions/AdvancedOptionsDefinition' 
         AssetType:
             minLength: 1
             type: string
@@ -3649,6 +3708,7 @@ definitions:
         - TradeAction
     type: object
 
+##############################################################################
   CancelReplaceDefinition:
     description: ''
     properties:
@@ -3668,27 +3728,130 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            type: object        
-            properties:
-              TrailingStop:
-                type: object
-                properties:
-                  Amount:
-                    description: | 
-                      Currency Offset from current price.  
-                      Note: Mutually exclusive with Percent.  
-                    type: number
-                  Percent:
-                    description: | 
-                      Percentage offset from current price.  
-                      Note: Mutually exclusive with Amount.
-                    type: number            
+            $ref: '#/definitions/CancelReplaceAdvancedOptionsDefinition'             
     required:
         - OrderType
         - Quantity
         - Symbol
     type: object  
 
+##############################################################################
+  CancelReplaceAdvancedOptionsDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TrailingStop:
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules: 
+        type: array
+        items: 
+          $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
+    type: object  
+
+##############################################################################
+  CancelReplaceMarketActivationRuleDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TrailingStop:
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules:
+        properties:
+          ClearAll:
+            type: boolean
+            description: |
+              If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
+          Rules:
+            type: array
+            items:
+              $ref: '#/definitions/MarketActivationRuleDefinition'
+            description: |
+              Set of activation rules that must be met before order is sent to the exchange.
+        type: object
+    type: object  
+
+##############################################################################
+  AdvancedOptionsDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TrailingStop:
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/MarketActivationRuleDefinition'
+        description: |
+          Set of activation rules that must be met before order is sent to the exchange.
+    type: object  
+
+##############################################################################
+  MarketActivationRuleDefinition:
+    description: 'Market Activation Rules that must be met before the order is sent to the exchange.'      
+    type: object
+    properties:
+        RuleType:
+          description: | 
+            Type of the activation rule. Currently only support "Price"
+          type: string
+          enum:
+            - Price
+        Symbol:
+          description: | 
+            Symbol that the rule is based on
+          type: string   
+        Predicate:
+          description: | 
+            The predicate comparison for the market rule type. E.g. Lt (less than).
+          type: string            
+          enum:
+            - Lt
+            - Lte
+            - Gt
+            - Gte
+        TriggerKey:
+          description: | 
+            The ticks behavior for the activation rule.
+          type: string
+          enum:
+              - STT
+              - STTN
+              - SBA
+              - SAB
+              - DTT
+              - DTTN
+              - DBA
+              - DAB
+              - TTT
+              - TTTN
+              - TBA
+              - TAB      
+        Price:
+          description: | 
+            Valid only for Type="Price", the price at which the rule will trigger when the price hits ticks as specified by TriggerType
+          type: string
+        LogicOperator:
+          description: | 
+            Relation with the previous activation rule when given a list of MarketActivationRules. Ignored for the first MarketActivationRule.
+          type: string               
+          enum:
+            - And
+            - Or                        
+
+##############################################################################
+  TrailingStopDefinition:
+    description: 'Trailing Stop offset; amount or percent'      
+    type: object
+    properties:
+        Amount:
+          description: | 
+            Currency Offset from current price.  
+            Note: Mutually exclusive with Percent.  
+          type: number
+        Percent:
+          description: | 
+            Percentage offset from current price.  
+            Note: Mutually exclusive with Amount.
+          type: number            
+
+##############################################################################
   OrderConfirmResponseDefinition:
     description: 'Order Confirm definition. The response will also contain asset-specific fields'
     type: object
@@ -3734,6 +3897,12 @@ definitions:
       AccountCurrency:
         type: string
         description: 'Futures Orders; '
+      TrailingStop: 
+        $ref: '#/definitions/TrailingStopDefinition'
+      MarketActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/MarketActivationRuleDefinition'
     required:
       - Route
       - Duration
@@ -3741,6 +3910,7 @@ definitions:
       - OrderConfirmId 
       - EstimatedPrice
 
+##############################################################################
   GroupOrderConfirmResponseDefinition:
     description: ''
     type: array
@@ -3749,6 +3919,7 @@ definitions:
     items: 
       $ref: '#/definitions/OrderConfirmResponseDefinition'
 
+##############################################################################
   OrderResponseDefinition:
     description: ''
     type: object
@@ -3766,6 +3937,7 @@ definitions:
       - Message
       - OrderStatus
 
+##############################################################################
   GroupOrderRequestDefinition: 
     description: ''
     properties:
@@ -3789,7 +3961,7 @@ definitions:
     - Orders
     type: object
           
-
+##############################################################################
   GroupOrderResponseDefinition:
     description: ''
     type: array
@@ -3798,6 +3970,52 @@ definitions:
     items: 
       $ref: '#/definitions/OrderResponseDefinition'
 
+##############################################################################
+  ActivationTriggerDefinition:
+    description: 'The trigger type allows you to specify the type of tick, number, and pattern of ticks that will trigger a specific row of an activation rule.'
+    properties:
+        Description:
+            minLength: 1
+            type: string
+        Key:
+            minLength: 1
+            type: string
+            description: |
+              * STT - Single Trade Tick; One trade tick must print within your stop price to trigger your stop.
+              * STTN - Single Trade Tick within NBBO;    One trade tick within the National Best Bid or Offer must print within your stop price to trigger your stop.
+              * SBA - Single Bid/Ask Tick;    Buy/Cover Orders - One Ask tick must print within your stop price to trigger your stop. Sell/Short Orders - One Bid tick must print within your stop price to trigger your stop.
+              * SAB - Single Ask/Bid Tick; Buy/Cover Orders - One Bid tick must print within your stop price to trigger your stop. Sell/Short Orders - One Ask tick must print within your stop price to trigger your stop.
+              * DTT - Double Trade Tick; Two consecutive trade ticks must print within your stop price to trigger your stop.
+              * DTTN - Double Trade Tick within NBBO; Two consecutive trade ticks within the National Best Bid or Offer must print within your stop price to trigger your stop.
+              * DBA - Double Bid/Ask Tick; Buy/Cover Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop
+              * DAB - Double Ask/Bid Tick;     Buy/Cover Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop.    
+              * TTT - Twice Trade Tick; Two trade ticks must print within your stop price to trigger your stop.
+              * TTTN - Twice Trade Tick; Two trade ticks within the National Best Bid or Offer must print within your stop price to trigger your stop.
+              * TBA - Twice Bid/Ask Tick; Buy/Cover Orders - Two Ask ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two Bid ticks must print within your stop price to trigger your stop.
+              * TAB - Twice Ask/Bid Tick; Buy/Cover Orders - Two Bid ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two Ask ticks must print within your stop price to trigger your stop.
+            enum:
+              - STT
+              - STTN
+              - SBA
+              - SAB
+              - DTT
+              - DTTN
+              - DBA
+              - DAB
+              - TTT
+              - TTTN
+              - TBA
+              - TAB              
+        Name:
+            minLength: 1
+            type: string                
+    required:
+        - Description
+        - Key
+        - Name
+    type: object
+
+##############################################################################
   QuoteStreamDefinition:
     description: 'Quote stream object used in quote/changes and quote/snapshots'
     properties:
@@ -4049,6 +4267,8 @@ definitions:
         - LastTime
         - TradeTime
     type: object
+
+##############################################################################
   BarchartDefinition:
     description: 'Standard barchart data object for streaming barchart data with stream/barchart/...'
     properties:
@@ -4100,6 +4320,8 @@ definitions:
         - UpVolume
         - OpenInterest
     type: object
+
+##############################################################################  
   StatusDefinition:
     description: 'Status value for Barcharts and Tickbars. Integer value represeting values through bit mappings'
     properties:
@@ -4207,6 +4429,7 @@ definitions:
     - bit28
     - bit29
     type: object
+##############################################################################
   TickbarDefinition:
     description: 'Standard tickbar data object for streaming tick bars with stream/tickbars/...'
     properties:
