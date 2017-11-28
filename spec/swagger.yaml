@@ -3751,8 +3751,6 @@ definitions:
   CancelReplaceMarketActivationRuleDefinition:
     description: 'Advanced Options for an order'      
     properties:
-      TrailingStop:
-        $ref: '#/definitions/TrailingStopDefinition'
       MarketActivationRules:
         properties:
           ClearAll:
