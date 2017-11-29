@@ -3042,7 +3042,7 @@ definitions:
                 description: (Futures)
                 type: number                      
             PatternDayTrader:
-                description: (Equities)
+                description: (Equities) Indicates whether you are considered a pattern day trader. As per FINRA rules, you will be considered a pattern day trader if you trade 4 or more times in 5 business days and your day-trading activities are greater than 6 percent of your total trading activity for that same five-day period. A pattern day trader must maintain minimum equity of $25,000 on any day that the customer day trades. If the account falls below the $25,000 requirement, the pattern day trader will not be permitted to day trade until the account is restored to the $25,000 minimum equity level.
                 type: boolean
             RealTimeAccountBalance:
                 type: number
@@ -3055,16 +3055,16 @@ definitions:
                 description: (Equities)
                 type: number
             RealTimeEquity:
-                description: (Futures)
+                description: (Real-time cash balance) + (Market value of long positions) – (Market value of short positions)
                 type: number
             RealTimeInitialMargin:
-                description: (Futures)
+                description: (Futures) Sum (Initial Margins of all positions in the given account)
                 type: number                  
             RealTimeOptionBuyingPower:
-                description: (Equities)
+                description: (Equities) The intraday buying power for options.
                 type: number
             RealTimeOptionValue:
-                description: (Equities)
+                description: (Equities) The dollar amount of Real-time Liquidation Value calculated throughout the trading day.  
                 type: number
             RealTimeOvernightBuyingPower:
                 description: (Equities)
@@ -3424,7 +3424,7 @@ definitions:
                items: 
                  $ref: '#/definitions/MarketActivationRuleDefinition'
                description: |
-                 Set of activation rules that must be met before order is sent to the exchange. 
+                 Set of market-based activation rules that must be met before order is sent to the exchange.             
             MinMove:
                 type: number
             OrderID:
@@ -3456,6 +3456,12 @@ definitions:
             Symbol:
                 minLength: 1
                 type: string
+            TimeActivationRules: 
+               type: array
+               items: 
+                 $ref: '#/definitions/TimeActivationRuleDefinition'
+               description: |
+                 Set of time-based activation rules that must be met before order is sent to the exchange.         
             TimeStamp:
                 minLength: 1
                 type: string
@@ -3745,6 +3751,10 @@ definitions:
         type: array
         items: 
           $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
+      TimeActivationRules: 
+        type: array
+        items: 
+          $ref: '#/definitions/CancelReplaceTimeActivationRuleDefinition'
     type: object  
 
 ##############################################################################
@@ -3762,7 +3772,26 @@ definitions:
             items:
               $ref: '#/definitions/MarketActivationRuleDefinition'
             description: |
-              Set of activation rules that must be met before order is sent to the exchange.
+              Set of market-based activation rules that must be met before order is sent to the exchange.
+        type: object
+    type: object  
+
+##############################################################################
+  CancelReplaceTimeActivationRuleDefinition:
+    description: 'Advanced Options for an order'      
+    properties:
+      TimeActivationRules:
+        properties:
+          ClearAll:
+            type: boolean
+            description: |
+              If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
+          Rules:
+            type: array
+            items:
+              $ref: '#/definitions/TimeActivationRuleDefinition'
+            description: |
+              Set of time-based activation rules that must be met before order is sent to the exchange.
         type: object
     type: object  
 
@@ -3777,7 +3806,13 @@ definitions:
         items: 
          $ref: '#/definitions/MarketActivationRuleDefinition'
         description: |
-          Set of activation rules that must be met before order is sent to the exchange.
+          Set of market-based activation rules that must be met before order is sent to the exchange.
+      TimeActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/TimeActivationRuleDefinition'
+        description: |
+          Set of time-based activation rules that must be met before order is sent to the exchange.
     type: object  
 
 ##############################################################################
@@ -3833,6 +3868,16 @@ definitions:
             - And
             - Or                        
 
+##############################################################################
+  TimeActivationRuleDefinition:
+    description: 'Time Activation Rules that must be met before the order is sent to the exchange.'      
+    type: object
+    properties:
+        TimeUtc:
+          description: | 
+            Order is activated once current UTC time is greater thans or equal to TimeUtc. hh:mm:ss
+          type: string               
+          
 ##############################################################################
   TrailingStopDefinition:
     description: 'Trailing Stop offset; amount or percent'      
@@ -3901,6 +3946,10 @@ definitions:
         type: array
         items: 
          $ref: '#/definitions/MarketActivationRuleDefinition'
+      TimeActivationRules: 
+        type: array
+        items: 
+         $ref: '#/definitions/TimeActivationRuleDefinition'
     required:
       - Route
       - Duration
