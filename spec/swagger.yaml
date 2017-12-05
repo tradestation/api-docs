@@ -3440,6 +3440,8 @@ definitions:
             Routing:
                 minLength: 1
                 type: string
+            ShowOnlyQuantity:
+                type: integer
             Spread:
                 type: string
             Status:
@@ -3751,6 +3753,13 @@ definitions:
         $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
       TimeActivationRules: 
         $ref: '#/definitions/CancelReplaceTimeActivationRuleDefinition'
+      ShowOnlyQuantity:
+        type: integer
+        description: |
+          Number of shares to submit to market at a time for this order. Valid for futures and equities orders. For equities, must be multiple of 100.
+          Cannot be added if original order did not have ShowOnlyQuantity.
+        minimum: 0
+        exclusiveMinimum: true
     type: object  
 
 ##############################################################################
@@ -3813,6 +3822,12 @@ definitions:
         description: |
           Set of time-based activation rules that must be met before order is sent to the exchange. Max 1 rule.
         maxItems: 1
+      ShowOnlyQuantity:
+        type: integer
+        description: |
+          Number of shares to submit to market at a time for this order. Valid for futures and equities orders. For equities, must be multiple of 100.
+        minimum: 0
+        exclusiveMinimum: true
     type: object  
 
 ##############################################################################
@@ -3950,6 +3965,9 @@ definitions:
         type: array
         items: 
          $ref: '#/definitions/TimeActivationRuleDefinition'
+      ShowOnlyQuantity:
+        type: integer
+        description: 'Equity and Futures Orders; Number of shares to submit to market at a time for this order'
     required:
       - Route
       - Duration
