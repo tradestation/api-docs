@@ -3748,13 +3748,9 @@ definitions:
       TrailingStop:
         $ref: '#/definitions/TrailingStopDefinition'
       MarketActivationRules: 
-        type: array
-        items: 
-          $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
+        $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
       TimeActivationRules: 
-        type: array
-        items: 
-          $ref: '#/definitions/CancelReplaceTimeActivationRuleDefinition'
+        $ref: '#/definitions/CancelReplaceTimeActivationRuleDefinition'
     type: object  
 
 ##############################################################################
@@ -3772,9 +3768,10 @@ definitions:
             items:
               $ref: '#/definitions/MarketActivationRuleDefinition'
             description: |
-              Set of market-based activation rules that must be met before order is sent to the exchange.
+              Set of market-based activation rules that must be met before order is sent to the exchange. Max 4 rules.
+            maxItems: 4
         type: object
-    type: object  
+    type: object
 
 ##############################################################################
   CancelReplaceTimeActivationRuleDefinition:
@@ -3791,9 +3788,10 @@ definitions:
             items:
               $ref: '#/definitions/TimeActivationRuleDefinition'
             description: |
-              Set of time-based activation rules that must be met before order is sent to the exchange.
+              Set of time-based activation rules that must be met before order is sent to the exchange. Max 1 rule.
+            maxItems: 1
         type: object
-    type: object  
+    type: object
 
 ##############################################################################
   AdvancedOptionsDefinition:
@@ -3806,13 +3804,15 @@ definitions:
         items: 
          $ref: '#/definitions/MarketActivationRuleDefinition'
         description: |
-          Set of market-based activation rules that must be met before order is sent to the exchange.
+          Set of market-based activation rules that must be met before order is sent to the exchange. Max 4 rules.
+        maxItems: 4
       TimeActivationRules: 
         type: array
         items: 
          $ref: '#/definitions/TimeActivationRuleDefinition'
         description: |
-          Set of time-based activation rules that must be met before order is sent to the exchange.
+          Set of time-based activation rules that must be met before order is sent to the exchange. Max 1 rule.
+        maxItems: 1
     type: object  
 
 ##############################################################################
