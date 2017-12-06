@@ -3766,40 +3766,34 @@ definitions:
   CancelReplaceMarketActivationRuleDefinition:
     description: 'Advanced Options for an order'      
     properties:
-      MarketActivationRules:
-        properties:
-          ClearAll:
-            type: boolean
-            description: |
-              If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
-          Rules:
-            type: array
-            items:
-              $ref: '#/definitions/MarketActivationRuleDefinition'
-            description: |
-              Set of market-based activation rules that must be met before order is sent to the exchange. Max 4 rules.
-            maxItems: 4
-        type: object
+      ClearAll:
+        type: boolean
+        description: |
+          If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
+      Rules:
+        type: array
+        items:
+          $ref: '#/definitions/MarketActivationRuleDefinition'
+        description: |
+          Set of market-based activation rules that must be met before order is sent to the exchange. Max 4 rules.
+        maxItems: 4
     type: object
 
 ##############################################################################
   CancelReplaceTimeActivationRuleDefinition:
     description: 'Advanced Options for an order'      
     properties:
-      TimeActivationRules:
-        properties:
-          ClearAll:
-            type: boolean
-            description: |
-              If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
-          Rules:
-            type: array
-            items:
-              $ref: '#/definitions/TimeActivationRuleDefinition'
-            description: |
-              Set of time-based activation rules that must be met before order is sent to the exchange. Max 1 rule.
-            maxItems: 1
-        type: object
+      ClearAll:
+        type: boolean
+        description: |
+          If 'True', removes all activation rules when replacing the order and ignores any rules sent in `Rules`.
+      Rules:
+        type: array
+        items:
+          $ref: '#/definitions/TimeActivationRuleDefinition'
+        description: |
+          Set of time-based activation rules that must be met before order is sent to the exchange. Max 1 rule.
+        maxItems: 1
     type: object
 
 ##############################################################################
