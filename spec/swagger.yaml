@@ -202,7 +202,7 @@ info:
     upon the `\n` (newline character) delimiter written to the end of each 
     JSON object. However, a more robust solution is less likely to break later.
 
-    #### Variable JSON Chunking
+    #### Variable Length JSON Chunking
 
     As a developer, be careful with how you parse HTTP Streams, because the 
     API’s or intermediate proxies may chunk JSON objects many different ways.
@@ -227,6 +227,41 @@ info:
     - "exactly 1" JSON object per chunk
     - “at least 1” JSON object per chunk
     - 1 JSON object split across 2 or more chunks
+
+    Example of 2 JSON objects in 1 chunk:
+    ```
+    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
+ 
+    HTTP/1.1 200 OK
+    Date: Wed, 14 Jun 2017 01:17:36 GMT
+    Content-Type: application/vnd.tradestation.streams+json
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Access-Control-Allow-Origin: *
+    Cache-Control: private
+    
+    22d
+    {"Close":19956.09,"DownTicks":26,"DownVolume":940229,"High":19961.77,"Low":19943.46,"Open":19943.46,"Status":13,"TimeStamp":"\/Date(1482849060000)\/","TotalTicks":59,"TotalVolume":3982533,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":33,"UpVolume":3042304,"OpenInterest":0}
+    {"Close":19950.82,"DownTicks":32,"DownVolume":440577,"High":19959.15,"Low":19947.34,"Open":19955.64,"Status":13,"TimeStamp":"\/Date(1482849120000)\/","TotalTicks":60,"TotalVolume":761274,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":28,"UpVolume":320697,"OpenInterest":0}
+    ```
+
+    Example of 1 JSON objects split across 2 chunks:
+    ```
+    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
+ 
+    HTTP/1.1 200 OK
+    Date: Wed, 14 Jun 2017 01:17:36 GMT
+    Content-Type: application/vnd.tradestation.streams+json
+    Transfer-Encoding: chunked
+    Connection: keep-alive
+    Access-Control-Allow-Origin: *
+    Cache-Control: private
+    
+    40
+    {"Close":71.65,"DownTicks":45,"DownVolume":5406,"High":71.67,"Lo
+    C2
+    w":71.65,"Open":71.66,"Status":13,"TimeStamp":"\/Date(1497016260000)\/","TotalTicks":77,"TotalVolume":17270,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":32,"UpVolume":11864,"OpenInterest":0}
+    ```
     
     This is allowed by the HTTP/1.1 specification, but can be confusing or lead 
     to bugs in client applications if you try to depend parsing JSON along 
