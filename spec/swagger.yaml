@@ -184,6 +184,8 @@ info:
     112
     {"Close":19950.82,"DownTicks":32,"DownVolume":440577,"High":19959.15,"Low":19947.34,"Open":19955.64,"Status":13,"TimeStamp":"\/Date(1482849120000)\/","TotalTicks":60,"TotalVolume":761274,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":28,"UpVolume":320697,"OpenInterest":0}
 
+    
+    END
     ```
 
     Typically this will stream forever, unless a network interruption or service
@@ -243,6 +245,7 @@ info:
     22d
     {"Close":19956.09,"DownTicks":26,"DownVolume":940229,"High":19961.77,"Low":19943.46,"Open":19943.46,"Status":13,"TimeStamp":"\/Date(1482849060000)\/","TotalTicks":59,"TotalVolume":3982533,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":33,"UpVolume":3042304,"OpenInterest":0}
     {"Close":19950.82,"DownTicks":32,"DownVolume":440577,"High":19959.15,"Low":19947.34,"Open":19955.64,"Status":13,"TimeStamp":"\/Date(1482849120000)\/","TotalTicks":60,"TotalVolume":761274,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":28,"UpVolume":320697,"OpenInterest":0}
+    END
     ```
 
     Example of 1 JSON objects split across 2 chunks:
@@ -261,6 +264,8 @@ info:
     {"Close":71.65,"DownTicks":45,"DownVolume":5406,"High":71.67,"Lo
     C2
     w":71.65,"Open":71.66,"Status":13,"TimeStamp":"\/Date(1497016260000)\/","TotalTicks":77,"TotalVolume":17270,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":32,"UpVolume":11864,"OpenInterest":0}
+    
+    END
     ```
     
     This is allowed by the HTTP/1.1 specification, but can be confusing or lead 
