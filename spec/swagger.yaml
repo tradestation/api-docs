@@ -229,6 +229,103 @@ securityDefinitions:
       interacting with the resource owner’s user-agent (typically a web browser) 
       and capable of receiving incoming requests (via redirection) from the 
       authorization server.
+
+      #### Implementation Guide
+
+      The authorization code grant type allows the end users to authenticate 
+      with TradeStation directly and authorize the Client application to make 
+      calls on their behalf. Access Tokens obtained via the authorization code 
+      Grant Type can be refreshed, they will expire in 20 minutes of the time 
+      issued.
+
+      **Step-by-Step**
+
+      **1. Redirect user for authentication/authorization**
+
+      The client application will route the end-user to our MFA (multi-factor 
+      authentication) login page web page.
+
+      *Authorize Uri:*
+      - https://api.tradestation.com/v2/authorize
+
+      *Required query string parameters:*
+      - redirect_uri
+      - client_id = the client application’s API key
+      - response_type = code
+
+      *Example Authorization Page Url:*
+      ```
+      https://api.tradestation.com/v2/authorize/?redirect_uri=https://exampleclientapp.com/authcode.aspx&client_id=D7635234&response_type=code
+      ```
+
+      The URL will take you to a TradeStation login page.
+
+      **2. Client receives authorization code**
+
+      Upon successful authentication; The user agent(browser) will be redirected 
+      to the URL provided and include an Authorization Code in the query string.
+
+      *Example Redirect:*
+      ```
+      HTTP 301 Redirect  
+      RedirectURL = https://exampleclientapp.com/authcode.aspx?code=AFF345CD12B
+      ```
+
+      *Note:*
+
+      - This redirect URL can be anything that the user agent can understand. 
+      In the case of an embedded browser it could be a URL to a native view, 
+      i.e.: device://viewname
+      - The Authorization Code is only valid for 30 seconds
+      
+      **3. Exchange Authorization Code for Access Token**
+
+      The Client uses the Authorization Code to request an Access Token via the 
+      `/security/authorize` service method using the authorization_code grant type;
+
+      *Required Header:*
+      - Content-Type: application/x-www-form-urlencoded
+      - Content-Length = Length of body information in UTF8
+
+      *Required form parameters:*
+      - grant_type = authorization_code
+      - client_id = The client application’s API key
+      - redirect_uri = The redirect uri used when obtaining the Authorization 
+      Code being provided
+      - code = The Authorization Code value
+      - client_secret = The secret for the client application’s API Key
+      
+      *Example Request*
+      ```
+      POST https://api.tradestation.com/v2/Security/Authorize HTTP/1.1
+      Content-Type: application/x-www-form-urlencoded
+      Host: api.tradestation.com
+      Content-Length: 630   
+
+      grant_type=authorization_code&client_id=11111111-1111-1111-1111-111111111111&redirect_uri=test.aspx&client_secret=11111111-1111-1111-1111-111111111111&code=YjlkWDRqVmxlRXphaZzM1NWQ1MzZtVVFJQXFkcmk3eldOSjRUSDJHSklqN1dMNkk=&response_type=token
+      ```
+
+      *Example Response*
+      ```
+      HTTP/1.1 200 OK
+      Cache-Control: private
+      Content-Length: 927
+      Content-Type: application/json; charset=utf-8
+      Server: Microsoft-IIS/7.5
+      X-AspNet-Version: 4.0.30319
+      X-Powered-By: ASP.NET
+      Date: Tue, 06 Dec 2011 20:50:32 GMT    
+
+      {
+
+          "RefreshToken": "eGlhc2xvTTVJaEdXMWs4VjhraWx4bk5QMHJMaA==",
+          "expires_in": 29367,
+          "token": "eGlhc2xvozT2IxWnVITmdwGVFPQ==",
+          "token_type": "AccessToken",
+          "userid": "testUser"
+      }
+      ```
+
     type: oauth2
     flow: accessCode
     authorizationUrl: "https://api.tradestation.com/v2/security/authorize"
