@@ -4320,7 +4320,7 @@ definitions:
 
 ##############################################################################
   GroupOrderRequestDefinition: 
-    description: 'asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdadad'
+    description: ''
     properties:
         Orders:
             minItems: 1
