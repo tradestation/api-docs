@@ -2414,7 +2414,12 @@ paths:
         a sell stop order for 1000 shares, and the limit order is partially 
         filled for 500 shares, then the customer would want the stop to remain 
         open, but it should automatically decrement the order to 500 shares to 
-        match the remaining open position.  
+        match the remaining open position. 
+        
+        #### NOTE
+        All submitted orders in a bracket, must have the same Quantity, otherwise,
+        an error will be reported.
+
       operationId: postOrderGroup
       tags:
         - order-execution
@@ -3738,6 +3743,32 @@ definitions:
             Status:
                 minLength: 1
                 type: string
+                description: |                    
+                    * OPN, ACK, UCN = Open Orders -- New order request pending, cancel request pending.
+                    * FLL, FLP = Filled Orders -- Partially-Filled and remaining canceled.
+                    * FPR = Partially Filled Orders.
+                    * OUT = Canceled Orders.
+                    * REJ, TSC = Rejected Orders -- It is an internal server(s) unsolicited cancel, not final status.
+                    * EXP = Expired Orders.
+                    * BRO = Broken Orders -- Not necessarily the order’s final status since later it may be reinstated to open.
+                    * CAN = Exch. Canceled Orders.
+                    * LAT = Too Late Orders -- Not the order’s final status.
+                    * DON = Queued Orders.
+                enum:
+                    - OPN
+                    - ACK
+                    - UCN
+                    - FLL
+                    - FLP
+                    - FPR
+                    - OUT
+                    - REJ
+                    - TSC                
+                    - Exp
+                    - BRO
+                    - CAN
+                    - LAT
+                    - DON
             StatusDescription:
                 minLength: 1
                 type: string
@@ -4289,7 +4320,7 @@ definitions:
 
 ##############################################################################
   GroupOrderRequestDefinition: 
-    description: ''
+    description: 'asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdadad'
     properties:
         Orders:
             minItems: 1
