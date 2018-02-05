@@ -306,13 +306,13 @@ info:
     | Order Details                                 | 250   | 5-minute |
     | Balances                                      | 250   | 5-minute |
     | Positions                                     | 250   | 5-minute |
-    | Data Quotes[\*](#symbol_quotas)               | 250   | 5-minute |
-    | Quote Change Stream[\*](#symbol_qotas)        | 500   | 5-minute |
-    | Quote Snapshot Stream[\*](#symbol_quotas)     | 500   | 5-minute |
+    | Data Quotes[\*]                               | 250   | 5-minute |
+    | Quote Change Stream[\*]                       | 500   | 5-minute |
+    | Quote Snapshot Stream[\*]                     | 500   | 5-minute |
     | Barchart Stream                               | 500   | 5-minute |
     | TickBar Stream                                | 500   | 5-minute |
 
-    *\* Note: See below for more information on [Symbol Quotas](#symbol_quotas)*
+  
 
     ## Intervals
 
