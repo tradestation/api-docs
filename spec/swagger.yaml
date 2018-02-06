@@ -2416,6 +2416,11 @@ paths:
         open, but it should automatically decrement the order to 500 shares to 
         match the remaining open position. 
         
+        ### Errors
+        When a submitted order fails, it can be seen in two different ways:
+        -	Immediately rejected during submit to the Orders API with a 400 HTTP status code.
+        -	Accepted by the API with a 200 HTTP status code, but you will see the order with a status of “REJ” (rejected) when you fetch the Order from the /v2/accounts/{id}/orders API 
+        
         #### NOTE
         All submitted orders in a bracket, must have the same Quantity, otherwise,
         an error will be reported.
