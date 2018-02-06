@@ -306,9 +306,9 @@ info:
     | Order Details                                 | 250   | 5-minute |
     | Balances                                      | 250   | 5-minute |
     | Positions                                     | 250   | 5-minute |
-    | Data Quotes[\*]                               | 250   | 5-minute |
-    | Quote Change Stream[\*]                       | 500   | 5-minute |
-    | Quote Snapshot Stream[\*]                     | 500   | 5-minute |
+    | Data Quotes                                   | 250   | 5-minute |
+    | Quote Change Stream                           | 500   | 5-minute |
+    | Quote Snapshot Stream                         | 500   | 5-minute |
     | Barchart Stream                               | 500   | 5-minute |
     | TickBar Stream                                | 500   | 5-minute |
 
