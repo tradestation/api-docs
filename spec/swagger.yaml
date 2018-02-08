@@ -2427,9 +2427,9 @@ paths:
         -	Accepted by the API with a 200 HTTP status code, but you will see the order with a status of “REJ” (rejected) when you fetch the Order from the /v2/accounts/{id}/orders API 
         
         #### NOTE
-        When I group order is submitted, the order execution system treats each leg of the bracket as an individual order. Thus, the system does not validate that each order has the same Quantity, and currently it is not able to update a bracket order.
+        When a group order is submitted, the order execution system treats each sibbling order as an individual order. Thus, the system does not validate that each order has the same Quantity, and currently it is not able to update a bracket order.
 
-        In order to prevent errors, it is needed to validate the data in the client side.	
+        In order to prevent errors, please validate the data on the client side.	
 
       operationId: postOrderGroup
       tags:
