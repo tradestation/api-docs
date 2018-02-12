@@ -1971,7 +1971,12 @@ paths:
       summary: |
         Get Account Orders
       description: |
-        Returns the Orders for the given accounts       
+        Returns the Orders for the given accounts
+        
+        #### Stateless Connection
+        Since the web-API provides a stateless connection, it only supports fetching the current state of Orders. If it is needed to display the intermediate state changes, it should be executed at client level.
+
+
       operationId: getOrdersByAccounts
       tags:
         - brokerage
@@ -2422,8 +2427,9 @@ paths:
         -	Accepted by the API with a 200 HTTP status code, but you will see the order with a status of “REJ” (rejected) when you fetch the Order from the /v2/accounts/{id}/orders API 
         
         #### NOTE
-        All submitted orders in a bracket, must have the same Quantity, otherwise,
-        an error will be reported.
+        When a group order is submitted, the order execution system treats each sibling order as an individual order. Thus, the system does not validate that each order has the same Quantity, and currently it is not able to update a bracket order as one transaction, instead you must update each order within a bracket.
+
+        In order to prevent errors, please validate the data on the client side.	
 
       operationId: postOrderGroup
       tags:
