@@ -3582,7 +3582,7 @@ definitions:
     description: ''
     items:
         properties:
-            AccountID: 
+            AccountID:
                 minLength: 1
                 type: string
                 description: ID that identifies a specific TradeStation account that is being used for a particular order.
@@ -3637,7 +3637,7 @@ definitions:
             DisplayType:
                 type: number
             Duration:
-                minLength: 1                
+                minLength: 1
                 type: string
                 description: The amount of time for which an order is valid.
             ExecuteQuantity:
@@ -3677,7 +3677,7 @@ definitions:
                         LegNumber:
                             type: number
                         LimitPrice:
-                            type: 
+                            type: number
                             description: The limit price for Limit orders
                         LimitPriceDisplay:
                             minLength: 1
@@ -3705,8 +3705,8 @@ definitions:
                             minLength: 1
                             type: string
                         StopPrice:
-                            type: 
-                             descrption: The stop price for stop orders.
+                            type: number
+                            description: The stop price for stop orders.
                         StopPriceDisplay:
                             type: string
                         StrikePrice:
@@ -3714,7 +3714,7 @@ definitions:
                         Symbol:
                             minLength: 1
                             type: string
-                              descrition: Symbol to trade.
+                            description: Symbol to trade.
                         TimeExecuted:
                             minLength: 1
                             type: string
@@ -3767,7 +3767,7 @@ definitions:
                 type: number
             OrderID:
                 type: number
-                description: ID of the current order
+                description: ID of the current order.
             Originator:
                 type: number
                 description: Account name that generates the order.
@@ -3819,14 +3819,14 @@ definitions:
                 type: string
             StopPrice:
                 type: number
-                descrption: The stop price for stop orders.
+                description: The stop price for stop orders.
             StopPriceText:
                 minLength: 1
                 type: string
             Symbol:
                 minLength: 1                
                 type: string
-                descrition: Symbol to trade.                 
+                description: Symbol to trade.                 
             TimeStamp:
                 minLength: 1
                 type: string
