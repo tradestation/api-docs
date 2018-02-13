@@ -3582,9 +3582,10 @@ definitions:
     description: ''
     items:
         properties:
-            AccountID:
+            AccountID: 
                 minLength: 1
                 type: string
+                description: ID that identifies a specific TradeStation account that is being used for a particular order.
             AdvancedOptions:
                 type: string
             Alias:
@@ -3592,32 +3593,62 @@ definitions:
             AssetType:
                 minLength: 1
                 type: string
+                description: |
+                    * FU = Future
+                    * FO = Future Option
+                    * S = Stock
+                    * So = Stock Option
+                    * IDX = Index
+                    * CO = Currency Option
+                    * MMF = Money Market Fund
+                    * IO = Index Option
+                    * B = Bond
+                    * F = Forex
+                enum:
+                    - FU
+                    - FO
+                    - S 
+                    - SO
+                    - IDX
+                    - CO
+                    - MMF
+                    - IO
+                    - B
+                    - F
             CommissionFee:
                 type: number
+                description: Commision paid in an order.
             ContractExpireDate:
                 minLength: 1
                 type: string
+                description: Displays the contract expiration date for orders specified in contracts.
             ConversionRate:
                 type: number
+                description: Conversion rate used to translate the position’s market value and PNL from symbol currency to account currency.
             Country: 
-                type: string            
+                type: string
+                description: The country of origin for the symbol.          
             Denomination:
                 minLength: 1
                 type: string
+                description: Currency used to complete the order.
             DisplayName: 
                 type: string            
             DisplayType:
                 type: number
             Duration:
-                minLength: 1
+                minLength: 1                
                 type: string
+                description: The amount of time for which an order is valid.
             ExecuteQuantity:
                 type: number
             FilledCanceled:
                 minLength: 1
                 type: string
+                description: The time the order was filled or canceled.
             FilledPrice:
                 type: number
+                description: At the top level, this is the average fill price. For expanded levels, this is the actual execution price.
             FilledPriceText:
                 minLength: 1
                 type: string
@@ -3628,22 +3659,26 @@ definitions:
                     properties:
                         Ask:
                             type: number
+                            description: The price at which a security, futures, or other financial instrument is offered for sale.
                         BaseSymbol:
                             type: string
                         Bid:
                             type: number
+                            description: The highest price a prospective buyer is prepared to pay at a particular time for a trading unit of a given symbol.
                         ExecPrice:
                             type: number
                         ExecQuantity:
                             type: number
                         ExpireDate:
                             type: string
+                            description: The expiration date of the future or option symbol.
                         Leaves:
                             type: number
                         LegNumber:
                             type: number
                         LimitPrice:
-                            type: number
+                            type: 
+                            description: The limit price for Limit orders
                         LimitPriceDisplay:
                             minLength: 1
                             type: string
@@ -3654,6 +3689,7 @@ definitions:
                             type: string
                         OrderID:
                             type: number
+                            description: ID of the current order
                         OrderType:
                             minLength: 1
                             type: string
@@ -3669,7 +3705,8 @@ definitions:
                             minLength: 1
                             type: string
                         StopPrice:
-                            type: number
+                            type: 
+                             descrption: The stop price for stop orders.
                         StopPriceDisplay:
                             type: string
                         StrikePrice:
@@ -3677,12 +3714,17 @@ definitions:
                         Symbol:
                             minLength: 1
                             type: string
+                              descrition: Symbol to trade.
                         TimeExecuted:
                             minLength: 1
                             type: string
                         Type:
                             minLength: 1
                             type: string
+                            description: Type of order
+                            enum:
+                                - Sell
+                                - Buy
                         Year:
                             type: number
                     required:
@@ -3717,34 +3759,32 @@ definitions:
                 uniqueItems: true
             LimitPrice:
                 type: number
+                description: The limit price for Limit orders.
             LimitPriceText:
                 minLength: 1
-                type: string
-            MarketActivationRules: 
-               type: array
-               items: 
-                 $ref: '#/definitions/MarketActivationRuleDefinition'
-               description: |
-                 Set of market-based activation rules that must be met before order is sent to the exchange.             
+                type: string                       
             MinMove:
                 type: number
             OrderID:
                 type: number
+                description: ID of the current order
             Originator:
                 type: number
+                description: Account name that generates the order.
             Quantity:
                 type: number
+                description: Gets the quantity of shares or contracts requested for the order.
             QuantityLeft:
                 type: number
+                description: Gets the number of unfilled shares  or contracts for the current order.
             RejectReason:
                 type: string
             Routing:
                 minLength: 1
-                type: string
-            ShowOnlyQuantity:
-                type: integer
+                type: string      
             Spread:
                 type: string
+                description: The spread name for an options order.
             Status:
                 minLength: 1
                 type: string
@@ -3779,18 +3819,14 @@ definitions:
                 type: string
             StopPrice:
                 type: number
+                descrption: The stop price for stop orders.
             StopPriceText:
                 minLength: 1
                 type: string
             Symbol:
-                minLength: 1
+                minLength: 1                
                 type: string
-            TimeActivationRules: 
-               type: array
-               items: 
-                 $ref: '#/definitions/TimeActivationRuleDefinition'
-               description: |
-                 Set of time-based activation rules that must be met before order is sent to the exchange.         
+                descrition: Symbol to trade.                 
             TimeStamp:
                 minLength: 1
                 type: string
@@ -3801,6 +3837,10 @@ definitions:
             Type:
                 minLength: 1
                 type: string
+                description: Type of order
+                enum:
+                    - Sell
+                    - Buy
             UnbundledRouteFee:
                 type: number
         required:
