@@ -3588,8 +3588,21 @@ definitions:
                 description: ID that identifies a specific TradeStation account that is being used for a particular order.
             AdvancedOptions:
                 type: string
+                description: Will display a value when the order has advanced order rules associated with it or is part of a bracket order.
+                enum: 
+                    - Activation Rule
+                    - All or None
+                    - Trailing Stop
+                    - If Touched
+                    - Show Only
+                    - Discretionary
+                    - Non-Display
+                    - Peg
+                    - Book Only
+                    - Add Liquidity
             Alias:
                 type: string
+                description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
             AssetType:
                 minLength: 1
                 type: string
@@ -3617,7 +3630,7 @@ definitions:
                     - F
             CommissionFee:
                 type: number
-                description: Commision paid in an order.
+                description: Commission paid in an order.
             ContractExpireDate:
                 minLength: 1
                 type: string
@@ -3633,15 +3646,18 @@ definitions:
                 type: string
                 description: Currency used to complete the order.
             DisplayName: 
-                type: string            
+                type: string 
+                description: Displays the Monex user ID. Used only by Monex.
             DisplayType:
                 type: number
+                description: Number of decimal points to display for the price.
             Duration:
                 minLength: 1
                 type: string
                 description: The amount of time for which an order is valid.
             ExecuteQuantity:
                 type: number
+                description: Number of shares that have been executed.
             FilledCanceled:
                 minLength: 1
                 type: string
@@ -3652,8 +3668,10 @@ definitions:
             FilledPriceText:
                 minLength: 1
                 type: string
+                description: String value for FilledPrice attribute.
             GroupName:
                 type: string
+                description: It can be used to identify orders that are part of the same bracket.
             Legs:
                 items:
                     properties:
@@ -3662,55 +3680,77 @@ definitions:
                             description: The price at which a security, futures, or other financial instrument is offered for sale.
                         BaseSymbol:
                             type: string
+                            description: Symbol of the underlying stock for an option trade.
                         Bid:
                             type: number
                             description: The highest price a prospective buyer is prepared to pay at a particular time for a trading unit of a given symbol.
                         ExecPrice:
                             type: number
+                            description: The execution price for the order.
                         ExecQuantity:
                             type: number
+                            description: Number of shares executed.
                         ExpireDate:
                             type: string
                             description: The expiration date of the future or option symbol.
                         Leaves:
                             type: number
+                            description: It will display the number of shares that have not yet filled if the entire quantity has not been filled.
                         LegNumber:
                             type: number
+                            description: For an equity purchase, the value will be 1.  For option spreads, there will be a leg for each option.
                         LimitPrice:
                             type: number
                             description: The limit price for Limit orders
                         LimitPriceDisplay:
                             minLength: 1
                             type: string
+                            description: String value for LimitPrice attribute.
                         Month:
                             type: number
+                            description: Expiration month for options or futures.
                         OpenOrClose:
                             minLength: 1
                             type: string
+                            description: Identifies whether the order is an Opening or Closing trade.
                         OrderID:
                             type: number
-                            description: ID of the current order
+                            description: ID of the current order.
                         OrderType:
                             minLength: 1
                             type: string
+                            description: |
+                                Identifies the order type of the order.
+                            enum: 
+                                - Market
+                                - Limit
+                                - Stop Limit
+                                - Stop Market  
                         PointValue:
                             type: number
+                            description: Number of shares the order represents. Equities will normally display 1. Options will display 100.
                         PriceUsedForBuyingPower:
                             type: number
+                            description: Price used for the buying power calculation of the order.
                         PutOrCall:
                             type: string
+                            description: For an option order, identifies whether the order is for a Put or Call.
                         Quantity:
                             type: number
+                            description: Number of shares or contracts being purchased.
                         Side:
                             minLength: 1
                             type: string
+                            description: Identifies whether the order is a buy or sell.
                         StopPrice:
                             type: number
                             description: The stop price for stop orders.
                         StopPriceDisplay:
                             type: string
+                            description: String value for StopPrice attribute.
                         StrikePrice:
                             type: number
+                            description: For an option order, the strike price for the Put or Call.
                         Symbol:
                             minLength: 1
                             type: string
@@ -3718,6 +3758,7 @@ definitions:
                         TimeExecuted:
                             minLength: 1
                             type: string
+                            description: Time the order was placed.
                         Type:
                             minLength: 1
                             type: string
@@ -3727,6 +3768,7 @@ definitions:
                                 - Buy
                         Year:
                             type: number
+                            description: Represents the expiration year if the order is an option.
                     required:
                     - Ask
                     - BaseSymbol
@@ -3762,9 +3804,17 @@ definitions:
                 description: The limit price for Limit orders.
             LimitPriceText:
                 minLength: 1
-                type: string                       
+                type: string
+                description: String value of LimitPrice attribute.
+            MarketActivationRules: 
+               type: array
+               items: 
+                 $ref: '#/definitions/MarketActivationRuleDefinition'
+               description: |
+                 Set of market-based activation rules that must be met before order is sent to the exchange.                          
             MinMove:
                 type: number
+                description: The smallest amount of price change allowed for a particular symbol.
             OrderID:
                 type: number
                 description: ID of the current order.
@@ -3776,15 +3826,20 @@ definitions:
                 description: Gets the quantity of shares or contracts requested for the order.
             QuantityLeft:
                 type: number
-                description: Gets the number of unfilled shares  or contracts for the current order.
+                description: Gets the number of unfilled shares or contracts for the current order.
             RejectReason:
                 type: string
+                description: If an order has been rejected, this will display the rejection reason.
             Routing:
                 minLength: 1
-                type: string      
+                type: string
+                description: Identifies the routing selection made by the customer when placing the order.
+            ShowOnlyQuantity:
+                type: integer
+                description: This option allows you to hide the true number of shares that you wish to buy or sell.
             Spread:
                 type: string
-                description: The spread name for an options order.
+                description: The spread type for an option order.
             Status:
                 minLength: 1
                 type: string
@@ -3816,6 +3871,7 @@ definitions:
                     - DON
             StatusDescription:
                 minLength: 1
+                description: Description for Status attribute.
                 type: string
             StopPrice:
                 type: number
@@ -3823,26 +3879,37 @@ definitions:
             StopPriceText:
                 minLength: 1
                 type: string
+                description: String value for StopPrice attribute.
             Symbol:
                 minLength: 1                
                 type: string
-                description: Symbol to trade.                 
+                description: Symbol to trade.
+            TimeActivationRules: 
+               type: array
+               items: 
+                 $ref: '#/definitions/TimeActivationRuleDefinition'
+               description: |
+                 Set of time-based activation rules that must be met before order is sent to the exchange.                 
             TimeStamp:
                 minLength: 1
                 type: string
+                description: Time the order was placed.
             TrailingStop:
-              $ref: '#/definitions/TrailingStopDefinition'                
+              $ref: '#/definitions/TrailingStopDefinition'
+              description: If the order is a trailing stop order, this identifies the percent or amount.
             TriggeredBy:
                 type: string
+                description: Will display a value if a stop limit or stop market order has been triggered.
             Type:
                 minLength: 1
                 type: string
-                description: Type of order
+                description: Type of order.
                 enum:
                     - Sell
                     - Buy
             UnbundledRouteFee:
                 type: number
+                description: Will contain a value if the order has received a routing fee.
         required:
         - AccountID
         - AdvancedOptions
