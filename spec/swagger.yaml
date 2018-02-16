@@ -3675,7 +3675,7 @@ definitions:
             AdvancedOptions:
                 type: string
                 description: Will display a value when the order has advanced order rules associated with it or is part of a bracket order.
-                enum: 
+                enum:
                     - Activation Rule
                     - All or None
                     - Trailing Stop
@@ -3807,11 +3807,11 @@ definitions:
                             type: string
                             description: |
                                 Identifies the order type of the order.
-                            enum: 
+                            enum:
                                 - Market
                                 - Limit
                                 - Stop Limit
-                                - Stop Market  
+                                - Stop Market
                         PointValue:
                             type: number
                             description: Number of shares the order represents. Equities will normally display 1. Options will display 100.
