@@ -4033,7 +4033,6 @@ definitions:
                 description: Time the order was placed.
             TrailingStop:
               $ref: '#/definitions/TrailingStopDefinition'
-              description: If the order is a trailing stop order, this identifies the percent or amount.
             TriggeredBy:
                 type: string
                 description: Will display a value if a stop limit or stop market order has been triggered.
