@@ -3534,7 +3534,7 @@ definitions:
             AccountID:
                 minLength: 1
                 type: string
-                description: ID that identifies a specific TradeStation account that is being used for a particular order.
+                description: Internal ID for the TradeStation account that is being used for a particular order.
             AccountMarketValue:
                 type: number
                 description: The actual market value denominated in the account currency of the open position.
@@ -3553,7 +3553,7 @@ definitions:
             AskPriceDisplay:
                 minLength: 1
                 type: string
-                description: String value for AskPrice attribute.
+                description: Formatted text representation of the AskPrice for easy display
             AssetType:
                 minLength: 1
                 type: string
@@ -3579,7 +3579,7 @@ definitions:
             BidPriceDisplay:
                 minLength: 1
                 type: string
-                description: String value for bidPrice attribute.
+                description: Formatted text representation of the BidPrice for easy display
             BigPointValue:
                 type: number
                 description: Dollar value for a one point movement.
@@ -3605,7 +3605,7 @@ definitions:
             DisplayName:
                 minLength: 1
                 type: string
-                description: ID that identifies a specific TradeStation account that is being used for a particular position.
+                description: The friendly name of the TradeStation account that is being used for a particular position.
             InitialMargin:
                 type: number
                 description: The margin account balance denominated in the account currency required for entering a position on margin.
@@ -3618,7 +3618,7 @@ definitions:
             LastPriceDisplay:
                 minLength: 1
                 type: string
-                description: String value for LastPrice attribute.
+                description: Formatted text representation of the LastPrice for easy display
             LongShort:
                 minLength: 1
                 type: string
@@ -3659,7 +3659,7 @@ definitions:
             StrikePriceDisplay:
                 minLength: 1
                 type: string
-                description: String value for StrikePrice attribute.
+                description: Formatted text representation of the StrikePrice for easy display
             Symbol:
                 minLength: 1
                 type: string
