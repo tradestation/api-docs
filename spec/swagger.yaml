@@ -3201,30 +3201,33 @@ definitions:
         properties:
             Alias:
                 type: string
+                description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
             BODAccountBalance:
-                description: (Equities)
-                type: number
+                description: (Equities) Indicates the dollar amount of cash in the specified account at the beginning of the day.
+                type: number                
             BODDayTradingMarginableEquitiesBuyingPower:
-                description: (Equities) 
+                description: (Equities) The Intraday Buying Power (Day Trading Rule 431) with which the account started the trading day.
                 type: number
             BODEquity:
                 type: number
+                description: Indicates the dollar amount of Beginning Day Equity for the given futures account.
             BODNetCash: 
                 type: number
+                description: The dollar amount in the specified account calculated in real-time.                
             BODOpenTradeEquity:
-                description: (Futures)
+                description: (Futures) Indicates the dollar amount of Beginning Day Trade Equity for the given futures account. 
                 type: number                  
             BODOptionBuyingPower:
-                description: (Equities)
+                description: (Equities) Indicates the amount of option buying power with which you started the current trading day.
                 type: number
             BODOptionValue:
-                description: (Equities)
+                description: (Equities) The dollar amount of Beginning Day Liquidation Value at the start of the trading day. 
                 type: number
             BODOvernightBuyingPower:
-                description: (Equities)
+                description: (Equities) Indicates the Overnight Buying Power (Regulation T) with which your account started the current trading day.
                 type: number
             CanDayTrade:
-                description: (Equities)
+                description: (Equities) Indicates whether day trading is allowed in the account. 
                 type: boolean
             ClosedPositions:
                 items:
@@ -3232,79 +3235,105 @@ definitions:
                     properties:
                       Currency:
                         type: number
+                        description: The base currency of the symbol.
                       Profit:
                         type: number
+                        description: This value includes any gain or loss as a result of closing a position.
                       Symbol:
                         type: string
+                        description: The name identifying the financial instrument for which the data is displayed.
                     required:
                       - Currency
                       - Profit
                       - Symbol
                 type: array
             Commission:
-                description: (Futures)
+                description: (Futures) The actual brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.                
                 type: number
             DayTrades:
-                description: (Equities)
+                description: (Equities) The number of day trades placed in the account.
                 type: number
             DayTradingQualified:
-                description: (Equities)
+                description: (Equities) Indicates if the account is qualified to day trade as per compliance suitability in TradeStation.
                 type: boolean
             Currency:
-                description: (Futures)
+                description: (Futures) The base currency of the symbol.
                 minLength: 1
                 type: string
             CurrencyDetails:
-                description: (Futures)
+                description: (Futures) Currency details of the symbol.
                 items:
                     properties:
                         AccountOpenOrderInitMargin:
                             type: number
+                            description: The margin account balance denominated in the account currency required for entering a position on margin.
                         BODAccountCashBalance:
                             type: number
+                            description: Indicates the dollar amount of Beginning Day Account Cash Balance.
                         BODAccountOpenTradeEquity:
                             type: number
+                            description: Indicates the dollar amount of Beginning Day Trade Equity for the given futures account.
                         BODAccountSecurities:
                             type: number
+                            description: Indicates the dollar amount of Beginning Day Account Securities.
                         BODCashBalance:
                             type: number
+                            description: Indicates the dollar amount of Beginning Day Cash Balance for the given futures account.
                         BODOpenTradeEquity:
                             type: number
+                            description: Indicates the dollar amount of Beginning Day Open Trade Equity.
                         BODSecurities:
                             type: number
+                            description: Indicates the dollar amount of Beginning Day Securities.
                         Commission:
                             type: number
+                            description: The actual brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.
                         Currency:
                             minLength: 1
                             type: string
+                            description: The base currency of the symbol.
                         OpenOrderInitMargin:
                             type: number
+                            description: The dollar amount of Open Order Initial Margin for the given futures account.
                         RealTimeAccountCashBalance:
                             type: number
+                            description: Indicates the value of real-time account cash balance.
                         RealTimeAccountInitMargin:
                             type: number
+                            description: Indicates the value of real-time account initial margin.
                         RealTimeAccountMaintenanceMargin:
                             type: number
+                            description: Indicates the value of real-time account maintance margin.
                         RealTimeAccountMarginRequirement:
                             type: number
+                            description: Indicates the value of real-time account margin requirement.
                         RealTimeAccountRealizedProfitLoss:
                             type: number
+                            description: Indicates the value of real-time account realized profit or loss.
                         RealTimeAccountUnrealizedProfitLoss:
                             type: number
+                            description: Indicates the value of real-time account unrealized profit or loss.
                         RealTimeCashBalance:
                             type: number
+                            description: Indicates the value of real-time cash balance.
                         RealTimeInitMargin:
                             type: number
+                            description: Indicates the value of real-time initial margin.
                         RealTimeMaintenanceMargin:
                             type: number
+                            description: Indicates the value of real-time maintance margin.
                         RealTimeRealizedProfitLoss:
                             type: number
+                            description: Indicates the value of real-time realized profit or loss.
                         RealTimeUnrealizedProfitLoss:
                             type: number
+                            description: Indicates the value of real-time unrealized profit or loss.
                         ToAccountConversionRate:
                             type: number
+                            description: Indicates the rate used to convert from the currency of the symbol to the currency of the account.
                         TodayRealTimeUnrealizedProfitLoss:
                             type: number
+                            description: Indicates the value of today's real-time unrealized profit or loss.
                     required:
                         - BODAccountCashBalance
                         - BODCashBalance
@@ -3335,31 +3364,47 @@ definitions:
             DisplayName:
                 minLength: 1
                 type: string
+                description: The friendly name of the specific TradeStation account.
             Key:
                 type: number
+                description: Key is the unique identifier for the requested account.
             MarketValue:
                 type: number
+                description: Indicates the actual market value.
             Name:
                 minLength: 1
                 type: string
+                description: name of the account.
             OptionApprovalLevel:
-                description: (Equities)
+                description: (Equities) Indicates the option approval level.
                 type: number
             OpenOrderMargin:
-                description: (Futures)
+                description: (Futures) The dollar amount of Open Order Margin for the given futures account.  
                 type: number                      
-            PatternDayTrader:
-                description: (Equities) Indicates whether you are considered a pattern day trader. As per FINRA rules, you will be considered a pattern day trader if you trade 4 or more times in 5 business days and your day-trading activities are greater than 6 percent of your total trading activity for that same five-day period. A pattern day trader must maintain minimum equity of $25,000 on any day that the customer day trades. If the account falls below the $25,000 requirement, the pattern day trader will not be permitted to day trade until the account is restored to the $25,000 minimum equity level.
+            PatternDayTrader: 
+                description: >
+                  (Equities) Indicates whether you are considered a pattern day 
+                  trader. As per FINRA rules, you will be considered a pattern 
+                  day trader if you trade 4 or more times in 5 business days and 
+                  your day-trading activities are greater than 6 percent of your 
+                  total trading activity for that same five-day period. A pattern 
+                  day trader must maintain a minimum equity of $25,000 on any day 
+                  that the customer day trades. If the account falls below the 
+                  $25,000 requirement, the pattern day trader will not be 
+                  permitted to day trade until the account is restored to the 
+                  $25,000 minimum equity level.
                 type: boolean
             RealTimeAccountBalance:
                 type: number
+                description: The dollar amount in the specified account calculated in real-time.  
             RealTimeBuyingPower:
                 type: number
+                description: Indicates the value of real-time buying power.
             RealTimeCostOfPositions:
-                description: (Equities)
+                description: (Equities) Total real-time cost of all open positions. Positions are based on the actual entry price.
                 type: number
             RealTimeDayTradingMarginableEquitiesBuyingPower:
-                description: (Equities)
+                description: (Equities) The intraday buying power for trading marginable equities.
                 type: number
             RealTimeEquity:
                 description: (Real-time cash balance) + (Market value of long positions) – (Market value of short positions)
@@ -3371,44 +3416,79 @@ definitions:
                 description: (Equities) The intraday buying power for options.
                 type: number
             RealTimeOptionValue:
-                description: (Equities) The dollar amount of Real-time Liquidation Value calculated throughout the trading day.  
+                description: (Equities) The dollar amount of Real-time Liquidation Value calculated throughout the trading day.
                 type: number
             RealTimeOvernightBuyingPower:
-                description: (Equities)
+                description: (Equities) Indicates in real-time, the value of the account equity position changes.
                 type: number
             RealTimeMaintenanceMargin:
-                description: (Futures)
+                description: (Futures) The dollar amount of Real-time Maintenance Margin for the given futures account.
                 type: number
-            RealTimeRealizedProfitLoss:
+            RealTimeRealizedProfitLoss:            
                 type: number
+                description: Indicates any gain or loss as a result of closing a position during the current trading day. This value also includes all commissions and routing fees incurred during the current trading day.
             RealTimeTradeEquity:
                 type: number
+                description: The dollar amount of Real-time Trade Equity for the given futures account.
             RealTimeUnrealizedGains:
                 type: number
+                description: Indicates in real-time, the unrealized gains for all currently open positions.
             RealTimeUnrealizedProfitLoss:
                 type: number
+                description: Indicates in real-time, the unrealized profit or loss for all currently open positions.
             SecurityOnDeposit:
-                description: (Futures)
+                description: (Futures) The value of special securities that are deposited by the customer with the clearing firm for the sole purpose of increasing purchasing power in their trading account. This number will be reset daily by the account balances clearing file. The entire value of this field will increase purchasing power.
                 type: number
             Status:
                 minLength: 1
                 type: string
+                description: |
+                    Status of a specific account.
+                    * A - Active
+                    * C - Closed
+                    * CTA - Closing Transaction Only
+                    * FMC - Fed Margin Call
+                    * I - Inactive
+                    * LTO - Liquidating Transactions Only
+                    * R - Restricted
+                enum:
+                    - A
+                    - C
+                    - CTA
+                    - FMC
+                    - I
+                    - LTO
+                    - R
             StatusDescription:
                 minLength: 1
                 type: string
+                description: String value for Status attribute.
             TodayRealTimeTradeEquity:
-                description: (Futures)
+                description: (Futures) The dollar amount of Today's Real-time Trade Equity for the given futures account.
                 type: number
             Type:
                 minLength: 1
                 type: string
+                description: |
+                    The type of the account.
+                    * C - Cash
+                    * M - Margin
+                    * D - DVP
+                    * F - Futures
+                enum:
+                    - C
+                    - M
+                    - D
+                    - F
             TypeDescription:
                 minLength: 1
                 type: string
-            UnclearedDeposit:
+                description: String value for Type Attribute.
+            UnclearedDeposit:            
                 type: number
+                description: The total of uncleared checks received by TradeStation for deposit.
             UnsettledFund:
-                description: (Equities)
+                description: (Equities) Funds received by TradeStation that are not settled from a transaction in the account.
                 type: number
         required:
             - Alias
