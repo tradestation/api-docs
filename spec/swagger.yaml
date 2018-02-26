@@ -3263,7 +3263,7 @@ definitions:
                             description: The margin account balance denominated in the account currency required for entering a position on margin.
                         BODAccountCashBalance:
                             type: number
-                            description:  Indicates the dollar amount of Beginning Day Account Cash Balance.
+                            description: Indicates the dollar amount of Beginning Day Account Cash Balance.
                         BODAccountOpenTradeEquity:
                             type: number
                             description: Indicates the dollar amount of Beginning Day Trade Equity for the given futures account.
@@ -3306,7 +3306,7 @@ definitions:
                             description: Indicates the value of real-time account realized profit or loss.
                         RealTimeAccountUnrealizedProfitLoss:
                             type: number
-                            description: Idicates the value of real-time account unrealized profit or loss.
+                            description: Indicates the value of real-time account unrealized profit or loss.
                         RealTimeCashBalance:
                             type: number
                             description: Indicates the value of real-time cash balance.
@@ -3324,10 +3324,10 @@ definitions:
                             description: Indicates the value of real-time unrealized profit or loss.
                         ToAccountConversionRate:
                             type: number
-                            description: Indicates the used rate to convert from the currency of the symbol to the currency of the account.
+                            description: Indicates the rate used to convert from the currency of the symbol to the currency of the account.
                         TodayRealTimeUnrealizedProfitLoss:
                             type: number
-                            description: Indicates the values of today's real-time unrealized profit or loss.
+                            description: Indicates the value of today's real-time unrealized profit or loss.
                     required:
                         - BODAccountCashBalance
                         - BODCashBalance
@@ -3358,10 +3358,10 @@ definitions:
             DisplayName:
                 minLength: 1
                 type: string
-                description: The number of a specific TradeStation account for which you are viewing account details.
+                description: The friendly name of the specific TradeStation account.
             Key:
                 type: number
-                description: Key is a unique identifier for the balance.
+                description: Key is the unique identifier for the requested account.
             MarketValue:
                 type: number
                 description: Indicates the actual market value.
@@ -3375,8 +3375,18 @@ definitions:
             OpenOrderMargin:
                 description: (Futures) The dollar amount of Open Order Margin for the given futures account.  
                 type: number                      
-            PatternDayTrader:
-                description: (Equities) Indicates whether you are considered a pattern day trader. As per FINRA rules, you will be considered a pattern day trader if you trade 4 or more times in 5 business days and your day-trading activities are greater than 6 percent of your total trading activity for that same five-day period. A pattern day trader must maintain a minimum equity of $25,000 on any day that the customer day trades. If the account falls below the $25,000 requirement, the pattern day trader will not be permitted to day trade until the account is restored to the $25,000 minimum equity level.
+            PatternDayTrader: 
+                description: >
+                  (Equities) Indicates whether you are considered a pattern day 
+                  trader. As per FINRA rules, you will be considered a pattern 
+                  day trader if you trade 4 or more times in 5 business days and 
+                  your day-trading activities are greater than 6 percent of your 
+                  total trading activity for that same five-day period. A pattern 
+                  day trader must maintain a minimum equity of $25,000 on any day 
+                  that the customer day trades. If the account falls below the 
+                  $25,000 requirement, the pattern day trader will not be 
+                  permitted to day trade until the account is restored to the 
+                  $25,000 minimum equity level.
                 type: boolean
             RealTimeAccountBalance:
                 type: number
