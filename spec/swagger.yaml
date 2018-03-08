@@ -2926,7 +2926,7 @@ definitions:
                 description: 'The net Realized Profit or Loss denominated in the symbol currency for the current trading session. This value includes any gain or loss as a result of closing a position during the current trading session'
             ClosePriceDisplay:
                 minLength: 1
-                type: string,
+                type: string
                 description: 'Daily running close price formatted for display.'
             CountryCode:
                 minLength: 1
