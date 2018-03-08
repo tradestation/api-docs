@@ -2591,7 +2591,7 @@ definitions:
 ##############################################################################
 
   SymbolDefinition:
-    description: "Symbol metatdata"
+    description: "Symbol metadata"
     properties:
         Category:
             minLength: 1
@@ -2893,14 +2893,18 @@ definitions:
         properties:
             Ask:
                 type: number
+                description: 'The price at which is offered for sale. Generally, the lowest round lot price at which a dealer will sell.'
             AskPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'Ask price formatted for display.'
             AskSize:
                 type: number
+                description: 'The number of trading units that prospective sellers are prepared to sell.'
             AssetType:
                 minLength: 1
                 type: string
+                description: 'The name of asset type for a symbol'
                 enum:
                     - INDEX
                     - STOCK
@@ -2909,22 +2913,29 @@ definitions:
                     - UNKNOWN
             Bid:
                 type: number
+                description: 'The highest price a prospective buyer is prepared to pay at a particular time for a trading unit of a given symbol.'
             BidPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'Bid price formatted for display.'
             BidSize:
                 type: number
+                description: 'The number of trading units that prospective buyers are prepared to purchase for a symbol.'
             Close:
                 type: number
+                description: 'The net Realized Profit or Loss denominated in the symbol currency for the current trading session. This value includes any gain or loss as a result of closing a position during the current trading session'
             ClosePriceDisplay:
                 minLength: 1
-                type: string
+                type: string,
+                description: 'Daily running close price formatted for display.'
             CountryCode:
                 minLength: 1
                 type: string
+                description: 'The country of the exchange where the symbol is listed.'
             Currency:
                 minLength: 1
                 type: string
+                description: 'The base currency of the symbol.'
                 enum:
                     - USD
                     - AUD
@@ -2941,100 +2952,164 @@ definitions:
                     - SGD
             DailyOpenInterest:
                 type: number
+                description: 'The total number of open or outstanding (not closed or delivered) options and/or futures contracts that exist on a given day, delivered on a particular day.'
             DataFeed:
                 minLength: 1
                 type: string
+                description: 'The data quote feed provider.'
             Description:
                 minLength: 1
                 type: string
+                description: 'Displays the full name of the symbol.'
             DisplayType:
                 type: number
+                description: |
+                    Symbol's price display type based on the following list:
+
+                    * `0` "Automatic" Not used
+                    * `1` 0 Decimals => 1
+                    * `2` 1 Decimals => .1
+                    * `3` 2 Decimals => .01
+                    * `4` 3 Decimals => .001
+                    * `5` 4 Decimals => .0001
+                    * `6` 5 Decimals => .00001
+                    * `7` Simplest Fraction
+                    * `8` 1/2-Halves => .5
+                    * `9` 1/4-Fourths => .25
+                    * `10` 1/8-Eights => .125
+                    * `11` 1/16-Sixteenths => .0625
+                    * `12` 1/32-ThirtySeconds => .03125
+                    * `13` 1/64-SixtyFourths => .015625
+                    * `14` 1/128-OneTwentyEigths => .0078125
+                    * `15` 1/256-TwoFiftySixths => .003906250
+                    * `16` 10ths and Quarters => .025
+                    * `17` 32nds and Halves => .015625
+                    * `18` 32nds and Quarters => .0078125
+                    * `19` 32nds and Eights => .00390625
+                    * `20` 32nds and Tenths => .003125
+                    * `21` 64ths and Halves => .0078125
+                    * `22` 64ths and Tenths => .0015625
+                    * `23` 6 Decimals => .000001
             Error: 
                 type: string
+                description: 'Error message received from exchange or Tradestation.'
             Exchange:
                 minLength: 1
                 type: string
+                description: 'Name of exchange where this symbol is traded in.'
             FractionalDisplay:
                 type: boolean
+                description: 'Determine whether fractional price display is required.'
             High:
                 type: number
+                description: 'Highest price of the day.'
             High52Week:
                 type: number
+                description: 'The highest price of the past 52 weeks. This is a grid-based indicator.'
             High52WeekPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'High52Week price formatted for display.'
             High52WeekTimeStamp:
                 minLength: 1
                 type: string
+                description: 'Date and time of the highest price in the past 52 week.'
             HighPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'High price formatted for display.'
             IsDelayed:
                 type: boolean
+                description: 'True if the quote is a delayed quote and False if the quote is a real-time quote'
             Last:
                 type: number
+                description: 'The last price at which the symbol traded.'
             LastPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'Last price formatted for display.'
             Low:
                 type: number
+                description: 'Lowest price of stock.'
             Low52Week:
                 type: number
+                description: 'The lowest price of the past 52 weeks.'
             Low52WeekPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'Low52Week price formatted for display.'
             Low52WeekTimeStamp:
                 minLength: 1
                 type: string
+                description: 'Date and time of the lowest price of the past 52 weeks.'
             LowPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'Low price formatted for display.'
             MinMove:
                 type: number
+                description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
             NameExt:
                 type: string
+                description: 'If the Quote is delayed this property will be set to `D`'
             NetChange:
                 type: number
+                description: 'The difference between the last displayed price and the previous day`s close.'
             NetChangePct:
                 type: number
+                description: 'The difference between the current price and the previous day`s close, expressed in a percentage.'
             Open:
                 type: number
+                description: 'The unrealized profit or loss denominated in the symbol currency on the position held, calculated based on the average price of the position.'
             OpenPriceDisplay:
                 minLength: 1
                 type: string
+                description: 'Open price formatted for display.'
             PointValue:
                 type: number
+                description: 'The currency value represented by a full point of price movement. In the case of stocks, the Big Point Value is usually 1, in that 1 point of movement represents 1 dollar, however it may vary.'
             PreviousClose:
                 type: number
+                description: 'The closing price of the previous day.'
             PreviousClosePriceDisplay:
                 minLength: 1
                 type: string
+                description: 'PreviousClose price formatted for display.'
             PreviousVolume:
                 type: number
+                description: 'Daily volume of the previous day.'
             Restrictions:
                 items:
                   type: string
                 type: array
             StrikePrice:
                 type: number
+                description: 'The price at which the underlying contract will be delivered in the event an option is exercised.'
             StrikePriceDisplay:
                 minLength: 1
                 type: string
+                description: 'StrikePrice formatted for display.'
             Symbol:
                 minLength: 1
                 type: string
+                description: 'The name identifying the financial instrument for which the data is displayed.'
             SymbolRoot:
                 minLength: 1
                 type: string
+                description: 'The symbol used to identify the option`s financial instrument for a specific underlying asset that is traded on the various trading exchanges.'
             TickSizeTier:
                 type: number
+                description: 'Trading increment based on a level group.'
             TradeTime:
                 minLength: 1
                 type: string
+                description: 'Trade execution time.'
             Underlying:
                 type: string
+                description: 'The financial instrument on which an option contract is based or derived.'
             Volume:
                 type: number
+                description: 'The number of shares or contracts traded in a security or an entire market during a given period of time.'
         required:
         - Symbol
         - SymbolRoot
