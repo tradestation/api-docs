@@ -3082,6 +3082,7 @@ definitions:
                 items:
                   type: string
                 type: array
+                description: 'A symbol specific restrictions for Japanese equities.'
             StrikePrice:
                 type: number
                 description: 'The price at which the underlying contract will be delivered in the event an option is exercised.'
