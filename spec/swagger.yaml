@@ -1996,7 +1996,7 @@ paths:
           type: string
           description: | 
             Start Date from which to pull older orders. `MM-DD-YYYY` format. 
-            Note that Pagination does not apply for requests that include the optional query parameter since
+            Note that Pagination does not apply for requests that include this parameter.
           required: false          
         - name: account_keys
           in: path
