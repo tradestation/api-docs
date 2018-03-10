@@ -2010,14 +2010,14 @@ paths:
           type: string
           description: |
             Conveys the number of order items to return in the request. (Default page size is 600).
-            Note that an empty set will be returned for a pageNum/pageSize combination that doesn''t contain orders.
+            Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.
           required: false
         - name: pageNum
           in: query
           type: string
           description: |
             Conveys the page number to return, given a set of orders and a page size.
-            Note that an empty set will be returned for a pageNum/pageSize combination that doesn''t contain orders.
+            Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.
           required: false
       responses:
         200:
