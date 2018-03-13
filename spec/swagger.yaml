@@ -2608,6 +2608,20 @@ definitions:
             minLength: 1
             type: string
             description: 'Displays the type of base currency for the selected symbol.'
+            enum:
+              - USD
+              - AUD
+              - CAD
+              - CHF
+              - DKK
+              - EUR
+              - DBP
+              - HKD
+              - JPY
+              - NOK
+              - NZD
+              - SEK
+              - SGD        
         Description:
             minLength: 1
             type: string
@@ -2658,9 +2672,10 @@ definitions:
         IndustryName:
             type: string
             description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
-        IsPreferredExchange:
-            type: boolean
-            description: 'Returns true if it is a preferred exchange. For japanese equities only. Not applicable to US symbols.'
+        # Pending to be documented. It's comment-out due to information not available when descriptions were added to fields.
+        #IsPreferredExchange:
+        #    type: boolean
+        #    description: ''
         LotSize:
             type: number
             description: 'The currency amount associated with a lot (contract) in the specified account.'
@@ -2682,10 +2697,12 @@ definitions:
             minLength: 1
             type: string
             description: 'Displays the symbol of the stock on the stock exchange.'
-        SectionClassCode:
-            type: string
-        SectionClassName:
-            type: string
+        # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+        #SectionClassCode:
+        #    type: string
+        # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+        #SectionClassName:
+        #    type: string
         SectorName:
             type: string
             description: 'Displays the assigned economic sector to which the equity symbol belongs.'
@@ -2782,9 +2799,10 @@ definitions:
             IndustryName:
                 type: string
                 description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
-            IsPreferredExchange:
-                type: boolean
-                description: 'Returns true if it is a preferred exchange. For japanese equities only. Not applicable to US symbols.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #IsPreferredExchange:
+            #    type: boolean
+            #    description: ''
             LotSize:
                 type: number
                 description: 'The currency amount associated with a lot (contract) in the specified account.'
@@ -2806,10 +2824,12 @@ definitions:
                 minLength: 1
                 type: string
                 description: 'Displays the symbol of the stock on the stock exchange.'
-            SectionClassCode:
-                type: string
-            SectionClassName:
-                type: string
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassCode:
+            #    type: string
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassName:
+            #    type: string
             SectorName:
                 type: string
                 description: 'Displays the assigned economic sector to which the equity symbol belongs.'
@@ -2910,9 +2930,10 @@ definitions:
             IndustryName:
                 type: string
                 description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
-            IsPreferredExchange:
-                type: boolean
-                description: 'Returns true if it is a preferred exchange. For japanese equities only. Not applicable to US symbols.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #IsPreferredExchange:
+            #    type: boolean
+            #    description: ''
             LotSize:
                 type: number
                 description: 'The currency amount associated with a lot (contract) in the specified account.'
@@ -2934,10 +2955,12 @@ definitions:
                 minLength: 1
                 type: string
                 description: 'Displays the symbol of the stock on the stock exchange.'
-            SectionClassCode:
-                type: string
-            SectionClassName:
-                type: string
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassCode:
+            #    type: string
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassName:
+            #    type: string
             SectorName:
                 type: string
                 description: 'Displays the assigned economic sector to which the equity symbol belongs.'
