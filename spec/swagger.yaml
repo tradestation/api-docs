@@ -3187,21 +3187,27 @@ definitions:
         Category:
             minLength: 1
             type: string
+            description: 'Second Level of Symbol List Hierarchy.'
         ID:
             minLength: 1
             type: string
+            description: 'Unique symbol list identifier.'
         Name:
             minLength: 1
             type: string
+            description: 'Symbol List Name.'
         Path:
             minLength: 1
             type: string
+            description: 'Full hierarchy path including name.'
         RootCategory:
             minLength: 1
             type: string
+            description: 'First Level of Symbol List Hierarchy.'
         Subcategory:
             minLength: 1
             type: string
+            description: 'Thrid Level of Symbol List Hierarchy.'
     required:
       - Category
       - ID
@@ -3220,12 +3226,15 @@ definitions:
             Description:
                 minLength: 1
                 type: string
+                description: 'Displays the full name of the symbol.'
             Exchange:
                 minLength: 1
                 type: string
+                description: 'Name of exchange where this symbol is traded in.'
             Name:
                 minLength: 1
                 type: string
+                description: 'A unique series of letters assigned to a security for trading purposes.'
         required:
         - Description
         - Exchange
