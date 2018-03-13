@@ -2613,8 +2613,10 @@ definitions:
         Category:
             minLength: 1
             type: string
+            description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
         Country: 
             type: string
+            description: 'The country of the exchange where the symbol is listed.'
             enum:
               - US
               - DE
@@ -2622,6 +2624,7 @@ definitions:
         Currency:
             minLength: 1
             type: string
+            description: 'Displays the type of base currency for the selected symbol.'
             enum:
               - USD
               - AUD
@@ -2635,54 +2638,94 @@ definitions:
               - NOK
               - NZD
               - SEK
-              - SGD            
+              - SGD        
         Description:
             minLength: 1
             type: string
+            description: 'Displays the full name of the symbol.'
         Error: 
             type: string
+            description: 'Element that references error.'
         Exchange:
             minLength: 1
             type: string
+            description: 'Name of exchange where this symbol is traded in.'
+            enum: 
+                - NYSE
+                - NASDAQ
+                - OTC
+                - OTCBB AMEX
+                - ARCX
+                - NASDS
+                - EUREX
+                - ICE
+                - CME
+                - ONCH
+                - NYMEX
+                - CBOT
         ExchangeID:
             type: number
+            description: 'A unique numerical identifier for the Exchange.'
         ExpirationDate:
             minLength: 1
             type: string
+            description: 'Displays the expiration date for a futures or options contract in UTC formatted time.'
         ExpirationType:
             type: string
+            description: | 
+                    For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
+                    * W - Weekly
+                    * M - Monthly
+                    * Q - Quartely
+                    * E - End of the month
+                    * "" - The term not be identified
         FutureType:
             minLength: 1
             type: string
+            description: 'Displays the type of future contract the symbol represents'
         IndustryCode:
             type: string
+            description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
         IndustryName:
             type: string
-        IsPreferredExchange:
-            type: boolean
+            description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
+        # Pending to be documented. It's comment-out due to information not available when descriptions were added to fields.
+        #IsPreferredExchange:
+        #    type: boolean
+        #    description: ''
         LotSize:
             type: number
+            description: 'The currency amount associated with a lot (contract) in the specified account.'
         MinMove:
             type: number
+            description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
         Name:
             minLength: 1
             type: string
+            description: 'A unique series of letters assigned to a security for trading purposes.'
         OptionType:
             minLength: 1
             type: string
+            description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
         PointValue:
             type: number
+            description: 'Symbol`s point value.'
         Root:
             minLength: 1
             type: string
-        SectionClassCode:
-            type: string
-        SectionClassName:
-            type: string
+            description: 'Displays the symbol of the stock on the stock exchange.'
+        # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+        #SectionClassCode:
+        #    type: string
+        # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+        #SectionClassName:
+        #    type: string
         SectorName:
             type: string
+            description: 'Displays the assigned economic sector to which the equity symbol belongs.'
         StrikePrice:
             type: number
+            description: 'Displays strike price of an options contract; For Options symbols only.'
     required:
     - Category
     - Currency
@@ -2709,9 +2752,11 @@ definitions:
             Category:
                 minLength: 1
                 type: string
+                description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
             Country:
                 minLength: 1
                 type: string
+                description: 'The country of the exchange where the symbol is listed.'
                 enum:
                   - US
                   - DE
@@ -2719,6 +2764,7 @@ definitions:
             Currency:
                 minLength: 1
                 type: string
+                description: 'Displays the type of base currency for the selected symbol.'
                 enum:
                   - USD
                   - AUD
@@ -2736,50 +2782,77 @@ definitions:
             Description:
                 minLength: 1
                 type: string
+                description: 'Displays the full name of the symbol.'
             Error:
                 type: string
+                description: 'Element that references error.'
             Exchange:
                 minLength: 1
                 type: string
+                description: 'Name of exchange where this symbol is traded in.'
             ExchangeID:
                 type: number
+                description: 'A unique numerical identifier for the Exchange.'
             ExpirationDate:
                 minLength: 1
                 type: string
+                description: 'Displays the expiration date for a futures or options contract in UTC formatted time.'
             ExpirationType:
                 type: string
+                description: | 
+                    For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
+                    * W - Weekly
+                    * M - Monthly
+                    * Q - Quartely
+                    * E - End of the month
+                    * "" - The term not be identified
             FutureType:
                 minLength: 1
                 type: string
+                description: 'Displays the type of future contract the symbol represents.'
             IndustryCode:
                 type: string
+                description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
             IndustryName:
                 type: string
-            IsPreferredExchange:
-                type: boolean
+                description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #IsPreferredExchange:
+            #    type: boolean
+            #    description: ''
             LotSize:
                 type: number
+                description: 'The currency amount associated with a lot (contract) in the specified account.'
             MinMove:
                 type: number
+                description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
             Name:
                 minLength: 1
                 type: string
+                description: 'A unique series of letters assigned to a security for trading purposes.'
             OptionType:
                 minLength: 1
                 type: string
+                description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
             PointValue:
                 type: number
+                description: 'Symbol`s point value.'
             Root:
                 minLength: 1
                 type: string
-            SectionClassCode:
-                type: string
-            SectionClassName:
-                type: string
+                description: 'Displays the symbol of the stock on the stock exchange.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassCode:
+            #    type: string
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassName:
+            #    type: string
             SectorName:
                 type: string
+                description: 'Displays the assigned economic sector to which the equity symbol belongs.'
             StrikePrice:
                 type: number
+                description: 'Displays strike price of an options contract; For Options symbols only.'
         required:
         - Category
         - Country
@@ -2810,9 +2883,11 @@ definitions:
             Category:
                 minLength: 1
                 type: string
+                description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
             Country:
                 minLength: 1
                 type: string
+                description: 'The country of the exchange where the symbol is listed.'
                 enum:
                   - US
                   - DE
@@ -2820,6 +2895,7 @@ definitions:
             Currency:
                 minLength: 1
                 type: string
+                description: 'Displays the type of base currency for the selected symbol.'
                 enum:
                   - USD
                   - AUD
@@ -2837,50 +2913,77 @@ definitions:
             Description:
                 minLength: 1
                 type: string
+                description: 'Displays the full name of the symbol.'
             Error: 
                 type: string
+                description: 'Element that references error.'
             Exchange:
                 minLength: 1
                 type: string
+                description: 'Name of exchange where this symbol is traded in.'
             ExchangeID:
                 type: number
+                description: 'A unique numerical identifier for the Exchange.'
             ExpirationDate:
                 minLength: 1
                 type: string
+                description: 'Displays the expiration date for a futures or options contract in UTC formatted time.'
             ExpirationType:
                 type: string
+                description: | 
+                    For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
+                    * W - Weekly
+                    * M - Monthly
+                    * Q - Quartely
+                    * E - End of the month
+                    * "" - The term not be identified
             FutureType:
                 minLength: 1
                 type: string
+                description: 'Displays the type of future contract the symbol represents.'
             IndustryCode:
                 type: string
+                description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
             IndustryName:
                 type: string
-            IsPreferredExchange:
-                type: boolean
+                description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #IsPreferredExchange:
+            #    type: boolean
+            #    description: ''
             LotSize:
                 type: number
+                description: 'The currency amount associated with a lot (contract) in the specified account.'
             MinMove:
                 type: number
+                description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
             Name:
                 minLength: 1
                 type: string
+                description: 'A unique series of letters assigned to a security for trading purposes.'
             OptionType:
                 minLength: 1
                 type: string
+                description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
             PointValue:
                 type: number
+                description: 'Symbol`s point value.'
             Root:
                 minLength: 1
                 type: string
-            SectionClassCode:
-                type: string
-            SectionClassName:
-                type: string
+                description: 'Displays the symbol of the stock on the stock exchange.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassCode:
+            #    type: string
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassName:
+            #    type: string
             SectorName:
                 type: string
+                description: 'Displays the assigned economic sector to which the equity symbol belongs.'
             StrikePrice:
                 type: number
+                description: 'Displays strike price of an options contract; For Options symbols only.'
         required:
         - Category
         - Country
@@ -3200,21 +3303,27 @@ definitions:
         Category:
             minLength: 1
             type: string
+            description: 'Second Level of Symbol List Hierarchy.'
         ID:
             minLength: 1
             type: string
+            description: 'Unique symbol list identifier.'
         Name:
             minLength: 1
             type: string
+            description: 'Symbol List Name.'
         Path:
             minLength: 1
             type: string
+            description: 'Full hierarchy path including name.'
         RootCategory:
             minLength: 1
             type: string
+            description: 'First Level of Symbol List Hierarchy.'
         Subcategory:
             minLength: 1
             type: string
+            description: 'Thrid Level of Symbol List Hierarchy.'
     required:
       - Category
       - ID
@@ -3233,12 +3342,15 @@ definitions:
             Description:
                 minLength: 1
                 type: string
+                description: 'Displays the full name of the symbol.'
             Exchange:
                 minLength: 1
                 type: string
+                description: 'Name of exchange where this symbol is traded in.'
             Name:
                 minLength: 1
                 type: string
+                description: 'A unique series of letters assigned to a security for trading purposes.'
         required:
         - Description
         - Exchange
