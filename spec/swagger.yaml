@@ -5269,13 +5269,16 @@ definitions:
     properties:
         Close:
             type: number
+            description: 'Close price of current bar.'
         Status:
             $ref: '#/definitions/StatusDefinition'
         TimeStamp:
             minLength: 1
             type: string
+            description: 'Epoch timestamp.'
         TotalVolume:
             type: number
+            description: 'The total volume of all securities trading on a specific exchange.'
     required:
     - TimeStamp
     - Status
