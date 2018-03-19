@@ -3367,24 +3367,45 @@ definitions:
         properties:
             Alias:
                 type: string
+                description: 'User defined name.'
             AltId:
                 type: string
+                description: 'TradeStation Alternate ID.'
             DisplayName:
                 minLength: 1
                 type: string
+                description: 'Set to Alternate ID if it exists otherwise will be the TradeStation Account ID'
             IsStockLocateEligible:
                 type: boolean
+                description: 'True if this account is stock locate eligible; otherwise, false.'
             Key:
                 type: number
+                description: 'Account Identifier.'
             Name:
                 minLength: 1
                 type: string
+                description: 'Account Name.'
             Type:
                 minLength: 1
                 type: string
+                description: |
+                    Type of the account:
+
+                    * `C` Cash
+                    * `M` Margin
+                    * `F` Futures
+                    * `X` Forex
+                    * `D` DVP
             TypeDescription:
                 minLength: 1
                 type: string
+                description: 'Name of the type of the account.'
+                enum:
+                    - Cash
+                    - Margin
+                    - DVP
+                    - Futures
+                    - Forex
         required:
           - Alias
           - DisplayName
@@ -4977,7 +4998,7 @@ definitions:
             description: 'Error message received from exchange or Tradestation.'
         ExRightsTSE:
             type: number
-            description: 'Ex Rights.'
+            description: 'Japanese Ex Rights.'
         Exchange:
             minLength: 1
             type: string
