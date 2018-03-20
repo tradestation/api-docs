@@ -4704,27 +4704,31 @@ definitions:
     properties:
       Route:
         type: string
+        description: 'The path chosen for directing a trade to a certain destination, such as an ECN, MM, Exchange, or Intelligent.'
       Duration:
         type: string
+        description: 'The amount of time for which an order is valid. Duration is the same as TIF (Time in Force).'
       Account:
         type: string
+        description: 'The number that identifies a specific TradeStation account that is being used for a particular order.'
       OrderConfirmId:
         type: string
         description: 'Unique id generated per order per API Key and User'      
       EstimatedPrice:
         type: number
+        description: 'An estimated value that is calculated using current market information. The actual cost for Market orders and orders with conditions, such as Trailing Stop or Activation Rule orders, may differ significantly from this estimate.'
       EstimatedPriceDisplay:
         type: string
         description: 'Equity and Futures Orders; Estimated price formatted for display'
       EstimatedCost:
         type: number
-        description: 'Equity and Futures Orders; '
+        description: 'The actual cost for Market orders and orders with conditions, such as Trailing Stop or Activation Rule orders.'
       EstimatedCostDisplay:
         type: string
         description: 'Equity Orders; Estimated cost formatted for display'
       EstimatedCommission:
         type: number
-        description: 'Equity and Futures Orders; '
+        description: 'An estimated value that is calculated using the published TradeStation commission schedule. Equity and Futures Orders'
       EstimatedCommissionDisplay:
         type: string
         description: 'Equity and Futures Orders; Estimated commission formatted for display'  
