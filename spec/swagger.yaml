@@ -4760,10 +4760,13 @@ definitions:
     properties:
       Message:
         type: string
+        description: 'Message string returned from orders service.'
       OrderID:
         type: string
+        description: 'Identifier for order.'
       OrderStatus:
         type: string
+        description: 'Returns the status of delete order operation.'
         enum:
           - Ok
           - Failed
