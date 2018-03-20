@@ -4766,7 +4766,7 @@ definitions:
         description: 'Identifier for order.'
       OrderStatus:
         type: string
-        description: 'Returns the status of delete order operation.'
+        description: 'Returns the status of the order operation'
         enum:
           - Ok
           - Failed
