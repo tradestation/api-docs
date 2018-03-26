@@ -5124,7 +5124,6 @@ definitions:
         - Category
         - Last
         - PreviousClose
-        - BitFlags
         - Exchange
         - High
         - Low
@@ -5147,7 +5146,6 @@ definitions:
         - Low52WeekDay
         - ExchangeID
         - DailyDate
-        - DailyTime
         - DisplayType
         - PointValue
         - MinMove
