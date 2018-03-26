@@ -4862,7 +4862,7 @@ definitions:
         AskType:
             minLength: 1
             type: string
-            description: 'Quote Type. For japanese equities.'
+            description: '(Japan Only) Quote Type.'
         AssetType:
             minLength: 1
             type: string
@@ -4880,7 +4880,7 @@ definitions:
         BidType:
             minLength: 1
             type: string
-            description: 'Quote Type. For japanese equities.'
+            description: '(Japan Only) Quote Type'
         Category:
             type: number
             description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
@@ -4979,7 +4979,7 @@ definitions:
             description: 'Error message received from exchange or Tradestation.'
         ExRightsTSE:
             type: number
-            description: '(Japan) Ex Rights field.'
+            description: '(Japan Only) Ex Rights field.'
         Exchange:
             minLength: 1
             type: string
@@ -5081,7 +5081,7 @@ definitions:
             items:
               type: string
             type: array
-            description: 'A symbol specific restrictions for Japanese equities.'
+            description: '(Japan Only) A symbol specific restrictions.'
         SectorName:
             type: string
             description: 'Displays the assigned economic sector to which the equity symbol belongs.'
