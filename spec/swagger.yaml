@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   title: Tradestation API
-  description: | 
+  description: |
     This document describes the resources that make up the official TradeStation
     API. If you have any problems or requests please contact [support](mailto:webapi@tradestation.com).
 
@@ -33,23 +33,23 @@ info:
     SIM vs LIVE
     -----------
 
-    We also offer a Simulator(SIM) API for "Paper Trading" that is identical 
-    to the Live API in all ways except it uses fake trading accounts seeded with 
-    fake money and orders are not actually executed - only simulated executions 
+    We also offer a Simulator(SIM) API for "Paper Trading" that is identical
+    to the Live API in all ways except it uses fake trading accounts seeded with
+    fake money and orders are not actually executed - only simulated executions
     occur with instant "fills".
 
-    To access the SIM environment, you must change your base-url to: 
+    To access the SIM environment, you must change your base-url to:
     ```
     https://sim-api.tradestation.com/v2
     ```
 
-    **WARNING:** TradeStation is not liable for mistakes made by applications 
+    **WARNING:** TradeStation is not liable for mistakes made by applications
     that allow users to switch between SIM and Live environments.
 
     ### Why offer a Simulator?
 
-    Transactional API calls such as Order Execution offers users or applications 
-    the ability to experiment within a Simulated trading system so that real 
+    Transactional API calls such as Order Execution offers users or applications
+    the ability to experiment within a Simulated trading system so that real
     accounts and money are not affected and trades are not actually executed.
 
     Other potential use-cases:
@@ -93,9 +93,9 @@ info:
     HTTP Streaming
     --------------
 
-    The TradeStation API offers HTTP Streaming responses for some specialized 
-    resources including intraday barcharts, quote changes, and quote snapshots. 
-    These streams conform to RFC2616 for HTTP/1.1 Streaming with some slight 
+    The TradeStation API offers HTTP Streaming responses for some specialized
+    resources including intraday barcharts, quote changes, and quote snapshots.
+    These streams conform to RFC2616 for HTTP/1.1 Streaming with some slight
     modifications.
 
     > The HTTP streaming mechanism keeps a request open indefinitely.  It
@@ -103,46 +103,46 @@ info:
     > server pushes data to the client.  This mechanism significantly
     > reduces the network latency because the client and the server do not
     > need to open and close the connection.
-    > 
+    >
     > The basic life cycle of an application using HTTP streaming is as
     > follows:
-    > 
+    >
     > 1.  The client makes an initial request and then waits for a
     >     response.
-    > 
+    >
     > 2.  The server defers the response to a poll request until an update
     >     is available, or until a particular status or timeout has
     >     occurred.
-    > 
+    >
     > 3.  Whenever an update is available, the server sends it back to the
     >     client as a part of the response.
-    > 
+    >
     > 4.  The data sent by the server does not terminate the request or the
     >     connection.  The server returns to step 3.
-    > 
+    >
     > The HTTP streaming mechanism is based on the capability of the server
     > to send several pieces of information in the same response, without
-    > terminating the request or the connection.  
+    > terminating the request or the connection.
 
     Source: [RFC6202, Page 7](https://tools.ietf.org/html/rfc6202#page-7).
-      
-    HTTP Streaming resources are identified under in this documentation as such, 
+
+    HTTP Streaming resources are identified under in this documentation as such,
     all other resources conform to the HTTP Request pattern instead.
 
     The HTTP Streaming response is returned with the following headers:
-    
-      ```   
+
+      ```
       Transfer-Encoding: chunked
       Content-Type: application/vnd.tradestation.streams+json
       ```
 
-    Note: The `Content-Length` header is typically omitted since the response 
+    Note: The `Content-Length` header is typically omitted since the response
     body size is unknown.
 
-    Streams consist of a series of chunks that contain individual JSON objects 
+    Streams consist of a series of chunks that contain individual JSON objects
     to be parsed separately rather than as a whole response body.
 
-    One unique thing about TradeStation's HTTP Streams is they also can terminate 
+    One unique thing about TradeStation's HTTP Streams is they also can terminate
     unlike a canonical HTTP/1.1 Stream.
 
     Streams terminate with a non-JSON string prefixed with one of the following:
@@ -156,19 +156,19 @@ info:
     ERROR - A Timeout Occurred after waiting 15000ms
     ```
 
-    In either case, the HTTP client must terminate the HTTP Stream and end the 
+    In either case, the HTTP client must terminate the HTTP Stream and end the
     HTTP Request lifetime as a result of these messages. In the case of `ERROR`
     the client application may add a delay before re-requesting the HTTP Stream.
 
     ### How to handle HTTP Chunked Encoded Streams
 
-    Healthy chunked-encoded streams emit variable length chunks that contain 
+    Healthy chunked-encoded streams emit variable length chunks that contain
     parsable JSON.
 
     For example:
     ```
     GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
-    
+
     HTTP/1.1 200 OK
     Date: Wed, 14 Jun 2017 01:17:36 GMT
     Content-Type: application/vnd.tradestation.streams+json
@@ -176,15 +176,15 @@ info:
     Connection: keep-alive
     Access-Control-Allow-Origin: *
     Cache-Control: private
-      
+
     114
     {"Close":19956.09,"DownTicks":26,"DownVolume":940229,"High":19961.77,"Low":19943.46,"Open":19943.46,"Status":13,"TimeStamp":"\/Date(1482849060000)\/","TotalTicks":59,"TotalVolume":3982533,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":33,"UpVolume":3042304,"OpenInterest":0}
-    
-    
+
+
     112
     {"Close":19950.82,"DownTicks":32,"DownVolume":440577,"High":19959.15,"Low":19947.34,"Open":19955.64,"Status":13,"TimeStamp":"\/Date(1482849120000)\/","TotalTicks":60,"TotalVolume":761274,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":28,"UpVolume":320697,"OpenInterest":0}
 
-    
+
     END
     ```
 
@@ -192,24 +192,24 @@ info:
     disruption occurs. It is up to the client to properly handle stream lifetime
     and connection closing.
 
-    ### How to parse JSON chunks 
+    ### How to parse JSON chunks
 
-    In order to process these chunks, API consumers should first read the 
-    response buffer, then de-chunk the plain-text strings, and finally identify 
-    new JSON objects by applying tokenizing techniques to the resulting text 
-    stream using either a streaming JSON parser, Regex, a lexer/parser, or 
+    In order to process these chunks, API consumers should first read the
+    response buffer, then de-chunk the plain-text strings, and finally identify
+    new JSON objects by applying tokenizing techniques to the resulting text
+    stream using either a streaming JSON parser, Regex, a lexer/parser, or
     brute-force string indexing logic.
-    
-    A simple but effective technique is after de-chunking to simply parse based 
-    upon the `\n` (newline character) delimiter written to the end of each 
+
+    A simple but effective technique is after de-chunking to simply parse based
+    upon the `\n` (newline character) delimiter written to the end of each
     JSON object. However, a more robust solution is less likely to break later.
 
     #### Variable Length JSON Chunking
 
-    As a developer, be careful with how you parse HTTP Streams, because the 
+    As a developer, be careful with how you parse HTTP Streams, because the
     API’s or intermediate proxies may chunk JSON objects many different ways.
 
-    > Using HTTP streaming, several application 
+    > Using HTTP streaming, several application
     > messages can be sent within a single HTTP response.  The
     > separation of the response stream into application messages needs
     > to be performed at the application level and not at the HTTP
@@ -223,7 +223,7 @@ info:
 
     Source: [RFC6202, Section 3.2](https://tools.ietf.org/html/rfc6202#section-3.2)
 
-    Translation: Be prepared for JSON objects that span chunks. You may see 
+    Translation: Be prepared for JSON objects that span chunks. You may see
     chunks with varying numbers of JSON objects, including:
 
     - "exactly 1" JSON object per chunk
@@ -233,7 +233,7 @@ info:
     Example of 2 JSON objects in 1 chunk:
     ```
     GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
- 
+
     HTTP/1.1 200 OK
     Date: Wed, 14 Jun 2017 01:17:36 GMT
     Content-Type: application/vnd.tradestation.streams+json
@@ -241,7 +241,7 @@ info:
     Connection: keep-alive
     Access-Control-Allow-Origin: *
     Cache-Control: private
-    
+
     22d
     {"Close":19956.09,"DownTicks":26,"DownVolume":940229,"High":19961.77,"Low":19943.46,"Open":19943.46,"Status":13,"TimeStamp":"\/Date(1482849060000)\/","TotalTicks":59,"TotalVolume":3982533,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":33,"UpVolume":3042304,"OpenInterest":0}
     {"Close":19950.82,"DownTicks":32,"DownVolume":440577,"High":19959.15,"Low":19947.34,"Open":19955.64,"Status":13,"TimeStamp":"\/Date(1482849120000)\/","TotalTicks":60,"TotalVolume":761274,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":28,"UpVolume":320697,"OpenInterest":0}
@@ -251,7 +251,7 @@ info:
     Example of 1 JSON objects split across 2 chunks:
     ```
     GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
- 
+
     HTTP/1.1 200 OK
     Date: Wed, 14 Jun 2017 01:17:36 GMT
     Content-Type: application/vnd.tradestation.streams+json
@@ -259,25 +259,25 @@ info:
     Connection: keep-alive
     Access-Control-Allow-Origin: *
     Cache-Control: private
-    
+
     40
     {"Close":71.65,"DownTicks":45,"DownVolume":5406,"High":71.67,"Lo
     C2
     w":71.65,"Open":71.66,"Status":13,"TimeStamp":"\/Date(1497016260000)\/","TotalTicks":77,"TotalVolume":17270,"UnchangedTicks":0,"UnchangedVolume":0,"UpTicks":32,"UpVolume":11864,"OpenInterest":0}
-    
+
     END
     ```
-    
-    This is allowed by the HTTP/1.1 specification, but can be confusing or lead 
-    to bugs in client applications if you try to depend parsing JSON along 
+
+    This is allowed by the HTTP/1.1 specification, but can be confusing or lead
+    to bugs in client applications if you try to depend parsing JSON along
     the HTTP chunk-boundaries because even if it works during testing, later if
     users connect from a different network, it may change the chunking behavior.
 
-    For example, if you are at a coffee shop with wifi which employs an 
-    HTTP Proxy, then it may buffer the stream and change the chunking boundary 
+    For example, if you are at a coffee shop with wifi which employs an
+    HTTP Proxy, then it may buffer the stream and change the chunking boundary
     from 1 JSON object per chunk, to splitting each JSON object across 2 or 3.
 
-    In fact, the HTTP/1.1 spec clearly advises developers of proxies to always 
+    In fact, the HTTP/1.1 spec clearly advises developers of proxies to always
     “re-chunk” HTTP Streams, so this is almost a guarantee to happen in the wild.
 
     HTTP Streaming API consumers should be prepared to support all variations.
@@ -288,12 +288,12 @@ info:
     Rate Limiting
     -------------
 
-    The TradeStation API Rate Limits on the number of requests a given user & 
-    client can make to the API in order to ensure fairness between users and 
-    prevent abuse to our network. Each API Key is allocated quota settings upon 
-    creation. These settings are applied on a per-user basis. If the quota is 
-    exceeded, an HTTP response of `403 Quota Exceeded` will be 
-    returned. Quotas are reset on a 5-minute interval based on when the user 
+    The TradeStation API Rate Limits on the number of requests a given user &
+    client can make to the API in order to ensure fairness between users and
+    prevent abuse to our network. Each API Key is allocated quota settings upon
+    creation. These settings are applied on a per-user basis. If the quota is
+    exceeded, an HTTP response of `403 Quota Exceeded` will be
+    returned. Quotas are reset on a 5-minute interval based on when the user
     issued the first request.
 
     ## Resource Categories
@@ -312,36 +312,36 @@ info:
     | Barchart Stream                               | 500   | 5-minute |
     | TickBar Stream                                | 500   | 5-minute |
 
-  
+
 
     ## Intervals
 
-    Quotas have "Windows" that last for a limited time interval 
-    (generally 5-minutes). Once the user has exceeded the maximum request count, 
-    all future requests will fail with a `403` error until the interval expires. 
-    Rate Limit intervals do not slide based upon the number of requests, they are 
-    fixed at a point in time starting from the very first request for that 
-    category of resource.  After the interval expires, the cycle will 
+    Quotas have "Windows" that last for a limited time interval
+    (generally 5-minutes). Once the user has exceeded the maximum request count,
+    all future requests will fail with a `403` error until the interval expires.
+    Rate Limit intervals do not slide based upon the number of requests, they are
+    fixed at a point in time starting from the very first request for that
+    category of resource.  After the interval expires, the cycle will
     start over at zero and the user can make more requests.
 
     ### Example A
 
-    A user logs into the TradeStation WebAPI with your application and issues a 
+    A user logs into the TradeStation WebAPI with your application and issues a
     request to `/v2/EliteTrader/accounts`. As a result, the request
-    quota is incremented by one for the `Accounts` resource-category. The user 
-    then issues 250 more requests immediately to `/v2/EliteTrader/accounts`. 
-    The last request fails with `403 Quota Exceeded`. All subsequent requests 
-    continue to fail until the 5-minute interval expires from the time of the 
+    quota is incremented by one for the `Accounts` resource-category. The user
+    then issues 250 more requests immediately to `/v2/EliteTrader/accounts`.
+    The last request fails with `403 Quota Exceeded`. All subsequent requests
+    continue to fail until the 5-minute interval expires from the time of the
     very first request.
 
     ### Example B
 
-    A user logs into the TradeStation WebAPI with your application and issues a 
-    request to `/v2/data/quote/IBM,NFLX,MSFT,AMZN,AAPL`. As a result, the 
-    request quota is incremented by one for the `Data Quotes` 
-    resource-category. The user then immediately issues the same request 250 more 
-    times. The last request fails with `403 Quota Exceeded`. All 
-    subsequent requests continue to fail until the 5-minute interval expires 
+    A user logs into the TradeStation WebAPI with your application and issues a
+    request to `/v2/data/quote/IBM,NFLX,MSFT,AMZN,AAPL`. As a result, the
+    request quota is incremented by one for the `Data Quotes`
+    resource-category. The user then immediately issues the same request 250 more
+    times. The last request fails with `403 Quota Exceeded`. All
+    subsequent requests continue to fail until the 5-minute interval expires
     from the time of the first request.
 
     **Example Throttled Request**
@@ -359,7 +359,7 @@ info:
     X-AspNet-Version: 4.0.30319
     Date: Tue, 06 Dec 2011 20:50:32 GMT
 
-    <html><body>Quota Exceeded</body></html>    
+    <html><body>Quota Exceeded</body></html>
     ```
 
 # Parameters
@@ -384,7 +384,7 @@ info:
 # ---------
 
 
-  version: "20160101"  
+  version: "20160101"
   x-logo:
     url: 'ts-logo.png'
   termsOfService: http://elasticbeanstalk-us-east-1-525856068889.s3.amazonaws.com/wp-content/uploads/2014/03/Guidelines_For_Acceptance.pdf
@@ -406,30 +406,30 @@ consumes:
   - application/json; charset=utf-8
 produces:
   - application/json; charset=utf-8
-##############################################################################  
+##############################################################################
 securityDefinitions:
   OAuth2-Auth-Code:
     description: |
-      The authorization code grant type is used to obtain both access tokens 
-      and refresh tokens and is optimized for confidential clients. Since 
-      this is a redirection-based flow, the client must be capable of 
-      interacting with the resource owner’s user-agent (typically a web browser) 
-      and capable of receiving incoming requests (via redirection) from the 
+      The authorization code grant type is used to obtain both access tokens
+      and refresh tokens and is optimized for confidential clients. Since
+      this is a redirection-based flow, the client must be capable of
+      interacting with the resource owner’s user-agent (typically a web browser)
+      and capable of receiving incoming requests (via redirection) from the
       authorization server.
 
       #### Implementation Guide
 
-      The authorization code grant type allows the end users to authenticate 
-      with TradeStation directly and authorize the Client application to make 
-      calls on their behalf. Access Tokens obtained via the authorization code 
-      Grant Type can be refreshed, they will expire in 20 minutes of the time 
+      The authorization code grant type allows the end users to authenticate
+      with TradeStation directly and authorize the Client application to make
+      calls on their behalf. Access Tokens obtained via the authorization code
+      Grant Type can be refreshed, they will expire in 20 minutes of the time
       issued.
 
       **Step-by-Step**
 
       **1. Redirect user for authentication/authorization**
 
-      The client application will route the end-user to our MFA (multi-factor 
+      The client application will route the end-user to our MFA (multi-factor
       authentication) login page web page.
 
       *Authorize Uri:*
@@ -449,25 +449,25 @@ securityDefinitions:
 
       **2. Client receives authorization code**
 
-      Upon successful authentication; The user agent(browser) will be redirected 
+      Upon successful authentication; The user agent(browser) will be redirected
       to the URL provided and include an Authorization Code in the query string.
 
       *Example Redirect:*
       ```
-      HTTP 301 Redirect  
+      HTTP 301 Redirect
       RedirectURL = https://exampleclientapp.com/authcode.aspx?code=AFF345CD12B
       ```
 
       *Note:*
 
-      - This redirect URL can be anything that the user agent can understand. 
-      In the case of an embedded browser it could be a URL to a native view, 
+      - This redirect URL can be anything that the user agent can understand.
+      In the case of an embedded browser it could be a URL to a native view,
       i.e.: device://viewname
       - The Authorization Code is only valid for 30 seconds
-      
+
       **3. Exchange Authorization Code for Access Token**
 
-      The Client uses the Authorization Code to request an Access Token via the 
+      The Client uses the Authorization Code to request an Access Token via the
       `/security/authorize` service method using the authorization_code grant type;
 
       *Required Header:*
@@ -477,17 +477,17 @@ securityDefinitions:
       *Required form parameters:*
       - grant_type = authorization_code
       - client_id = The client application’s API key
-      - redirect_uri = The redirect uri used when obtaining the Authorization 
+      - redirect_uri = The redirect uri used when obtaining the Authorization
       Code being provided
       - code = The Authorization Code value
       - client_secret = The secret for the client application’s API Key
-      
+
       *Example Request*
       ```
       POST https://api.tradestation.com/v2/Security/Authorize HTTP/1.1
       Content-Type: application/x-www-form-urlencoded
       Host: api.tradestation.com
-      Content-Length: 630   
+      Content-Length: 630
 
       grant_type=authorization_code&client_id=11111111-1111-1111-1111-111111111111&redirect_uri=test.aspx&client_secret=11111111-1111-1111-1111-111111111111&code=YjlkWDRqVmxlRXphaZzM1NWQ1MzZtVVFJQXFkcmk3eldOSjRUSDJHSklqN1dMNkk=&response_type=token
       ```
@@ -501,7 +501,7 @@ securityDefinitions:
       Server: Microsoft-IIS/7.5
       X-AspNet-Version: 4.0.30319
       X-Powered-By: ASP.NET
-      Date: Tue, 06 Dec 2011 20:50:32 GMT    
+      Date: Tue, 06 Dec 2011 20:50:32 GMT
 
       {
 
@@ -527,7 +527,7 @@ securityDefinitions:
     #   news: |
     #     Requests access to view Market News
     #   hotlists: |
-    #     Requests access to be allowed to execute HotList symbol scans    
+    #     Requests access to be allowed to execute HotList symbol scans
     # grant_type=authorization_code&code=K29qbmpGSEFDMLS0c=&client_id=42545245&redirect_uri=/webapi/authorize/authcodetest.aspx&client_secret=2452345
   OAuth2-Refresh-Token:
     description: |
@@ -548,17 +548,17 @@ securityDefinitions:
     #   news: |
     #     Requests access to view Market News
     #   hotlists: |
-    #     Requests access to be allowed to execute HotList symbol scans        
-    # grant_type=refresh_token&client_id=123456&redirect_uri=http://www.myredirect.com&client_secret=789456&refresh_token=1234myRefreshToken56789                
+    #     Requests access to be allowed to execute HotList symbol scans
+    # grant_type=refresh_token&client_id=123456&redirect_uri=http://www.myredirect.com&client_secret=789456&refresh_token=1234myRefreshToken56789
 
-##############################################################################    
+##############################################################################
 tags:
   - name: marketdata
     description: |
       Snapshots and live streams of market data from supported exchanges.
   - name: brokerage
     description: |
-      Access to bank accounts, order transactions, and market positions for 
+      Access to bank accounts, order transactions, and market positions for
       the given user account.
   - name: order-execution
     description: |
@@ -571,12 +571,12 @@ paths:
       summary: |
         Get Symbol Info
       description: |
-        Finds the given symbol and returns a collection of fields describing the 
+        Finds the given symbol and returns a collection of fields describing the
         symbol, its origin exchange, and other pertinant information.
       operationId: getSymbol
       tags:
         - marketdata
-      parameters:  
+      parameters:
         - name: access_token
           in: query
           type: string
@@ -589,10 +589,10 @@ paths:
           required: true
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
-          - marketdata        
-      x-code-samples: 
+          - marketdata
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl "https://api.tradestation.com/v2/data/symbol/AMZN?access_token=1JUjFiNFFGWEdDM"
@@ -616,7 +616,7 @@ paths:
         404:
           description: Symbol not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -628,7 +628,7 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'      
+            $ref: '#/definitions/Error'
 
   ##############################################################################
   /data/symbols/suggest/{text}:
@@ -640,13 +640,13 @@ paths:
         company name, or description
       operationId: suggestsymbols
       tags:
-        - marketdata      
+        - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl "https://api.tradestation.com/v2/data/symbols/suggest/A?access_token=1JUjFiNFFGWEdDM"
@@ -707,16 +707,16 @@ paths:
       summary: |
         Search for Symbols
       description: |
-        Searches symbols based upon input criteria including Name, Category and 
+        Searches symbols based upon input criteria including Name, Category and
         Country.
       operationId: searchSymbols
       tags:
-        - marketdata      
+        - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
-          - marketdata        
+          - marketdata
       parameters:
         - name: access_token
           in: query
@@ -726,65 +726,65 @@ paths:
         - name: criteria
           in: path
           type: string
-          description: | 
-            Criteria are represented as Key/value pairs (`&` separated):    
-              
-            `N`: Name of Symbol. (Optional)  
-              
-            `C`: Asset categories. (Optional) Possible values:  
-              - `Future` or `FU`  
-              - `FutureOption` or `FO`  
-              - `Stock` or `S` (Default)  
-              - `StockOption` or `SO` (If root is specified, default category)  
-              - `Index` or `IDX`  
-              - `CurrencyOption` or `CO`  
-              - `MutualFund` or `MF`  
-              - `MoneyMarketFund` or `MMF`   
-              - `IndexOption` or `IO`   
-              - `Bond` or `B`  
-              - `Forex` or `FX`  
-                
-            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:  
-              - `ALL` if not presented (Default)  
-              - `US`  
-              - `DE`  
-              - `CA`  
+          description: |
+            Criteria are represented as Key/value pairs (`&` separated):
 
-            #### For Equities Lookups:  
-               
+            `N`: Name of Symbol. (Optional)
+
+            `C`: Asset categories. (Optional) Possible values:
+              - `Future` or `FU`
+              - `FutureOption` or `FO`
+              - `Stock` or `S` (Default)
+              - `StockOption` or `SO` (If root is specified, default category)
+              - `Index` or `IDX`
+              - `CurrencyOption` or `CO`
+              - `MutualFund` or `MF`
+              - `MoneyMarketFund` or `MMF`
+              - `IndexOption` or `IO`
+              - `Bond` or `B`
+              - `Forex` or `FX`
+
+            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:
+              - `ALL` if not presented (Default)
+              - `US`
+              - `DE`
+              - `CA`
+
+            #### For Equities Lookups:
+
             `N`: partial/full symbol name, will return all symbols that contain the provided name value
-                
-            `Desc`: Name of the company  
-                
-            `Flg`: indicates whether symbols no longer trading should be included in the results returned. (Optional) This criteria is not returned in the symbol data. Possible values:  
-              - `true`  
-              - `false` (Default)  
 
-            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:  
-              - `ALL` if not presented (Default)  
-              - `US`  
-              - `DE`  
-              - `CA`  
+            `Desc`: Name of the company
 
-            #### For Options Lookups:  
-            (Category=StockOption, IndexOption, FutureOption or CurrencyOption)  
-              
+            `Flg`: indicates whether symbols no longer trading should be included in the results returned. (Optional) This criteria is not returned in the symbol data. Possible values:
+              - `true`
+              - `false` (Default)
+
+            `Cnt`: Country where the symbol is traded in. (Optional) Possible values:
+              - `ALL` if not presented (Default)
+              - `US`
+              - `DE`
+              - `CA`
+
+            #### For Options Lookups:
+            (Category=StockOption, IndexOption, FutureOption or CurrencyOption)
+
             `R`: Symbol root. Required field, the symbol the option is a derivative of, this search will not return options based on a partial root.
 
             `Stk`: Number of strikes prices above and below the underlying price
-              - Default value 3  
-
-            `Spl`: Strike price low  
-
-            `Sph`: Strike price high 
-
-            `Exd`: Number of expiration dates.  
               - Default value 3
-            
+
+            `Spl`: Strike price low
+
+            `Sph`: Strike price high
+
+            `Exd`: Number of expiration dates.
+              - Default value 3
+
             `Edl`: Expiration date low, ex: 01-05-2011
-            
+
             `Edh`: Expiration date high, ex: 01-20-2011
-            
+
             `OT`: Option type. Possible values:
               - `Both` (Default)
               - `Call`
@@ -799,13 +799,13 @@ paths:
               - `Composite` (Default)
               - `Regional`
 
-            #### For Futures Lookups:  
-            (Category = Future)  
+            #### For Futures Lookups:
+            (Category = Future)
 
             `Desc`: Description of symbol traded
-           
+
             `R`: Symbol root future trades
-           
+
             `FT`: Futures type. Possible values:
               - `None`
               - `PIT`
@@ -838,17 +838,17 @@ paths:
               - `DE`
               - `CA`
 
-            #### For Forex Lookups:  
+            #### For Forex Lookups:
 
             `N`: partial/full symbol name. Use all or null for a list of all forex symbols
-            
+
             `Desc`: Description
-            
+
             Note:
               - The exchange returned for all forex searches will be `FX`
               - The country returned for all forex searches will be `FOREX`
 
-          required: true  
+          required: true
       responses:
         200:
           description: symbol search response
@@ -869,7 +869,7 @@ paths:
         404:
           description: Symbol not found
           schema:
-              $ref: '#/definitions/Error'              
+              $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -881,7 +881,7 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-              $ref: '#/definitions/Error'     
+              $ref: '#/definitions/Error'
 
   ##############################################################################
   /data/quote/{symbols}:
@@ -892,26 +892,26 @@ paths:
         Gets the latest Level2 Quote for the given Symbol
       operationId: getQuotes
       tags:
-        - marketdata      
+        - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl "https://api.tradestation.com/v2/data/quote/AMZN?access_token=1JUjFiNFFGWEdDM"
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: symbols
           in: path
           description: 1 or more Symbol Names (comma-separated)
-          type: string          
+          type: string
           items:
             type: string
           collectionFormat: csv
@@ -936,7 +936,7 @@ paths:
         404:
           description: Symbol not found
           schema:
-              $ref: '#/definitions/Error'              
+              $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -948,16 +948,16 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-              $ref: '#/definitions/Error'     
+              $ref: '#/definitions/Error'
 
   ##############################################################################
-  /stream/quote/changes/{symbols}: 
+  /stream/quote/changes/{symbols}:
     get:
       summary: |
         Stream Quote Changes
       description: |
         Streams the latest Quote information for the given Symbols. The first chunk in the stream is a full quote snapshot - subsequent chunks only contain fields of the quote object that have changed since the last chunk.
-        
+
         An invalid symbol name will result in a response of this form - {"Symbol":"BADEXAMPLESYMBOL","Error":"FAILED, EX_INVALID_SYMBOL"}
 
         If the user is not entitled for the symbol requested, response will be of this form - {"Symbol":"EXAMPLESYMBOL","Error":"FAILED, EX_NOT_ENTITLED"}
@@ -966,10 +966,10 @@ paths:
         - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
@@ -979,13 +979,13 @@ paths:
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: symbols
           in: path
           description: 1 or more Symbol Names (comma-separated)
-          type: string          
+          type: string
           items:
             type: string
           collectionFormat: csv
@@ -1017,7 +1017,7 @@ paths:
         404:
           description: Symbol not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -1029,16 +1029,16 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'    
+            $ref: '#/definitions/Error'
 
-  ##############################################################################                     
-  /stream/quote/snapshots/{symbols}: 
+  ##############################################################################
+  /stream/quote/snapshots/{symbols}:
     get:
       summary: |
         Stream Quote Snapshots
       description: |
         Streams the latest Quote for the given Symbols. Each chunk is a full quote object.
-        
+
         An invalid symbol name will result in a response of this form - {"Symbol":"BADSYMBOLEXAMPLE","Error":"FAILED, EX_INVALID_SYMBOL"}
 
         If the user is not entitled for the symbol requested, response will be of this form - {"Symbol":"EXAMPLESYMBOL","Error":"FAILED, EX_NOT_ENTITLED"}
@@ -1047,10 +1047,10 @@ paths:
         - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
@@ -1060,13 +1060,13 @@ paths:
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: symbols
           in: path
           description: 1 or more Symbol Names (comma-separated)
-          type: string          
+          type: string
           items:
             type: string
           collectionFormat: csv
@@ -1091,7 +1091,7 @@ paths:
         404:
           description: Symbol not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -1106,7 +1106,7 @@ paths:
             $ref: '#/definitions/Error'
 
   ##############################################################################
-  /stream/barchart/{symbol}/{interval}/{unit}/{startDate}: 
+  /stream/barchart/{symbol}/{interval}/{unit}/{startDate}:
     get:
       summary: |
         Stream BarChart - Starting on Date
@@ -1117,10 +1117,10 @@ paths:
         - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
@@ -1130,12 +1130,12 @@ paths:
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: SessionTemplate
           in: query
-          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.
           type: string
           enum:
             - USEQPre
@@ -1167,111 +1167,7 @@ paths:
           required: true
         - name: startDate
           in: path
-          description: The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600 
-          type: string
-          required: true
-      responses:
-        200:
-          description: Barchart response
-          schema:
-            $ref: '#/definitions/BarchartDefinition'
-        400:
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/BarchartError400'
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/Error'
-        403:
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/Error'
-        404:
-          description: Symbol not found
-          schema:
-            $ref: '#/definitions/BarchartError404'    
-        500:
-          description: Unexpected Error
-          schema:
-            $ref: '#/definitions/Error'
-        502:
-          description: Bad Gateway
-          schema:
-            $ref: '#/definitions/Error'
-        504:
-          description: Gateway Timeout
-          schema:
-            $ref: '#/definitions/Error' 
-
-  ##############################################################################
-  /stream/barchart/{symbol}/{interval}/{unit}/{startDate}/{endDate}: 
-    get:
-      summary: |
-        Stream BarChart - Date Range
-      description: |
-        Streams barchart data starting from startDate to end date, each bar filling interval of unit.
-      operationId: streamBarchartsFromStartDateToEndDate
-      tags:
-        - marketdata
-      security:
-        - OAuth2-Auth-Code:
-          - marketdata 
-        - OAuth2-Refresh-Token:
-          - marketdata
-      x-code-samples: 
-        - lang: 'shell'
-          source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
-      produces:
-        - text/plain
-        - application/vnd.tradestation.streams+json
-      parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
-          type: string
-          required: true
-        - name: SessionTemplate
-          in: query
-          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
-          type: string
-          enum:
-            - USEQPre
-            - USEQPost
-            - USEQPreAndPost
-            - Default
-          required: false
-        - name: symbol
-          in: path
-          description: A Symbol Name
-          type: string
-          required: true
-        - name: interval
-          in: path
-          description: Interval that each bar will consist of. **For Daily, Weekly, and Monthly units this value must be 1.**
-          type: integer
-          minimum: 1
-          maximum: 1440
-          required: true
-        - name: unit
-          in: path
-          description: Unit of time for each bar interval.
-          type: string
-          enum:
-            - Minute
-            - Daily
-            - Weekly
-            - Monthly
-          required: true
-        - name: startDate
-          in: path
-          description: The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600 
-          type: string
-          required: true
-        - name: endDate
-          in: path
-          description: The ending date for bars streamed. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600 
+          description: The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600
           type: string
           required: true
       responses:
@@ -1306,10 +1202,114 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error' 
+            $ref: '#/definitions/Error'
 
   ##############################################################################
-  /stream/barchart/{symbol}/{interval}/{unit}/{barsBack}/{lastDate}/...: 
+  /stream/barchart/{symbol}/{interval}/{unit}/{startDate}/{endDate}:
+    get:
+      summary: |
+        Stream BarChart - Date Range
+      description: |
+        Streams barchart data starting from startDate to end date, each bar filling interval of unit.
+      operationId: streamBarchartsFromStartDateToEndDate
+      tags:
+        - marketdata
+      security:
+        - OAuth2-Auth-Code:
+          - marketdata
+        - OAuth2-Refresh-Token:
+          - marketdata
+      x-code-samples:
+        - lang: 'shell'
+          source: |
+            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+      produces:
+        - text/plain
+        - application/vnd.tradestation.streams+json
+      parameters:
+        - name: access_token
+          in: query
+          description: A valid OAuth2 token used to authorize access to the resource
+          type: string
+          required: true
+        - name: SessionTemplate
+          in: query
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.
+          type: string
+          enum:
+            - USEQPre
+            - USEQPost
+            - USEQPreAndPost
+            - Default
+          required: false
+        - name: symbol
+          in: path
+          description: A Symbol Name
+          type: string
+          required: true
+        - name: interval
+          in: path
+          description: Interval that each bar will consist of. **For Daily, Weekly, and Monthly units this value must be 1.**
+          type: integer
+          minimum: 1
+          maximum: 1440
+          required: true
+        - name: unit
+          in: path
+          description: Unit of time for each bar interval.
+          type: string
+          enum:
+            - Minute
+            - Daily
+            - Weekly
+            - Monthly
+          required: true
+        - name: startDate
+          in: path
+          description: The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600
+          type: string
+          required: true
+        - name: endDate
+          in: path
+          description: The ending date for bars streamed. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600
+          type: string
+          required: true
+      responses:
+        200:
+          description: Barchart response
+          schema:
+            $ref: '#/definitions/BarchartDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BarchartError400'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Symbol not found
+          schema:
+            $ref: '#/definitions/BarchartError404'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+  ##############################################################################
+  /stream/barchart/{symbol}/{interval}/{unit}/{barsBack}/{lastDate}/...:
     get:
       summary: |
         Stream BarChart - Bars Back
@@ -1320,10 +1320,10 @@ paths:
         - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
@@ -1333,12 +1333,12 @@ paths:
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: SessionTemplate
           in: query
-          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.
           type: string
           enum:
             - USEQPre
@@ -1377,7 +1377,7 @@ paths:
           required: true
         - name: lastDate
           in: path
-          description: The date to use as the end point when getting bars back. Date is of form MM-DD-YYYY, and is for time 00:00:00 of that day. 
+          description: The date to use as the end point when getting bars back. Date is of form MM-DD-YYYY, and is for time 00:00:00 of that day.
           type: string
           required: true
       responses:
@@ -1415,7 +1415,7 @@ paths:
             $ref: '#/definitions/Error'
 
   ##############################################################################
-  /stream/barchart/{symbol}/{interval}/{unit}: 
+  /stream/barchart/{symbol}/{interval}/{unit}:
     get:
       summary: |
         Stream BarChart - Days Back
@@ -1426,10 +1426,10 @@ paths:
         - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
@@ -1439,12 +1439,12 @@ paths:
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: SessionTemplate
           in: query
-          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.          
+          description: United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.
           type: string
           enum:
             - USEQPre
@@ -1505,7 +1505,7 @@ paths:
         404:
           description: Symbol not found
           schema:
-            $ref: '#/definitions/BarchartError404'    
+            $ref: '#/definitions/BarchartError404'
         500:
           description: Unexpected Error
           schema:
@@ -1517,10 +1517,10 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'  
+            $ref: '#/definitions/Error'
 
   ##############################################################################
-  /stream/tickbars/{symbol}/{interval}/{barsBack}: 
+  /stream/tickbars/{symbol}/{interval}/{barsBack}:
     get:
       summary: |
         Stream Tick Bars
@@ -1531,10 +1531,10 @@ paths:
         - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
           - marketdata
-      x-code-samples: 
+      x-code-samples:
         - lang: 'shell'
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
@@ -1544,7 +1544,7 @@ paths:
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: symbol
@@ -1599,25 +1599,25 @@ paths:
           description: Gateway Timeout
           schema:
             $ref: '#/definitions/Error'
-  ################################################################################            
+  ################################################################################
   /data/symbollists:
     get:
       summary: |
-        Get all Symbol Lists 
+        Get all Symbol Lists
       description: |
         Gets a list of all Symbol Lists
       operationId: getSymbolLists
       tags:
-        - marketdata      
+        - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
-          - marketdata        
+          - marketdata
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
       responses:
@@ -1648,10 +1648,10 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'    
+            $ref: '#/definitions/Error'
 
   ##############################################################################
-  /data/symbollists/{symbol_list_id}: 
+  /data/symbollists/{symbol_list_id}:
     get:
       summary: |
         Get Symbol List
@@ -1659,16 +1659,16 @@ paths:
         Gets a specific Symbol List
       operationId: getSymbolListByID
       tags:
-        - marketdata   
+        - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
-          - marketdata           
+          - marketdata
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: symbol_list_id
@@ -1681,7 +1681,7 @@ paths:
           description: SymbolList response
           schema:
             $ref: '#/definitions/SymbolListDefinition'
-        400:          
+        400:
           description: Bad Request
           schema:
             $ref: '#/definitions/Error'
@@ -1696,7 +1696,7 @@ paths:
         404:
           description: Symbol List not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -1708,7 +1708,7 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'                                                   
+            $ref: '#/definitions/Error'
 
   ##############################################################################
   /data/symbollists/{symbol_list_id}/symbols:
@@ -1719,16 +1719,16 @@ paths:
         Gets the Symbols for a specific Symbol List
       operationId: getSymbolListSymbolsByID
       tags:
-        - marketdata    
+        - marketdata
       security:
         - OAuth2-Auth-Code:
-          - marketdata 
+          - marketdata
         - OAuth2-Refresh-Token:
-          - marketdata          
+          - marketdata
       parameters:
         - name: access_token
           in: query
-          description: A valid OAuth2 token used to authorize access to the resource          
+          description: A valid OAuth2 token used to authorize access to the resource
           type: string
           required: true
         - name: symbol_list_id
@@ -1768,7 +1768,7 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'                                                   
+            $ref: '#/definitions/Error'
 
   ##############################################################################
   /users/{user_id}/accounts:
@@ -1782,10 +1782,10 @@ paths:
         - brokerage
       security:
         - OAuth2-Auth-Code:
-          - readaccount 
+          - readaccount
         - OAuth2-Refresh-Token:
-          - readaccount        
-      parameters:  
+          - readaccount
+      parameters:
         - name: access_token
           in: query
           type: string
@@ -1816,7 +1816,7 @@ paths:
         404:
           description: User not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -1828,10 +1828,10 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'                            
+            $ref: '#/definitions/Error'
 
   ##############################################################################
-  
+
   ##############################################################################
   /accounts/{account_keys}/balances:
     get:
@@ -1844,10 +1844,10 @@ paths:
         - brokerage
       security:
         - OAuth2-Auth-Code:
-          - readaccount 
+          - readaccount
         - OAuth2-Refresh-Token:
-          - readaccount        
-      parameters:  
+          - readaccount
+      parameters:
         - name: access_token
           in: query
           type: string
@@ -1855,7 +1855,7 @@ paths:
           required: true
         - name: account_keys
           in: path
-          description: 1 or more Account Keys          
+          description: 1 or more Account Keys
           type: array
           items:
             type: string
@@ -1880,7 +1880,7 @@ paths:
         404:
           description: Account not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -1906,10 +1906,10 @@ paths:
         - brokerage
       security:
         - OAuth2-Auth-Code:
-          - readaccount 
+          - readaccount
         - OAuth2-Refresh-Token:
-          - readaccount           
-      parameters:  
+          - readaccount
+      parameters:
         - name: access_token
           in: query
           type: string
@@ -1917,7 +1917,7 @@ paths:
           required: true
         - name: account_keys
           in: path
-          description: 1 or more Account Keys          
+          description: 1 or more Account Keys
           type: array
           items:
             type: string
@@ -1926,8 +1926,8 @@ paths:
           in: query
           type: string
           description: |
-            An OData v2.0 filter.  
-              
+            An OData v2.0 filter.
+
             Available Fields:
               - `Symbol`: Symbol Name for Position
 
@@ -1951,7 +1951,7 @@ paths:
         404:
           description: Account not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -1972,7 +1972,7 @@ paths:
         Get Account Orders
       description: |
         Returns the Orders for the given accounts sorted descending, most recent order first.
-        
+
         #### Stateless Connection
         Since the web-API provides a stateless connection, it only supports fetching the current state of Orders. If it is needed to display the intermediate state changes, it should be executed at client level.
 
@@ -1982,10 +1982,10 @@ paths:
         - brokerage
       security:
         - OAuth2-Auth-Code:
-          - readaccount 
+          - readaccount
         - OAuth2-Refresh-Token:
-          - readaccount           
-      parameters:  
+          - readaccount
+      parameters:
         - name: access_token
           in: query
           type: string
@@ -1994,13 +1994,13 @@ paths:
         - name: since
           in: query
           type: string
-          description: | 
-            Start Date from which to pull older orders. `MM-DD-YYYY` format. 
+          description: |
+            Start Date from which to pull older orders. `MM-DD-YYYY` format.
             Note that Pagination does not apply for requests that include this parameter.
-          required: false          
+          required: false
         - name: account_keys
           in: path
-          description: 1 or more Account Keys          
+          description: 1 or more Account Keys
           type: array
           items:
             type: string
@@ -2040,7 +2040,7 @@ paths:
         404:
           description: Account not found
           schema:
-            $ref: '#/definitions/Error'              
+            $ref: '#/definitions/Error'
         500:
           description: Unexpected Error
           schema:
@@ -2060,13 +2060,13 @@ paths:
       summary: |
         Confirm Order
       description: |
-        Returns estimated cost and commission information for an order without the order actually being placed. The fields that are returned in the response depend on the order type.  
-        The following shows the different fields that will be returned.  
-          
+        Returns estimated cost and commission information for an order without the order actually being placed. The fields that are returned in the response depend on the order type.
+        The following shows the different fields that will be returned.
+
         **Base Confirmation**  (All confirmations will have these fields)
-        * Route 
-        * Duration 
-        * Account 
+        * Route
+        * Duration
+        * Account
         * SummaryMessage
         * OrderConfirmId
 
@@ -2077,6 +2077,8 @@ paths:
         * EstimatedCostDisplay
         * EstimatedCommission
         * EstimatedCommissionDisplay
+        * DebitCreditEstimatedCost
+        * DebitCreditEstimatedCostDisplay
 
         **Forex Confirmation** (Base Confirmation fields + the following)
         * BaseCurrency
@@ -2098,15 +2100,15 @@ paths:
         - order-execution
       security:
         - OAuth2-Auth-Code:
-          - trade 
+          - trade
         - OAuth2-Refresh-Token:
-          - trade           
-      parameters:  
+          - trade
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
         - name: body
           in: body
           required: true
@@ -2148,21 +2150,21 @@ paths:
       summary: |
         Submit Order
       description: |
-        Submits 1 or more orders  
+        Submits 1 or more orders
       operationId: postOrder
       tags:
         - order-execution
       security:
         - OAuth2-Auth-Code:
-          - trade 
+          - trade
         - OAuth2-Refresh-Token:
-          - trade               
-      parameters:  
+          - trade
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
         - name: body
           in: body
           required: true
@@ -2199,26 +2201,26 @@ paths:
             $ref: '#/definitions/Error'
 
 ##############################################################################
-  /orders/{order_id}:            
+  /orders/{order_id}:
     delete:
       summary: |
         Cancel Order
       description: |
-        Cancels an open order. You cannot cancel an order that has been filled.  
+        Cancels an open order. You cannot cancel an order that has been filled.
       operationId: cancelOrder
       tags:
         - order-execution
       security:
         - OAuth2-Auth-Code:
-          - trade 
+          - trade
         - OAuth2-Refresh-Token:
-          - trade               
-      parameters:  
+          - trade
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
         - name: order_id
           in: path
           type: string
@@ -2252,16 +2254,16 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'            
-     
+            $ref: '#/definitions/Error'
+
     put:
       summary: |
         Update Order
       description: |
-         Updates (Cancels & Replaces) an open order. You cannot update an order 
-         that has been filled.  
+         Updates (Cancels & Replaces) an open order. You cannot update an order
+         that has been filled.
 
-         Rules: 
+         Rules:
 
           | Original order type              | Fields to update                 | Can only change order type to |
           | -------------------------------- | -------------------------------- | ----------------------------- |
@@ -2274,12 +2276,12 @@ paths:
       operationId: cancelReplaceOrder
       tags:
         - order-execution
-      parameters:  
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
         - name: order_id
           in: path
           type: string
@@ -2289,7 +2291,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CancelReplaceDefinition'          
+            $ref: '#/definitions/CancelReplaceDefinition'
       responses:
         200:
           description: CancelReplace Order Response
@@ -2318,7 +2320,7 @@ paths:
         504:
           description: Gateway Timeout
           schema:
-            $ref: '#/definitions/Error'            
+            $ref: '#/definitions/Error'
 
 ##############################################################################
   /orders/groups/confirm:
@@ -2327,11 +2329,11 @@ paths:
         Confirm Group Order
       description: |
         Returns estimated cost and commission information for a group of orders (OCO, BRK) without the orders actually being placed
-          
+
         **Base Confirmation**  (All confirmations will have these fields)
-        * Route 
-        * Duration 
-        * Account 
+        * Route
+        * Duration
+        * Account
         * SummaryMessage
         * OrderConfirmId
 
@@ -2363,15 +2365,15 @@ paths:
         - order-execution
       security:
         - OAuth2-Auth-Code:
-          - trade 
+          - trade
         - OAuth2-Refresh-Token:
-          - trade               
-      parameters:  
+          - trade
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
         - name: body
           in: body
           required: true
@@ -2413,55 +2415,55 @@ paths:
       summary: |
         Submit Group Order
       description: |
-        Submits a group order such as Bracket and OCO Orders.  
+        Submits a group order such as Bracket and OCO Orders.
 
-        #### Order Cancels Order (OCO)  
-        An OCO order is a group of orders whereby if one of the orders is filled 
-        or partially-filled, then all of the other orders in the group are 
-        cancelled.  
+        #### Order Cancels Order (OCO)
+        An OCO order is a group of orders whereby if one of the orders is filled
+        or partially-filled, then all of the other orders in the group are
+        cancelled.
 
         #### Bracket OCO Orders
-        A bracket order is a special instance of an OCO (Order Cancel Order). 
-        Bracket orders are used to exit an existing position. They are designed 
-        to limit loss and lock in profit by “bracketing” an order with a 
-        simultaneous stop and limit order.  
+        A bracket order is a special instance of an OCO (Order Cancel Order).
+        Bracket orders are used to exit an existing position. They are designed
+        to limit loss and lock in profit by “bracketing” an order with a
+        simultaneous stop and limit order.
 
-        Bracket orders are limited so that the orders are all for the same 
-        symbol and are on the same side of the market (either all to sell or 
-        all to cover), and they are restricted to closing transactions.   
+        Bracket orders are limited so that the orders are all for the same
+        symbol and are on the same side of the market (either all to sell or
+        all to cover), and they are restricted to closing transactions.
 
-        The reason that they follow these rules is because the orders need to be 
-        able to auto decrement when a partial fill occurs with one of the orders. 
-        For example, if the customer has a sell limit order for 1000 shares and 
-        a sell stop order for 1000 shares, and the limit order is partially 
-        filled for 500 shares, then the customer would want the stop to remain 
-        open, but it should automatically decrement the order to 500 shares to 
-        match the remaining open position. 
-        
+        The reason that they follow these rules is because the orders need to be
+        able to auto decrement when a partial fill occurs with one of the orders.
+        For example, if the customer has a sell limit order for 1000 shares and
+        a sell stop order for 1000 shares, and the limit order is partially
+        filled for 500 shares, then the customer would want the stop to remain
+        open, but it should automatically decrement the order to 500 shares to
+        match the remaining open position.
+
         ### Errors
         When a submitted order fails, it can be seen in two different ways:
         -	Immediately rejected during submit to the Orders API with a 400 HTTP status code.
-        -	Accepted by the API with a 200 HTTP status code, but you will see the order with a status of “REJ” (rejected) when you fetch the Order from the /v2/accounts/{id}/orders API 
-        
+        -	Accepted by the API with a 200 HTTP status code, but you will see the order with a status of “REJ” (rejected) when you fetch the Order from the /v2/accounts/{id}/orders API
+
         #### NOTE
         When a group order is submitted, the order execution system treats each sibling order as an individual order. Thus, the system does not validate that each order has the same Quantity, and currently it is not able to update a bracket order as one transaction, instead you must update each order within a bracket.
 
-        In order to prevent errors, please validate the data on the client side.	
+        In order to prevent errors, please validate the data on the client side.
 
       operationId: postOrderGroup
       tags:
         - order-execution
       security:
         - OAuth2-Auth-Code:
-          - trade 
+          - trade
         - OAuth2-Refresh-Token:
-          - trade               
-      parameters:  
+          - trade
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
         - name: body
           in: body
           required: true
@@ -2505,22 +2507,22 @@ paths:
 
         Request Available Activation Triggers
       description: |
-        To place orders with activation triggers, a valid TriggerKey must be sent with the order.  This resource provides the available trigger methods with their corresponding key.    
+        To place orders with activation triggers, a valid TriggerKey must be sent with the order.  This resource provides the available trigger methods with their corresponding key.
 
       operationId: getActivationTriggers
       tags:
         - order-execution
       security:
         - OAuth2-Auth-Code:
-          - trade 
+          - trade
         - OAuth2-Refresh-Token:
-          - trade               
-      parameters:  
+          - trade
+      parameters:
         - name: access_token
           in: query
           type: string
           description: A valid OAuth2 token used to authorize access to the resource
-          required: true     
+          required: true
       responses:
         200:
           description: Get Activation Triggers Response
@@ -2529,7 +2531,7 @@ paths:
             properties:
               ActivationTriggers:
                 type: array
-                items: 
+                items:
                   $ref: '#/definitions/ActivationTriggerDefinition'
         400:
           description: Bad Request
@@ -2557,7 +2559,7 @@ paths:
             $ref: '#/definitions/Error'
 
 ##############################################################################
-definitions: 
+definitions:
   Error:
     required:
       - StatusCode
@@ -2614,7 +2616,7 @@ definitions:
             minLength: 1
             type: string
             description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
-        Country: 
+        Country:
             type: string
             description: 'The country of the exchange where the symbol is listed.'
             enum:
@@ -2638,19 +2640,19 @@ definitions:
               - NOK
               - NZD
               - SEK
-              - SGD        
+              - SGD
         Description:
             minLength: 1
             type: string
             description: 'Displays the full name of the symbol.'
-        Error: 
+        Error:
             type: string
             description: 'Element that references error.'
         Exchange:
             minLength: 1
             type: string
             description: 'Name of exchange where this symbol is traded in.'
-            enum: 
+            enum:
                 - NYSE
                 - NASDAQ
                 - OTC
@@ -2672,7 +2674,7 @@ definitions:
             description: 'Displays the expiration date for a futures or options contract in UTC formatted time.'
         ExpirationType:
             type: string
-            description: | 
+            description: |
                     For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
                     * W - Weekly
                     * M - Monthly
@@ -2747,7 +2749,7 @@ definitions:
 
   SymbolSuggestDefinition:
     description: ''
-    items: 
+    items:
         properties:
             Category:
                 minLength: 1
@@ -2760,7 +2762,7 @@ definitions:
                 enum:
                   - US
                   - DE
-                  - CA                
+                  - CA
             Currency:
                 minLength: 1
                 type: string
@@ -2778,7 +2780,7 @@ definitions:
                   - NOK
                   - NZD
                   - SEK
-                  - SGD                
+                  - SGD
             Description:
                 minLength: 1
                 type: string
@@ -2799,7 +2801,7 @@ definitions:
                 description: 'Displays the expiration date for a futures or options contract in UTC formatted time.'
             ExpirationType:
                 type: string
-                description: | 
+                description: |
                     For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
                     * W - Weekly
                     * M - Monthly
@@ -2891,7 +2893,7 @@ definitions:
                 enum:
                   - US
                   - DE
-                  - CA                 
+                  - CA
             Currency:
                 minLength: 1
                 type: string
@@ -2909,12 +2911,12 @@ definitions:
                   - NOK
                   - NZD
                   - SEK
-                  - SGD                 
+                  - SGD
             Description:
                 minLength: 1
                 type: string
                 description: 'Displays the full name of the symbol.'
-            Error: 
+            Error:
                 type: string
                 description: 'Element that references error.'
             Exchange:
@@ -2930,7 +2932,7 @@ definitions:
                 description: 'Displays the expiration date for a futures or options contract in UTC formatted time.'
             ExpirationType:
                 type: string
-                description: | 
+                description: |
                     For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
                     * W - Weekly
                     * M - Monthly
@@ -3110,7 +3112,7 @@ definitions:
                     * `21` 64ths and Halves => .0078125
                     * `22` 64ths and Tenths => .0015625
                     * `23` 6 Decimals => .000001
-            Error: 
+            Error:
                 type: string
                 description: 'Error message received from exchange or Tradestation.'
             Exchange:
@@ -3428,30 +3430,30 @@ definitions:
                 description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
             BODAccountBalance:
                 description: (Equities) Indicates the dollar amount of cash in the specified account at the beginning of the day.
-                type: number                
+                type: number
             BODDayTradingMarginableEquitiesBuyingPower:
                 description: (Equities) The Intraday Buying Power (Day Trading Rule 431) with which the account started the trading day.
                 type: number
             BODEquity:
                 type: number
                 description: Indicates the dollar amount of Beginning Day Equity for the given futures account.
-            BODNetCash: 
+            BODNetCash:
                 type: number
-                description: The dollar amount in the specified account calculated in real-time.                
+                description: The dollar amount in the specified account calculated in real-time.
             BODOpenTradeEquity:
-                description: (Futures) Indicates the dollar amount of Beginning Day Trade Equity for the given futures account. 
-                type: number                  
+                description: (Futures) Indicates the dollar amount of Beginning Day Trade Equity for the given futures account.
+                type: number
             BODOptionBuyingPower:
                 description: (Equities) Indicates the amount of option buying power with which you started the current trading day.
                 type: number
             BODOptionValue:
-                description: (Equities) The dollar amount of Beginning Day Liquidation Value at the start of the trading day. 
+                description: (Equities) The dollar amount of Beginning Day Liquidation Value at the start of the trading day.
                 type: number
             BODOvernightBuyingPower:
                 description: (Equities) Indicates the Overnight Buying Power (Regulation T) with which your account started the current trading day.
                 type: number
             CanDayTrade:
-                description: (Equities) Indicates whether day trading is allowed in the account. 
+                description: (Equities) Indicates whether day trading is allowed in the account.
                 type: boolean
             ClosedPositions:
                 items:
@@ -3472,7 +3474,7 @@ definitions:
                       - Symbol
                 type: array
             Commission:
-                description: (Futures) The actual brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.                
+                description: (Futures) The actual brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.
                 type: number
             DayTrades:
                 description: (Equities) The number of day trades placed in the account.
@@ -3603,24 +3605,24 @@ definitions:
                 description: (Equities) Indicates the option approval level.
                 type: number
             OpenOrderMargin:
-                description: (Futures) The dollar amount of Open Order Margin for the given futures account.  
-                type: number                      
-            PatternDayTrader: 
+                description: (Futures) The dollar amount of Open Order Margin for the given futures account.
+                type: number
+            PatternDayTrader:
                 description: >
-                  (Equities) Indicates whether you are considered a pattern day 
-                  trader. As per FINRA rules, you will be considered a pattern 
-                  day trader if you trade 4 or more times in 5 business days and 
-                  your day-trading activities are greater than 6 percent of your 
-                  total trading activity for that same five-day period. A pattern 
-                  day trader must maintain a minimum equity of $25,000 on any day 
-                  that the customer day trades. If the account falls below the 
-                  $25,000 requirement, the pattern day trader will not be 
-                  permitted to day trade until the account is restored to the 
+                  (Equities) Indicates whether you are considered a pattern day
+                  trader. As per FINRA rules, you will be considered a pattern
+                  day trader if you trade 4 or more times in 5 business days and
+                  your day-trading activities are greater than 6 percent of your
+                  total trading activity for that same five-day period. A pattern
+                  day trader must maintain a minimum equity of $25,000 on any day
+                  that the customer day trades. If the account falls below the
+                  $25,000 requirement, the pattern day trader will not be
+                  permitted to day trade until the account is restored to the
                   $25,000 minimum equity level.
                 type: boolean
             RealTimeAccountBalance:
                 type: number
-                description: The dollar amount in the specified account calculated in real-time.  
+                description: The dollar amount in the specified account calculated in real-time.
             RealTimeBuyingPower:
                 type: number
                 description: Indicates the value of real-time buying power.
@@ -3635,7 +3637,7 @@ definitions:
                 type: number
             RealTimeInitialMargin:
                 description: (Futures) Sum (Initial Margins of all positions in the given account)
-                type: number                  
+                type: number
             RealTimeOptionBuyingPower:
                 description: (Equities) The intraday buying power for options.
                 type: number
@@ -3648,7 +3650,7 @@ definitions:
             RealTimeMaintenanceMargin:
                 description: (Futures) The dollar amount of Real-time Maintenance Margin for the given futures account.
                 type: number
-            RealTimeRealizedProfitLoss:            
+            RealTimeRealizedProfitLoss:
                 type: number
                 description: Indicates any gain or loss as a result of closing a position during the current trading day. This value also includes all commissions and routing fees incurred during the current trading day.
             RealTimeTradeEquity:
@@ -3708,7 +3710,7 @@ definitions:
                 minLength: 1
                 type: string
                 description: String value for Type Attribute.
-            UnclearedDeposit:            
+            UnclearedDeposit:
                 type: number
                 description: The total of uncleared checks received by TradeStation for deposit.
             UnsettledFund:
@@ -3748,7 +3750,7 @@ definitions:
     minItems: 1
     type: array
     uniqueItems: true
-  
+
 ##############################################################################
 
   AccountPositionsDefinition:
@@ -3981,7 +3983,7 @@ definitions:
                 enum:
                     - FU
                     - FO
-                    - S 
+                    - S
                     - SO
                     - IDX
                     - CO
@@ -3999,15 +4001,15 @@ definitions:
             ConversionRate:
                 type: number
                 description: Conversion rate used to translate the position’s market value and PNL from symbol currency to account currency.
-            Country: 
+            Country:
                 type: string
-                description: The country of origin for the symbol.          
+                description: The country of origin for the symbol.
             Denomination:
                 minLength: 1
                 type: string
                 description: Currency used to complete the order.
-            DisplayName: 
-                type: string 
+            DisplayName:
+                type: string
                 description: Displays the Monex user ID. Used only by Monex.
             DisplayType:
                 type: number
@@ -4204,7 +4206,7 @@ definitions:
             Status:
                 minLength: 1
                 type: string
-                description: |                    
+                description: |
                     * OPN, ACK, UCN = Open Orders -- New order request pending, cancel request pending.
                     * FLL, FLP = Filled Orders -- Partially-Filled and remaining canceled.
                     * FPR = Partially Filled Orders.
@@ -4224,7 +4226,7 @@ definitions:
                     - FPR
                     - OUT
                     - REJ
-                    - TSC                
+                    - TSC
                     - Exp
                     - BRO
                     - CAN
@@ -4312,7 +4314,7 @@ definitions:
     uniqueItems: true
 
 ##############################################################################
-  OrderRequestDefinition:    
+  OrderRequestDefinition:
     properties:
         AccountKey:
             description: |
@@ -4320,7 +4322,7 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            $ref: '#/definitions/AdvancedOptionsDefinition' 
+            $ref: '#/definitions/AdvancedOptionsDefinition'
         AssetType:
             minLength: 1
             type: string
@@ -4365,10 +4367,10 @@ definitions:
             minLength: 1
         GTDDate:
             description: |
-              Date that Order is valid through. Input Format: MM/DD/YYYY  
-              Required for orders with Duration = GTD.  
+              Date that Order is valid through. Input Format: MM/DD/YYYY
+              Required for orders with Duration = GTD.
             minLength: 1
-            maxLength: 10 
+            maxLength: 10
             type: string
             format: mmddyyyy
         LimitPrice:
@@ -4376,12 +4378,12 @@ definitions:
             type: string
         StopPrice:
             minLength: 1
-            type: string     
+            type: string
         OrderConfirmId:
-            description: | 
+            description: |
                A unique identifier regarding an order used to prevent duplicates.
-                 
-               Must be unique per API key, per order, per user.  
+
+               Must be unique per API key, per order, per user.
             minLength: 1
             maxLength: 25
             type: string
@@ -4398,7 +4400,7 @@ definitions:
             type: string
         Route:
             minLength: 1
-            type: string   
+            type: string
             enum:
               - Intelligent
               - AMEX
@@ -4415,7 +4417,7 @@ definitions:
               - NITE
               - NQBX
               - NSDQ
-              - NYSE      
+              - NYSE
         Symbol:
             description: Must be UPPERCASE
             minLength: 1
@@ -4443,16 +4445,16 @@ definitions:
               - SELLTOOPEN
               - SELLTOCLOSE
         OSOs:
-            items: 
+            items:
                 type: object
                 properties:
                     Type:
                         minLength: 1
                         type: string
-                        enum: 
-                          - NORMAL 
+                        enum:
+                          - NORMAL
                           - BRK
-                          - OCO                
+                          - OCO
                     Orders:
                         items:
                           $ref: '#/definitions/OrderRequestDefinition'
@@ -4499,7 +4501,7 @@ definitions:
                     * SELLTOCLOSE - option trades
           minItems: 1
           type: array
-          uniqueItems: true 
+          uniqueItems: true
     required:
         - AssetType
         - Symbol
@@ -4519,7 +4521,7 @@ definitions:
             type: string
         StopPrice:
             minLength: 1
-            type: string            
+            type: string
         OrderType:
             minLength: 1
             type: string
@@ -4530,22 +4532,22 @@ definitions:
             minLength: 1
             type: string
         AdvancedOptions:
-            $ref: '#/definitions/CancelReplaceAdvancedOptionsDefinition'             
+            $ref: '#/definitions/CancelReplaceAdvancedOptionsDefinition'
     required:
         - OrderType
         - Quantity
         - Symbol
-    type: object  
+    type: object
 
 ##############################################################################
   CancelReplaceAdvancedOptionsDefinition:
-    description: 'Advanced Options for an order'      
+    description: 'Advanced Options for an order'
     properties:
       TrailingStop:
         $ref: '#/definitions/TrailingStopDefinition'
-      MarketActivationRules: 
+      MarketActivationRules:
         $ref: '#/definitions/CancelReplaceMarketActivationRuleDefinition'
-      TimeActivationRules: 
+      TimeActivationRules:
         $ref: '#/definitions/CancelReplaceTimeActivationRuleDefinition'
       ShowOnlyQuantity:
         type: integer
@@ -4554,11 +4556,11 @@ definitions:
           Cannot be added if original order did not have ShowOnlyQuantity.
         minimum: 0
         exclusiveMinimum: true
-    type: object  
+    type: object
 
 ##############################################################################
   CancelReplaceMarketActivationRuleDefinition:
-    description: 'Advanced Options for an order'      
+    description: 'Advanced Options for an order'
     properties:
       ClearAll:
         type: boolean
@@ -4575,7 +4577,7 @@ definitions:
 
 ##############################################################################
   CancelReplaceTimeActivationRuleDefinition:
-    description: 'Advanced Options for an order'      
+    description: 'Advanced Options for an order'
     properties:
       ClearAll:
         type: boolean
@@ -4592,20 +4594,20 @@ definitions:
 
 ##############################################################################
   AdvancedOptionsDefinition:
-    description: 'Advanced Options for an order'      
+    description: 'Advanced Options for an order'
     properties:
       TrailingStop:
         $ref: '#/definitions/TrailingStopDefinition'
-      MarketActivationRules: 
+      MarketActivationRules:
         type: array
-        items: 
+        items:
          $ref: '#/definitions/MarketActivationRuleDefinition'
         description: |
           Set of market-based activation rules that must be met before order is sent to the exchange. Max 4 rules.
         maxItems: 4
-      TimeActivationRules: 
+      TimeActivationRules:
         type: array
-        items: 
+        items:
          $ref: '#/definitions/TimeActivationRuleDefinition'
         description: |
           Set of time-based activation rules that must be met before order is sent to the exchange. Max 1 rule.
@@ -4616,34 +4618,34 @@ definitions:
           Number of shares to submit to market at a time for this order. Valid for futures and equities orders. For equities, must be multiple of 100.
         minimum: 0
         exclusiveMinimum: true
-    type: object  
+    type: object
 
 ##############################################################################
   MarketActivationRuleDefinition:
-    description: 'Market Activation Rules that must be met before the order is sent to the exchange.'      
+    description: 'Market Activation Rules that must be met before the order is sent to the exchange.'
     type: object
     properties:
         RuleType:
-          description: | 
+          description: |
             Type of the activation rule. Currently only support "Price"
           type: string
           enum:
             - Price
         Symbol:
-          description: | 
+          description: |
             Symbol that the rule is based on
-          type: string   
+          type: string
         Predicate:
-          description: | 
+          description: |
             The predicate comparison for the market rule type. E.g. Lt (less than).
-          type: string            
+          type: string
           enum:
             - Lt
             - Lte
             - Gt
             - Gte
         TriggerKey:
-          description: | 
+          description: |
             The ticks behavior for the activation rule.
           type: string
           enum:
@@ -4658,44 +4660,44 @@ definitions:
               - TTT
               - TTTN
               - TBA
-              - TAB      
+              - TAB
         Price:
-          description: | 
+          description: |
             Valid only for Type="Price", the price at which the rule will trigger when the price hits ticks as specified by TriggerType
           type: string
         LogicOperator:
-          description: | 
+          description: |
             Relation with the previous activation rule when given a list of MarketActivationRules. Ignored for the first MarketActivationRule.
-          type: string               
+          type: string
           enum:
             - And
-            - Or                        
+            - Or
 
 ##############################################################################
   TimeActivationRuleDefinition:
-    description: 'Time Activation Rules that must be met before the order is sent to the exchange.'      
+    description: 'Time Activation Rules that must be met before the order is sent to the exchange.'
     type: object
     properties:
         TimeUtc:
-          description: | 
+          description: |
             Order is activated once current UTC time is greater thans or equal to TimeUtc. hh:mm:ss
-          type: string               
-          
+          type: string
+
 ##############################################################################
   TrailingStopDefinition:
-    description: 'Trailing Stop offset; amount or percent'      
+    description: 'Trailing Stop offset; amount or percent'
     type: object
     properties:
         Amount:
-          description: | 
-            Currency Offset from current price.  
-            Note: Mutually exclusive with Percent.  
+          description: |
+            Currency Offset from current price.
+            Note: Mutually exclusive with Percent.
           type: number
         Percent:
-          description: | 
-            Percentage offset from current price.  
+          description: |
+            Percentage offset from current price.
             Note: Mutually exclusive with Amount.
-          type: number            
+          type: number
 
 ##############################################################################
   OrderConfirmResponseDefinition:
@@ -4713,7 +4715,7 @@ definitions:
         description: 'The number that identifies a specific TradeStation account that is being used for a particular order.'
       OrderConfirmId:
         type: string
-        description: 'Unique id generated per order per API Key and User'      
+        description: 'Unique id generated per order per API Key and User'
       EstimatedPrice:
         type: number
         description: 'An estimated value that is calculated using current market information. The actual cost for Market orders and orders with conditions, such as Trailing Stop or Activation Rule orders, may differ significantly from this estimate.'
@@ -4726,12 +4728,18 @@ definitions:
       EstimatedCostDisplay:
         type: string
         description: 'Equity Orders; Estimated cost formatted for display'
+      DebitCreditEstimatedCost:
+        type: number
+        description: 'The actual cost for Market orders and orders with conditions, such as Trailing Stop or Activation Rule orders. Takes into account wheather or not the transaction will result in a debit or credit to the user.'
+      DebitCreditEstimatedCostDisplay:
+        type: string
+        description: 'Equity Orders; Debit credit estimated cost formatted for display'
       EstimatedCommission:
         type: number
         description: 'An estimated value that is calculated using the published TradeStation commission schedule. Equity and Futures Orders'
       EstimatedCommissionDisplay:
         type: string
-        description: 'Equity and Futures Orders; Estimated commission formatted for display'  
+        description: 'Equity and Futures Orders; Estimated commission formatted for display'
       BaseCurrency:
         type: string
         description: 'Forex Orders; '
@@ -4747,15 +4755,15 @@ definitions:
       AccountCurrency:
         type: string
         description: 'Futures Orders; '
-      TrailingStop: 
+      TrailingStop:
         $ref: '#/definitions/TrailingStopDefinition'
-      MarketActivationRules: 
+      MarketActivationRules:
         type: array
-        items: 
+        items:
          $ref: '#/definitions/MarketActivationRuleDefinition'
-      TimeActivationRules: 
+      TimeActivationRules:
         type: array
-        items: 
+        items:
          $ref: '#/definitions/TimeActivationRuleDefinition'
       ShowOnlyQuantity:
         type: integer
@@ -4764,16 +4772,16 @@ definitions:
       - Route
       - Duration
       - Account
-      - OrderConfirmId 
+      - OrderConfirmId
       - EstimatedPrice
 
 ##############################################################################
   GroupOrderConfirmResponseDefinition:
     description: ''
     type: array
-    minItems: 1    
+    minItems: 1
     uniqueItems: true
-    items: 
+    items:
       $ref: '#/definitions/OrderConfirmResponseDefinition'
 
 ##############################################################################
@@ -4798,13 +4806,13 @@ definitions:
       - OrderStatus
 
 ##############################################################################
-  GroupOrderRequestDefinition: 
+  GroupOrderRequestDefinition:
     description: ''
     properties:
         Orders:
             minItems: 1
             type: array
-            uniqueItems: true       
+            uniqueItems: true
             items:
               $ref: '#/definitions/OrderRequestDefinition'
         Type:
@@ -4820,14 +4828,14 @@ definitions:
     - Type
     - Orders
     type: object
-          
+
 ##############################################################################
   GroupOrderResponseDefinition:
     description: ''
     type: array
-    minItems: 1    
+    minItems: 1
     uniqueItems: true
-    items: 
+    items:
       $ref: '#/definitions/OrderResponseDefinition'
 
 ##############################################################################
@@ -4848,7 +4856,7 @@ definitions:
               * DTT - Double Trade Tick; Two consecutive trade ticks must print within your stop price to trigger your stop.
               * DTTN - Double Trade Tick within NBBO; Two consecutive trade ticks within the National Best Bid or Offer must print within your stop price to trigger your stop.
               * DBA - Double Bid/Ask Tick; Buy/Cover Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop
-              * DAB - Double Ask/Bid Tick;     Buy/Cover Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop.    
+              * DAB - Double Ask/Bid Tick;     Buy/Cover Orders - Two consecutive Bid ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two consecutive Ask ticks must print within your stop price to trigger your stop.
               * TTT - Twice Trade Tick; Two trade ticks must print within your stop price to trigger your stop.
               * TTTN - Twice Trade Tick; Two trade ticks within the National Best Bid or Offer must print within your stop price to trigger your stop.
               * TBA - Twice Bid/Ask Tick; Buy/Cover Orders - Two Ask ticks must print within your stop price to trigger your stop. Sell/Short Orders - Two Bid ticks must print within your stop price to trigger your stop.
@@ -4865,10 +4873,10 @@ definitions:
               - TTT
               - TTTN
               - TBA
-              - TAB              
+              - TAB
         Name:
             minLength: 1
-            type: string                
+            type: string
     required:
         - Description
         - Key
@@ -5219,7 +5227,7 @@ definitions:
         - OpenInterest
     type: object
 
-##############################################################################  
+##############################################################################
   StatusDefinition:
     description: 'Status value for Barcharts and Tickbars. Integer value represeting values through bit mappings'
     properties:
