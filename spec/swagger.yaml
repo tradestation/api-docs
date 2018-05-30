@@ -3119,6 +3119,10 @@ definitions:
                 minLength: 1
                 type: string
                 description: 'Name of exchange where this symbol is traded in.'
+            ExpirationDate:
+                minLength: 1
+                type: string
+                description: 'The UTC expiration date of a contract in ISO 8601 format. Valid only on options and futures symbols. For other categories this field is null.'
             FractionalDisplay:
                 type: boolean
                 description: 'Determine whether fractional price display is required.'
@@ -5021,6 +5025,10 @@ definitions:
             minLength: 1
             type: string
             description: 'Name of exchange where this symbol is traded in.'
+        ExpirationDate:
+            minLength: 1
+            type: string
+            description: 'The UTC expiration date of a contract in ISO 8601 format. Valid only on options and futures symbols. For other categories this field is null on snapshot streams, and is entirely omitted on change streams.'
         # ExchangeID:
         #     type: number
         #     description: 'A unique numerical identifier for the Exchange.'
