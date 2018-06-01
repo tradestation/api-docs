@@ -2378,7 +2378,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/GroupOrderRequestDefinition'
+            $ref: '#/definitions/GroupOrderConfirmRequestDefinition'
       responses:
         200:
           description: Group Order Confirm Response
@@ -4314,6 +4314,197 @@ definitions:
     uniqueItems: true
 
 ##############################################################################
+  OrderConfirmRequestDefinition:
+    properties:
+        AccountKey:
+            description: |
+              Must be a valid Account Key for that user and Asset Type
+            minLength: 1
+            type: string
+        AdvancedOptions:
+            $ref: '#/definitions/AdvancedOptionsDefinition'
+        AssetType:
+            minLength: 1
+            type: string
+            enum:
+              - EQ
+              - FU
+              - OP
+        Duration:
+            type: string
+            enum:
+              - DAY
+              - DYP
+              - GTC
+              - GCP
+              - GTD
+              - GDP
+              - OPG
+              - CLO
+              - IOC
+              - FOK
+              - 1
+              - 1 MIN
+              - 3
+              - 3 MIN
+              - 5
+              - 5 MIN
+            description: |
+              Allowed durations vary by Asset Type
+              * DAY - Day, valid until the end of the regular trading session.
+              * DYP - Day Plus; valid until the end of the extended trading session
+              * GTC - Good till canceled
+              * GCP - Good till canceled plus
+              * GTD - Good through date
+              * GDP - Good through date plus
+              * OPG - At the opening; only valid for listed stocks at the opening session Price
+              * CLO - On Close; orders that target the closing session of an exchange.
+              * IOC - Immediate or Cancel; filled immediately or canceled, partial fills are accepted
+              * FOK - Fill or Kill; orders are filled entirely or canceled, partial fills are not accepted
+              * 1 or 1 MIN - 1 minute; expires after the 1 minute
+              * 3 or 3 MIN - 3 minutes; expires after the 3 minutes
+              * 5 or 5 MIN - 5 minutes; expires after the 5 minutes
+            minLength: 1
+        GTDDate:
+            description: |
+              Date that Order is valid through. Input Format: MM/DD/YYYY
+              Required for orders with Duration = GTD.
+            minLength: 1
+            maxLength: 10
+            type: string
+            format: mmddyyyy
+        LimitPrice:
+            minLength: 1
+            type: string
+        StopPrice:
+            minLength: 1
+            type: string
+        OrderType:
+            minLength: 1
+            type: string
+            enum:
+              - Limit
+              - Market
+              - StopLimit
+              - StopMarket
+        Quantity:
+            minLength: 1
+            type: string
+        Route:
+            minLength: 1
+            type: string
+            enum:
+              - Intelligent
+              - AMEX
+              - ARCA
+              - AUTO
+              - BATS
+              - BTRD
+              - BYX
+              - CTDL
+              - EDGA
+              - EDGX
+              - GFLO
+              - MIXI
+              - NITE
+              - NQBX
+              - NSDQ
+              - NYSE
+        Symbol:
+            description: Must be UPPERCASE
+            minLength: 1
+            type: string
+        TradeAction:
+            type: string
+            description: |
+              Conveys the intent of the trade
+              * BUY - `equities` and `futures`
+              * SELL - `equities` and `futures`
+              * BUYTOCOVER - `equities`
+              * SELLSHORT - `equities`
+              * BUYTOOPEN - `options`
+              * BUYTOCLOSE - `options`
+              * SELLTOOPEN - `options`
+              * SELLTOCLOSE - `options`
+            minLength: 1
+            enum:
+              - BUY
+              - SELL
+              - BUYTOCOVER
+              - SELLSHORT
+              - BUYTOOPEN
+              - BUYTOCLOSE
+              - SELLTOOPEN
+              - SELLTOCLOSE
+        OSOs:
+            items:
+                type: object
+                properties:
+                    Type:
+                        minLength: 1
+                        type: string
+                        enum:
+                          - NORMAL
+                          - BRK
+                          - OCO
+                    Orders:
+                        items:
+                          $ref: '#/definitions/OrderConfirmRequestDefinition'
+                        minItems: 1
+                        type: array
+                        uniqueItems: true
+                required:
+                - Type
+            minItems: 1
+            type: array
+            uniqueItems: true
+        Legs:
+          items:
+            type: object
+            properties:
+              Symbol:
+                  description: Must be UPPERCASE
+                  minLength: 1
+                  type: string
+              Quantity:
+                  minLength: 1
+                  type: string
+              TradeAction:
+                  minLength: 1
+                  type: string
+                  enum:
+                    - BUY
+                    - SELL
+                    - BUYTOCOVER
+                    - SELLSHORT
+                    - BUYTOOPEN
+                    - BUYTOCLOSE
+                    - SELLTOOPEN
+                    - SELLTOCLOSE
+                  description: |
+                    Conveys the intent of the trade
+                    * BUY - equity and futures trades
+                    * SELL - equity and futures trades
+                    * BUYTOCOVER - equity trade to close a short position
+                    * SELLSHORT - equity trade to open a short position
+                    * BUYTOOPEN - option trades
+                    * BUYTOCLOSE - option trades
+                    * SELLTOOPEN - option trades
+                    * SELLTOCLOSE - option trades
+          minItems: 1
+          type: array
+          uniqueItems: true
+    required:
+        - AssetType
+        - Symbol
+        - Quantity
+        - OrderType
+        - Duration
+        - AccountKey
+        - TradeAction
+    type: object    
+
+##############################################################################
   OrderRequestDefinition:
     properties:
         AccountKey:
@@ -4774,6 +4965,30 @@ definitions:
       - Account
       - OrderConfirmId
       - EstimatedPrice
+
+##############################################################################
+  GroupOrderConfirmRequestDefinition:
+    description: ''
+    properties:
+        Orders:
+            minItems: 1
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/definitions/OrderConfirmRequestDefinition'
+        Type:
+            description: |
+              Indicates how Order Execution should treat this group of orders.
+            minLength: 1
+            type: string
+            enum:
+              - NORMAL
+              - OCO
+              - BRK
+    required:
+    - Type
+    - Orders
+    type: object
 
 ##############################################################################
   GroupOrderConfirmResponseDefinition:
