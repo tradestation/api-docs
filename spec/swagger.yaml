@@ -2113,7 +2113,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/OrderRequestDefinition'
+            $ref: '#/definitions/OrderConfirmRequestDefinition'
       responses:
         200:
           description: Order Confirm Response
