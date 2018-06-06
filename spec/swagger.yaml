@@ -3055,7 +3055,7 @@ definitions:
                 description: (Equities)
                 type: number
             RealTimeEquity:
-                description: (Real-time cash balance) + (Market value of long positions) – (Market value of short positions)
+                description: (Real-time cash balance) + (Market value of long positions) – (Market value of short positions) + (Liquidation value of options)
                 type: number
             RealTimeInitialMargin:
                 description: (Futures) Sum (Initial Margins of all positions in the given account)
