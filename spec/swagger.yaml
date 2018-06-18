@@ -3122,7 +3122,7 @@ definitions:
             ExpirationDate:
                 minLength: 1
                 type: string
-                description: 'The UTC expiration date of a contract in ISO 8601 format. Valid only on options and futures symbols. For other categories this field is null.'
+                description: 'The UTC expiration date of a contract in ISO 8601 date format (yyyy-mm-dd). Valid only on options and futures symbols. For other categories this field is empty.'
             FractionalDisplay:
                 type: boolean
                 description: 'Determine whether fractional price display is required.'
@@ -5028,7 +5028,7 @@ definitions:
         ExpirationDate:
             minLength: 1
             type: string
-            description: 'The UTC expiration date of a contract in ISO 8601 format. Valid only on options and futures symbols. For other categories this field is null on snapshot streams, and is entirely omitted on change streams.'
+            description: 'The UTC expiration date of a contract in ISO 8601 date format (yyyy-mm-dd). Valid only on options and futures symbols. For other categories this field is empty.'
         # ExchangeID:
         #     type: number
         #     description: 'A unique numerical identifier for the Exchange.'
