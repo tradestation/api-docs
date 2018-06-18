@@ -529,12 +529,64 @@ securityDefinitions:
     #   hotlists: |
     #     Requests access to be allowed to execute HotList symbol scans
     # grant_type=authorization_code&code=K29qbmpGSEFDMLS0c=&client_id=42545245&redirect_uri=/webapi/authorize/authcodetest.aspx&client_secret=2452345
+  
   OAuth2-Refresh-Token:
     description: |
-      Refresh tokens are credentials used to obtain access tokens. Refresh
-      tokens are used to obtain a new access token when the current access token
-      becomes invalid or expires, or to obtain additional access tokens
-      with identical or narrower scope.
+      After an access token has expired or it becomes invalid, 
+      the Refresh token grant type can be used in order to obtain a new access token. 
+      Refresh tokens are valid indefinitely, unless the API key has been removed.
+      
+      A refresh token is specifically asigned for one API key and cannot be used to request new access tokens for a differet API key.
+      
+
+      *Required Header:*
+      - Content-Type: application/x-www-form-urlencoded
+      - Content-Length = Length of body information in UTF8
+
+      *Required form parameters:*
+      - grant_type:  "refresh_token" is the expected valur for this grant type
+      - client_id: The client application’s API key
+      - redirect_uri: A valid Uri
+      - refresh_token: The Refresh Token value generated when to original Access token was requested.
+      - client_secret: The secret for the client application’s API Key
+      - response_type: "token" is the expected value for the response type.
+
+      *Example Request*
+      ```
+      POST https://api.tradestation.com/v2/security/authorize HTTP/1.1
+      Content-Type: application/x-www-form-urlencoded
+      Host: api.tradestation.com
+      Content-Length: 630
+
+      grant_type=refresh_token&client_id=11111111-1111-1111-1111-111111111111&redirect_uri=http://www.myredirect.com&client_secret=11111111-1111-1111-1111-111111111111&refresh_token=YjlkWDRqVmxlRXphaZzM1NWQ1MzZtVdMNkk==&reponse_type=token
+      ```
+
+      *Example Response*
+      ```
+      HTTP/1.1 200 OK
+      Cache-Control: private
+      Content-Length: 927
+      Content-Type: application/json; charset=utf-8
+      Server: Microsoft-IIS/7.5     
+      Date: Tue, 06 Dec 2011 20:50:32 GMT
+
+      {
+
+          "access_token":"VUdLbE1RbTdCRUE4==",
+          "expires_in":1200,
+          "token_type":"AccessToken",
+          "userid":"testUser"
+      }
+      ```
+
+
+      *Possible Errors*
+      - Invalid API Key: The API key sent as parameter does not match with the API key used to create the Refresh token.
+      - API key failure: They API secret sent as parameter does not match with the API secret used to create the Refresh token.
+      - Invalid refresh token: The refresh token used is not same that was sent to the user when the original access token was created.
+
+      
+
     type: oauth2
     flow: application
     tokenUrl: "https://api.tradestation.com/v2/security/authorize"
