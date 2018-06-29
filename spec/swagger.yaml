@@ -3436,7 +3436,9 @@ definitions:
                 type: number
             BODEquity:
                 type: number
-                description: Indicates the dollar amount of Beginning Day Equity for the given futures account.
+                description: |
+                  Indicates the dollar amount of Beginning Day Equity for the given account.
+                  (Beginning Day cash balance) + (Market value of long positions) – (Market value of short positions)
             BODNetCash:
                 type: number
                 description: The dollar amount in the specified account calculated in real-time.
