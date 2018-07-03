@@ -3436,7 +3436,7 @@ definitions:
                 type: number
             BODEquity:
                 type: number
-                description: The amount of cash in the account at the beginning of the day. For cash accounts, also includes UnsettledFunds.  For futures accounts, also includes securities on deposit.
+                description: The total amount of equity with which you started the current trading day. Sum of the beginning day cash balance for your account and the market value of all positions brought into the current trading day (those that were held overnight) minus the outstanding margin debit balance for the account at the start of the current trading day. (Cash balance) + (Long market value) + (Short Credit) - (Margin Debit) + (Short Market Value). For cash accounts, also includes UnsettledFunds.  For futures accounts, also includes securities on deposit.
             BODNetCash:
                 type: number
                 description: The amount of cash in the account at the beginning of the day.
