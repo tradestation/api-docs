@@ -3485,30 +3485,28 @@ definitions:
                 type: string
                 description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
             BODAccountBalance:
-                description: (Equities) Indicates the dollar amount of cash in the specified account at the beginning of the day.
+                description: (Equities) The sum of cash at the start of the trading day and the market value of open positions.
                 type: number
             BODDayTradingMarginableEquitiesBuyingPower:
                 description: (Equities) The Intraday Buying Power (Day Trading Rule 431) with which the account started the trading day.
                 type: number
             BODEquity:
                 type: number
-                description: |
-                  Indicates the dollar amount of Beginning Day Equity for the given account.
-                  (Beginning Day cash balance) + (Market value of long positions) – (Market value of short positions)
+                description: The amount of cash in the account at the beginning of the day. For cash accounts, also includes UnsettledFunds.  For futures accounts, also includes securities on deposit.
             BODNetCash:
                 type: number
-                description: The dollar amount in the specified account calculated in real-time.
+                description: The amount of cash in the account at the beginning of the day.
             BODOpenTradeEquity:
-                description: (Futures) Indicates the dollar amount of Beginning Day Trade Equity for the given futures account.
+                description: (Futures) Unrealized profit and loss at the beginning of the day.
                 type: number
             BODOptionBuyingPower:
-                description: (Equities) Indicates the amount of option buying power with which you started the current trading day.
+                description: (Equities) Option buying power at the start of the trading day.
                 type: number
             BODOptionValue:
-                description: (Equities) The dollar amount of Beginning Day Liquidation Value at the start of the trading day.
+                description: (Equities) Liquidation value of options at the start of the trading day.
                 type: number
             BODOvernightBuyingPower:
-                description: (Equities) Indicates the Overnight Buying Power (Regulation T) with which your account started the current trading day.
+                description: (Equities) Overnight Buying Power (Regulation T) at the start of the trading day.
                 type: number
             CanDayTrade:
                 description: (Equities) Indicates whether day trading is allowed in the account.
@@ -3532,10 +3530,13 @@ definitions:
                       - Symbol
                 type: array
             Commission:
-                description: (Futures) The actual brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.
+                description: (Futures) The brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.
+                type: number
+            DayTradeExcess:
+                description: (Equities) (Buying Power Available - Buying Power Used) / Buying Power Multiplier, (Futures) (Cash + UnrealizedGains) - Buying Power Used
                 type: number
             DayTrades:
-                description: (Equities) The number of day trades placed in the account.
+                description: (Equities) The number of day trades placed in the account within the previous 4 trading days. A day trade refers to buying then selling or selling short then buying to cover the same security on the same trading day.
                 type: number
             DayTradingQualified:
                 description: (Equities) Indicates if the account is qualified to day trade as per compliance suitability in TradeStation.
@@ -3654,13 +3655,27 @@ definitions:
                 description: Key is the unique identifier for the requested account.
             MarketValue:
                 type: number
-                description: Indicates the actual market value.
+                description: Market value of open positions. 
             Name:
                 minLength: 1
                 type: string
                 description: name of the account.
             OptionApprovalLevel:
-                description: (Equities) Indicates the option approval level.
+                description: | 
+                  (Equities) The option approval level will determine what options strategies you will be able to employ in the account. In general terms, the levels are defined as follows
+                  * Level 0 - No options trading allowed.
+                  * Level 1 - Writing of Covered Calls, Buying Protective Puts.
+                  * Level 2 - Level 1 + Buying Calls, Buying Puts, Writing Covered Puts.
+                  * Level 3 - level 2+ Stock Option Spreads, Index Option Spreads, Butterfly Spreads, Condor Spreads, Iron Butterfly Spreads, Iron Condor Spreads.
+                  * Level 4 - Level 3 + Writing of Naked Puts (Stock Options).
+                  * Level 5 - Level 4 + Writing of Naked Puts (Index Options), Writing of Naked Calls (Stock Options), Writing of Naked Calls (Index Options).
+                enum:
+                  - 0
+                  - 1
+                  - 2
+                  - 3
+                  - 4
+                  - 5
                 type: number
             OpenOrderMargin:
                 description: (Futures) The dollar amount of Open Order Margin for the given futures account.
@@ -3680,7 +3695,7 @@ definitions:
                 type: boolean
             RealTimeAccountBalance:
                 type: number
-                description: The dollar amount in the specified account calculated in real-time.
+                description: Current cash balance of the account.
             RealTimeBuyingPower:
                 type: number
                 description: Indicates the value of real-time buying power.
@@ -3691,7 +3706,7 @@ definitions:
                 description: (Equities) The intraday buying power for trading marginable equities.
                 type: number
             RealTimeEquity:
-                description: (Real-time cash balance) + (Market value of long positions) – (Market value of short positions) + (Liquidation value of options)
+                description: The real-time cash reserves for your account. At the beginning of the trading day, this value will equal the beginning day cash balance. This figure is calculated by taking the real-time cash balance plus the market value of any long positions minus the market value of any short position. (Real-time cash balance) + (Market value of long positions) – (Market value of short positions) + (Liquidation value of options)
                 type: number
             RealTimeInitialMargin:
                 description: (Futures) Sum (Initial Margins of all positions in the given account)
@@ -3700,10 +3715,10 @@ definitions:
                 description: (Equities) The intraday buying power for options.
                 type: number
             RealTimeOptionValue:
-                description: (Equities) The dollar amount of Real-time Liquidation Value calculated throughout the trading day.
+                description: (Equities) Intraday liquidation value of option positions.
                 type: number
             RealTimeOvernightBuyingPower:
-                description: (Equities) Indicates in real-time, the value of the account equity position changes.
+                description: (Equities) Real-time Overnight Marginable Equities Buying Power.
                 type: number
             RealTimeMaintenanceMargin:
                 description: (Futures) The dollar amount of Real-time Maintenance Margin for the given futures account.
@@ -3713,13 +3728,13 @@ definitions:
                 description: Indicates any gain or loss as a result of closing a position during the current trading day. This value also includes all commissions and routing fees incurred during the current trading day.
             RealTimeTradeEquity:
                 type: number
-                description: The dollar amount of Real-time Trade Equity for the given futures account.
+                description: (Futures) The dollar amount of unrealized profit and loss for the given futures account.  Same value as RealTimeUnrealizedGains.
             RealTimeUnrealizedGains:
                 type: number
-                description: Indicates in real-time, the unrealized gains for all currently open positions.
+                description: Indicates in real-time, the unrealized profit and loss for all currently open positions.  Does not update as frequently as RealTimeUnrealizedProfitLoss.
             RealTimeUnrealizedProfitLoss:
                 type: number
-                description: Indicates in real-time, the unrealized profit or loss for all currently open positions.
+                description: Indicates in real-time, the unrealized profit or loss for all currently open positions using the latest quotes for positions.
             SecurityOnDeposit:
                 description: (Futures) The value of special securities that are deposited by the customer with the clearing firm for the sole purpose of increasing purchasing power in their trading account. This number will be reset daily by the account balances clearing file. The entire value of this field will increase purchasing power.
                 type: number
@@ -3748,7 +3763,7 @@ definitions:
                 type: string
                 description: String value for Status attribute.
             TodayRealTimeTradeEquity:
-                description: (Futures) The dollar amount of Today's Real-time Trade Equity for the given futures account.
+                description: (Futures) The unrealized P/L for today. Unrealized P/L - BODOpenTradeEquity
                 type: number
             Type:
                 minLength: 1
