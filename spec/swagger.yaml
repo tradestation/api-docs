@@ -3553,7 +3553,7 @@ definitions:
                 type: string
                 description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
             BODAccountBalance:
-                description: (Equities) The sum of cash at the start of the trading day and the market value of open positions.
+                description: (Equities) Deprecated. The amount of cash in the account at the beginning of the day. Redundant with BODNetCash.
                 type: number
             BODDayTradingMarginableEquitiesBuyingPower:
                 description: (Equities) The Intraday Buying Power (Day Trading Rule 431) with which the account started the trading day.
