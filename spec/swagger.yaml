@@ -2768,17 +2768,17 @@ definitions:
             description: 'Displays the type of future contract the symbol represents'
         IndustryCode:
             type: string
-            description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
+            description: '(Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.'
         IndustryName:
             type: string
-            description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
+            description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
         # Pending to be documented. It's comment-out due to information not available when descriptions were added to fields.
         #IsPreferredExchange:
         #    type: boolean
-        #    description: ''
+        #    description: '(Japan Only)'
         LotSize:
             type: number
-            description: 'The currency amount associated with a lot (contract) in the specified account.'
+            description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
         MinMove:
             type: number
             description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
@@ -2800,12 +2800,14 @@ definitions:
         # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
         #SectionClassCode:
         #    type: string
+        #    description: '(Japan Only)'
         # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
         #SectionClassName:
         #    type: string
+        #    description: '(Japan Only)'
         SectorName:
             type: string
-            description: 'Displays the assigned economic sector to which the equity symbol belongs.'
+            description: '(Japan Only) Displays the assigned economic sector to which the equity symbol belongs.'
         StrikePrice:
             type: number
             description: 'Displays strike price of an options contract; For Options symbols only.'
@@ -2900,17 +2902,17 @@ definitions:
                 description: 'Displays the type of future contract the symbol represents.'
             IndustryCode:
                 type: string
-                description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
+                description: '(Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.'
             IndustryName:
                 type: string
-                description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
+                description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #IsPreferredExchange:
             #    type: boolean
-            #    description: ''
+            #    description: '(Japan Only)'
             LotSize:
                 type: number
-                description: 'The currency amount associated with a lot (contract) in the specified account.'
+                description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
             MinMove:
                 type: number
                 description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
@@ -2932,12 +2934,14 @@ definitions:
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #SectionClassCode:
             #    type: string
+            #    description: '(Japan Only)'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #SectionClassName:
             #    type: string
+            #    description: '(Japan Only)'
             SectorName:
                 type: string
-                description: 'Displays the assigned economic sector to which the equity symbol belongs.'
+                description: '(Japan Only) Displays the assigned economic sector to which the equity symbol belongs.'
             StrikePrice:
                 type: number
                 description: 'Displays strike price of an options contract; For Options symbols only.'
@@ -3060,17 +3064,17 @@ definitions:
                 description: 'Displays the type of future contract the symbol represents.'
             IndustryCode:
                 type: string
-                description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
+                description: '(Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.'
             IndustryName:
                 type: string
-                description: 'Displays the Reuters assigned industry name to which the equity symbol belongs.'
+                description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #IsPreferredExchange:
             #    type: boolean
-            #    description: ''
+            #    description: '(Japan Only)'
             LotSize:
                 type: number
-                description: 'The currency amount associated with a lot (contract) in the specified account.'
+                description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
             MinMove:
                 type: number
                 description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
@@ -3092,12 +3096,14 @@ definitions:
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #SectionClassCode:
             #    type: string
+            #    description: '(Japan Only)'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #SectionClassName:
             #    type: string
+            #    description: '(Japan Only)'
             SectorName:
                 type: string
-                description: 'Displays the assigned economic sector to which the equity symbol belongs.'
+                description: '(Japan Only) Displays the assigned economic sector to which the equity symbol belongs.'
             StrikePrice:
                 type: number
                 description: 'Displays strike price of an options contract; For Options symbols only.'
@@ -5403,7 +5409,7 @@ definitions:
         # HighTime:
         #     minLength: 1
         #     type: string
-        #     description: 'Time of the highest price of the day.'
+        #     description: '(Japan Only) Time of the highest price of the day.'
         # IndustryCode:
         #     type: string
         #     description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
@@ -5416,10 +5422,10 @@ definitions:
         # LastTime:
         #     minLength: 1
         #     type: string
-        #     description: 'Last traded price time stamp.'
+        #     description: '(Japan Only) Last traded price time stamp.'
         # LotSize:
         #     type: number
-        #     description: 'The currency amount associated with a lot (contract) in the specified account.'
+        #     description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
         Low:
             type: number
             description: 'The lowest price of the day.'
@@ -5439,16 +5445,16 @@ definitions:
         # LowTime:
         #     minLength: 1
         #     type: string
-        #     description: 'Time of the lowest price of the day.'
+        #     description: '(Japan Only) Time of the lowest price of the day.'
         # MaxPrice:
         #     type: number
-        #    description: 'Max price of the quote.'
+        #    description: '(Japan Only) Max price of the quote.'
         MinMove:
             type: number
             description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in.'
         # MinPrice:
         #     type: number
-        #    description: 'Min price of the quote.'
+        #    description: '(Japan Only) Min price of the quote.'
         NameExt:
             type: string
             description: 'If the Quote is delayed this property will be set to `D`.'
@@ -5464,7 +5470,7 @@ definitions:
         # OpenTime:
         #     minLength: 1
         #     type: string
-        #     description: 'Time of symbol`s open price today.'
+        #     description: '(Japan Only) Time of symbol`s open price today.'
         PointValue:
             type: number
             description: 'Symbol`s point value'
@@ -5503,10 +5509,10 @@ definitions:
         # TradeType:
         #     minLength: 1
         #     type: string
-        #     description: 'The type of market event.'
+        #     description: '(Japan Only) The type of market event.'
         # Turnover:
         #     type: number
-        #     description: 'The total value of stocks traded during a specific period of time.'
+        #     description: '(Japan Only) The total value of stocks traded during a specific period of time.'
         Underlying:
             type: string
             description: 'The financial instrument on which an option contract is based or derived.'
