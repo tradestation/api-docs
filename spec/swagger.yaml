@@ -3805,10 +3805,10 @@ definitions:
                 description: (Futures) The dollar amount of unrealized profit and loss for the given futures account.  Same value as RealTimeUnrealizedGains.
             RealTimeUnrealizedGains:
                 type: number
-                description: Indicates in real-time, the unrealized profit and loss for all currently open positions.  Does not update as frequently as RealTimeUnrealizedProfitLoss.
+                description: Unrealized profit and loss, for the current trading day, of all open positions. 
             RealTimeUnrealizedProfitLoss:
                 type: number
-                description: Indicates in real-time, the unrealized profit or loss for all currently open positions using the latest quotes for positions.
+                description: Unrealized profit or loss of all open positions using current market prices.
             SecurityOnDeposit:
                 description: (Futures) The value of special securities that are deposited by the customer with the clearing firm for the sole purpose of increasing purchasing power in their trading account. This number will be reset daily by the account balances clearing file. The entire value of this field will increase purchasing power.
                 type: number
