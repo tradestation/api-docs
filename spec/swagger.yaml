@@ -3156,6 +3156,7 @@ definitions:
                 enum:
                     - INDEX
                     - STOCK
+                    - STOCKOPTION
                     - FUTURE
                     - FOREX
                     - UNKNOWN
@@ -5327,6 +5328,7 @@ definitions:
             enum:
                 - INDEX
                 - STOCK
+                - STOCKOPTION
                 - FUTURE
                 - FOREX
                 - UNKNOWN
