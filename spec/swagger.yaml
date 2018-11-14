@@ -3156,6 +3156,7 @@ definitions:
                 enum:
                     - INDEX
                     - STOCK
+                    - STOCKOPTION
                     - FUTURE
                     - FOREX
                     - UNKNOWN
@@ -3536,6 +3537,32 @@ definitions:
                     - Margin
                     - DVP
                     - Futures
+            Status:
+                minLength: 1
+                type: string
+                description: |
+                    Status of a specific account.
+                    * A - Active
+                    * X - Closed
+                    * C - Closing Transaction Only
+                    * F - Margin Call - Closing Transactions Only
+                    * I - Inactive
+                    * L - Liquidating Transactions Only
+                    * R - Restricted
+                    * D - 90 Day Restriction-Closing Transaction Only
+                enum:
+                    - A
+                    - X
+                    - C
+                    - F
+                    - I
+                    - L
+                    - R
+                    - D
+            StatusDescription:
+                minLength: 1
+                type: string
+                description: String value for Status attribute.        
         required:
           - Alias
           - DisplayName
@@ -3818,20 +3845,22 @@ definitions:
                 description: |
                     Status of a specific account.
                     * A - Active
-                    * C - Closed
-                    * CTA - Closing Transaction Only
-                    * FMC - Fed Margin Call
+                    * X - Closed
+                    * C - Closing Transaction Only
+                    * F - Margin Call - Closing Transactions Only
                     * I - Inactive
-                    * LTO - Liquidating Transactions Only
+                    * L - Liquidating Transactions Only
                     * R - Restricted
+                    * D - 90 Day Restriction-Closing Transaction Only
                 enum:
                     - A
+                    - X
                     - C
-                    - CTA
-                    - FMC
+                    - F
                     - I
-                    - LTO
+                    - L
                     - R
+                    - D
             StatusDescription:
                 minLength: 1
                 type: string
@@ -5327,6 +5356,7 @@ definitions:
             enum:
                 - INDEX
                 - STOCK
+                - STOCKOPTION
                 - FUTURE
                 - FOREX
                 - UNKNOWN
