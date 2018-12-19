@@ -4147,26 +4147,14 @@ definitions:
                 type: string
                 description: |
                     * FU = Future
-                    * FO = Future Option
-                    * S = Stock
-                    * So = Stock Option
-                    * IDX = Index
-                    * CO = Currency Option
-                    * MMF = Money Market Fund
-                    * IO = Index Option
-                    * B = Bond
-                    * F = Forex
+                    * EQ = Equity                  
+                    * OP = Stock Option                  
+                    * FX = Forex
                 enum:
                     - FU
-                    - FO
-                    - S
-                    - SO
-                    - IDX
-                    - CO
-                    - MMF
-                    - IO
-                    - B
-                    - F
+                    - EQ
+                    - OP
+                    - FX
             CommissionFee:
                 type: number
                 description: Commission paid in an order.
@@ -5771,7 +5759,7 @@ definitions:
             maximum: 1
         bit29:
             type: integer
-            description: '`END_OF_HISTORY_STREAM`: Set when the bar returned is the last bar in the requested history span'
+            description: '`END_OF_HISTORY_STREAM`: Set on a bar to convey to consumer that all historical bars have been sent.  Historical bars are not guaranteed to be returned in order'
             minimum: 0
             maximum: 1
     required:
