@@ -2611,6 +2611,57 @@ paths:
             $ref: '#/definitions/Error'
 
 ##############################################################################
+  /orderexecution/exchanges:
+    get:
+      summary: |
+        Request Available Exchanges
+      description: |
+        Returns a list of valid exchanges that a client can specify when posting an order.
+      operationId: getExchanges
+      tags:
+        - order-execution      
+      parameters:
+        - name: access_token
+          in: query
+          type: string
+          description: A valid OAuth2 token used to authorize access to the resource
+          required: true
+      responses:
+        200:
+          description: Get Exchange List
+          schema:
+            type: object
+            properties:
+              Exchange:
+                type: array
+                items:
+                  $ref: '#/definitions/ExchangeDefinition'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Unexpected Error
+          schema:
+            $ref: '#/definitions/Error'
+        502:
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/Error'
+        504:
+          description: Gateway Timeout
+          schema:
+            $ref: '#/definitions/Error'
+
+##############################################################################
 definitions:
   Error:
     required:
@@ -5321,6 +5372,33 @@ definitions:
     required:
         - Description
         - Key
+        - Name
+    type: object
+
+##############################################################################
+
+  ExchangeDefinition:
+    description: 'Returns a list of valid exchanges that a client can specify when posting an order.'
+    properties:
+        AssetType:
+            minLength: 1
+            type: string
+            description: |
+                Indicates the asset type of the exchange.
+                * EQ - Equity
+                * OP - Option
+            enum:
+                - EQ
+                - OP
+        Id:
+            minLength: 1
+            type: string            
+        Name:
+            minLength: 1
+            type: string            
+    required:
+        - AssetType
+        - Id
         - Name
     type: object
 
