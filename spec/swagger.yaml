@@ -2832,7 +2832,7 @@ definitions:
             description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
         MinMove:
             type: number
-            description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
+            description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
         Name:
             minLength: 1
             type: string
@@ -2966,7 +2966,7 @@ definitions:
                 description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
             MinMove:
                 type: number
-                description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
+                description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
             Name:
                 minLength: 1
                 type: string
@@ -3128,7 +3128,7 @@ definitions:
                 description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
             MinMove:
                 type: number
-                description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
+                description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
             Name:
                 minLength: 1
                 type: string
@@ -3300,10 +3300,16 @@ definitions:
             ExpirationDate:
                 minLength: 1
                 type: string
-                description: 'The UTC expiration date of a contract in ISO 8601 date format (yyyy-mm-dd). Valid only on options and futures symbols. For other categories this field is empty.'
+                description: 'The UTC expiration date of a contract in ISO 8601 date format (yyyy-mm-dd). Valid only on options and futures symbols. For other categories this field is empty.'          
+            FirstNoticeDate:
+                type: string
+                description: The day after which an investor who has purchased a futures contract may be required to take physical delivery of the contracts underlying commodity.          
             FractionalDisplay:
                 type: boolean
                 description: 'Determine whether fractional price display is required.'
+            Halted:
+                type: boolean
+                description: 'A temporary suspension of trading for a particular security or securities at one exchange or across numerous exchanges.'
             High:
                 type: number
                 description: 'Highest price of the day.'
@@ -3332,6 +3338,9 @@ definitions:
                 minLength: 1
                 type: string
                 description: 'Last price formatted for display.'
+            LastTradingDate:
+                type: string
+                description: 'The final day that a futures contract may trade or be closed out before the delivery of the underlying asset or cash settlement must occur.'            
             Low:
                 type: number
                 description: 'Lowest price of stock.'
@@ -3350,9 +3359,15 @@ definitions:
                 minLength: 1
                 type: string
                 description: 'Low price formatted for display.'
+            MaxPrice:
+                type: number
+                description: 'The maximum price a commodity futures contract may be traded for the current session.'
             MinMove:
                 type: number
-                description: 'The smallest amount of price change allowed for a particular symbol. This value is expressed in terms of Price Scale increments.'
+                description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
+            MinPrice:
+                type: number
+                description: 'The minimum price a commodity futures contract may be traded for the current session.'
             NameExt:
                 type: string
                 description: 'If the Quote is delayed this property will be set to `D`'
@@ -4392,7 +4407,7 @@ definitions:
                  Set of market-based activation rules that must be met before order is sent to the exchange.
             MinMove:
                 type: number
-                description: The smallest amount of price change allowed for a particular symbol.
+                description: Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold..
             OrderID:
                 type: number
                 description: ID of the current order.
@@ -5447,6 +5462,12 @@ definitions:
         # ContractExpireDate:
         #     type: number
         #     description: 'Displays the contract expiration date for orders specified in contracts.'
+        FirstNoticeDate:
+            type: string
+            description: The day after which an investor who has purchased a futures contract may be required to take physical delivery of the contracts underlying commodity.
+        LastTradingDate:
+            type: string
+            description: 'The final day that a futures contract may trade or be closed out before the delivery of the underlying asset or cash settlement must occur.'
         CountryCode:
             minLength: 1
             type: string
@@ -5548,6 +5569,9 @@ definitions:
         # ExchangeID:
         #     type: number
         #     description: 'A unique numerical identifier for the Exchange.'
+        Halted:
+            type: boolean
+            description: 'A temporary suspension of trading for a particular security or securities at one exchange or across numerous exchanges.'
         High:
             type: number
             description: 'The highest price of the day.'
@@ -5604,15 +5628,15 @@ definitions:
         #     minLength: 1
         #     type: string
         #     description: '(Japan Only) Time of the lowest price of the day.'
-        # MaxPrice:
-        #     type: number
-        #    description: '(Japan Only) Max price of the quote.'
+        MaxPrice:
+            type: number
+            description: 'The maximum price a commodity futures contract may be traded for the current session.'            
         MinMove:
             type: number
-            description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in.'
-        # MinPrice:
-        #     type: number
-        #    description: '(Japan Only) Min price of the quote.'
+            description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
+        MinPrice:
+            type: number
+            description: 'The minimum price a commodity futures contract may be traded for the current session.'
         NameExt:
             type: string
             description: 'If the Quote is delayed this property will be set to `D`.'
