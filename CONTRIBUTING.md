@@ -10,26 +10,6 @@ Swagger Style Guide
 Response Body object.
 
 
-API Dump scripts
-----------------
-
- You can use the 2 scripts located in `/scripts` named `api.sh` and `dump.sh` to
- quickly dump YAML schemas for payloads that you need in the `definitions` section
- of the swagger spec.
-
-If you `cat` them, you will see notes on usage. Normally I use them something 
-like this:
-
-```
-cd scripts
-./api.sh /data/quote/amzn | ./dump.sh
-```
-
-Then copy/past the results into the `definitions` section of the swagger spec.
-
-Note: YMMV on these scripts - they dont handle nulls well, so you might have to fix them up.
-
-
 Hosting API Docs with Github Pages:
 -----------------------------------
 
