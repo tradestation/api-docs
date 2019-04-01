@@ -1053,7 +1053,7 @@ paths:
         200:
           description: Quote Stream response
           schema:
-            $ref: '#/definitions/QuoteStreamDefinition'
+            $ref: '#/definitions/QuoteDefinition'
         400:
           description: Bad Request
           schema:
@@ -1127,7 +1127,7 @@ paths:
         200:
           description: Quote Stream response
           schema:
-            $ref: '#/definitions/QuoteStreamDefinition'
+            $ref: '#/definitions/QuoteDefinition'
         400:
           description: Bad Request
           schema:
@@ -3362,12 +3362,18 @@ definitions:
             MaxPrice:
                 type: number
                 description: 'The maximum price a commodity futures contract may be traded for the current session.'
+            MaxPriceDisplay:
+                type: number
+                description: 'MaxPrice formatted for display.'
             MinMove:
                 type: number
                 description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
             MinPrice:
                 type: number
                 description: 'The minimum price a commodity futures contract may be traded for the current session.'
+            MinPriceDisplay:
+                type: number
+                description: 'MinPrice formatted for display.'
             NameExt:
                 type: string
                 description: 'If the Quote is delayed this property will be set to `D`'
@@ -5416,298 +5422,7 @@ definitions:
         - Id
         - Name
     type: object
-
-##############################################################################
-  QuoteStreamDefinition:
-    description: 'Quote stream object used in quote/changes and quote/snapshots'
-    properties:
-        Ask:
-            type: number
-            description: 'The price at which a security, futures contract, or other financial instrument is offered for sale.'
-        AskSize:
-            type: number
-            description: 'The number of trading units that prospective sellers are prepared to sell.'
-        AskType:
-            minLength: 1
-            type: string
-            description: '(Japan Only) Quote Type.'
-        AssetType:
-            minLength: 1
-            type: string
-            enum:
-                - INDEX
-                - STOCK
-                - STOCKOPTION
-                - FUTURE
-                - FOREX
-                - UNKNOWN
-        Bid:
-            type: number
-            description: 'The highest price a prospective buyer is prepared to pay at a particular time for a trading unit of a given symbol.'
-        BidSize:
-            type: number
-            description: 'The number of shares/contracts at the current bid price.'
-        # BidType:
-        #     minLength: 1
-        #     type: string
-        #     description: '(Japan Only) Quote Type'
-        # BitFlags:
-        #     type: number
-        # Category:
-        #     type: number
-        #     description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
-        Close:
-            type: number
-            description: 'Daily running close price.'
-        # ContractExpireDate:
-        #     type: number
-        #     description: 'Displays the contract expiration date for orders specified in contracts.'
-        FirstNoticeDate:
-            type: string
-            description: The day after which an investor who has purchased a futures contract may be required to take physical delivery of the contracts underlying commodity.
-        LastTradingDate:
-            type: string
-            description: 'The final day that a futures contract may trade or be closed out before the delivery of the underlying asset or cash settlement must occur.'
-        CountryCode:
-            minLength: 1
-            type: string
-            description: 'The country of the exchange where the symbol is listed.'
-        Currency:
-            minLength: 1
-            type: string
-            description: 'The base currency of the symbol.'
-            enum:
-                - USD
-                - AUD
-                - CAD
-                - CHF
-                - DKK
-                - EUR
-                - DBP
-                - HKD
-                - JPY
-                - NOK
-                - NZD
-                - SEK
-                - SGD
-        # CurrencyCode:
-        #     type: number
-        #     description: 'Symbol currency code.'
-        # DailyDate:
-        #     type: number
-        #     description: 'Date of quote.'
-        #     minLength: 1
-        #     type: string
-        # DailyHighTime:
-        #     description: 'Time of quote.'
-        #     type: number
-        # DailyLastTime:
-        #     type: number
-        #     description: 'Time of last high price.'
-        # DailyLowTime:
-        #     type: number
-        #    description: 'Time of last low price.'
-        DailyOpenInterest:
-            type: number
-            description: 'Number of open contracts.'
-        # DailyOpenTime:
-        #     type: number
-        #     description: 'Time at open.'
-        # DailyTime:
-        #     type: number
-        DataFeed:
-            minLength: 1
-            type: string
-            description: 'The data quote feed provider.'
-        Description:
-            minLength: 1
-            type: string
-            description: 'Displays the full name of the symbol.'
-        DisplayType:
-            type: number
-            description: |
-                    Symbol's price display type based on the following list:
-
-                    * `0` "Automatic" Not used
-                    * `1` 0 Decimals => 1
-                    * `2` 1 Decimals => .1
-                    * `3` 2 Decimals => .01
-                    * `4` 3 Decimals => .001
-                    * `5` 4 Decimals => .0001
-                    * `6` 5 Decimals => .00001
-                    * `7` Simplest Fraction
-                    * `8` 1/2-Halves => .5
-                    * `9` 1/4-Fourths => .25
-                    * `10` 1/8-Eights => .125
-                    * `11` 1/16-Sixteenths => .0625
-                    * `12` 1/32-ThirtySeconds => .03125
-                    * `13` 1/64-SixtyFourths => .015625
-                    * `14` 1/128-OneTwentyEigths => .0078125
-                    * `15` 1/256-TwoFiftySixths => .003906250
-                    * `16` 10ths and Quarters => .025
-                    * `17` 32nds and Halves => .015625
-                    * `18` 32nds and Quarters => .0078125
-                    * `19` 32nds and Eights => .00390625
-                    * `20` 32nds and Tenths => .003125
-                    * `21` 64ths and Halves => .0078125
-                    * `22` 64ths and Tenths => .0015625
-                    * `23` 6 Decimals => .000001
-        Error:
-            type: string
-            description: 'Error message received from exchange or Tradestation.'
-        # ExRightsTSE:
-        #     type: number
-        #     description: '(Japan Only) Ex Rights field.'
-        Exchange:
-            minLength: 1
-            type: string
-            description: 'Name of exchange where this symbol is traded in.'
-        ExpirationDate:
-            minLength: 1
-            type: string
-            description: 'The UTC expiration date of a contract in ISO 8601 date format (yyyy-mm-dd). Valid only on options and futures symbols. For other categories this field is empty.'
-        # ExchangeID:
-        #     type: number
-        #     description: 'A unique numerical identifier for the Exchange.'
-        Halted:
-            type: boolean
-            description: 'A temporary suspension of trading for a particular security or securities at one exchange or across numerous exchanges.'
-        High:
-            type: number
-            description: 'The highest price of the day.'
-        High52Week:
-            type: number
-            description: 'The highest price of the past 52 weeks. This is a grid-based indicator.'
-        # High52WeekDay:
-        #     type: number
-        #     description: 'Number of the day when the 52 week high price was reached.'
-        # High52WeekMonth:
-        #     type: number
-        #     description: 'Number of the month when the 52 week high price was reached.'
-        High52WeekTimeStamp:
-            minLength: 1
-            type: string
-            description: 'Date and time of the highest price in the past 52 week.'
-        # HighTime:
-        #     minLength: 1
-        #     type: string
-        #     description: '(Japan Only) Time of the highest price of the day.'
-        # IndustryCode:
-        #     type: string
-        #     description: 'Displays a digit code that categorize companies by the type of business activities they engage in.'
-        IsDelayed:
-            type: boolean
-            description: 'True if the quote is a delayed quote and False if the quote is a real-time quote.'
-        Last:
-            type: number
-            description: 'The last price for a symbol sent by the exchange.'
-        # LastTime:
-        #     minLength: 1
-        #     type: string
-        #     description: '(Japan Only) Last traded price time stamp.'
-        # LotSize:
-        #     type: number
-        #     description: '(Japan Only) The currency amount associated with a lot (contract) in the specified account.'
-        Low:
-            type: number
-            description: 'The lowest price of the day.'
-        Low52Week:
-            type: number
-            description: '52 week low price.'
-        # Low52WeekDay:
-        #     type: number
-        #     description: 'Number of the day when the 52 week low price was reached.'
-        # Low52WeekMonth:
-        #     type: number
-        #     description: 'Number of the month when the 52 week low price was reached.'
-        Low52WeekTimeStamp:
-            minLength: 1
-            type: string
-            description: 'Date and time of the highest price in the past 52 week.'
-        # LowTime:
-        #     minLength: 1
-        #     type: string
-        #     description: '(Japan Only) Time of the lowest price of the day.'
-        MaxPrice:
-            type: number
-            description: 'The maximum price a commodity futures contract may be traded for the current session.'            
-        MinMove:
-            type: number
-            description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
-        MinPrice:
-            type: number
-            description: 'The minimum price a commodity futures contract may be traded for the current session.'
-        NameExt:
-            type: string
-            description: 'If the Quote is delayed this property will be set to `D`.'
-        NetChange:
-            type: number
-            description: 'Net change price difference.'
-        NetChangePct:
-            type: number
-            description: 'Net percent change from previous day`s close.'
-        Open:
-            type: number
-            description: 'Today`s opening price'
-        # OpenTime:
-        #     minLength: 1
-        #     type: string
-        #     description: '(Japan Only) Time of symbol`s open price today.'
-        PointValue:
-            type: number
-            description: 'Symbol`s point value'
-        PreviousClose:
-            type: number
-            description: 'Close of the previous trading period.'
-        PreviousVolume:
-            type: number
-            description: 'Previous day`s trading volume.'
-        Restrictions:
-            items:
-              type: string
-            type: array
-            description: '(Japan Only) A symbol specific restrictions.'
-        # SectorName:
-        #     type: string
-        #     description: 'Displays the assigned economic sector to which the equity symbol belongs.'
-        StrikePrice:
-            type: number
-            description: 'Strike price for the option; This is for Options symbols only.'
-        Symbol:
-            minLength: 1
-            type: string
-            description: 'Symbol name.'
-        SymbolRoot:
-            minLength: 1
-            type: string
-            description: 'The symbol used to identify the option`s financial instrument for a specific underlying asset that is traded on the various trading exchanges.'
-        TickSizeTier:
-            type: number
-            description: 'Trading increment based on a level group.'
-        TradeTime:
-            minLength: 1
-            type: string
-            description: 'Time of the last trade in UTC.'
-        # TradeType:
-        #     minLength: 1
-        #     type: string
-        #     description: '(Japan Only) The type of market event.'
-        # Turnover:
-        #     type: number
-        #     description: '(Japan Only) The total value of stocks traded during a specific period of time.'
-        Underlying:
-            type: string
-            description: 'The financial instrument on which an option contract is based or derived.'
-        # UnitOfTrade:
-        #     type: number
-        #     description: 'The number of shares of a particular security that is used as the acceptable quantity for trading on the exchanges.'
-        Volume:
-            type: number
-            description: 'Today`s volume'
-    required:
-        - Symbol
-    type: object
-
+ 
 ##############################################################################
   BarchartDefinition:
     description: 'Standard barchart data object for streaming barchart data with stream/barchart/...'
