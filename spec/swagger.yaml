@@ -1907,7 +1907,7 @@ paths:
           required: true
         - name: account_keys
           in: path
-          description: 1 or more Account Keys
+          description: 1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.
           type: array
           items:
             type: string
@@ -1969,7 +1969,7 @@ paths:
           required: true
         - name: account_keys
           in: path
-          description: 1 or more Account Keys
+          description: 1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.
           type: array
           items:
             type: string
@@ -2024,9 +2024,7 @@ paths:
         Get Account Orders
       description: |
         Returns the Orders for the given accounts sorted descending, most recent order first.
-
-        #### Stateless Connection
-        Since the web-API provides a stateless connection, it only supports fetching the current state of Orders. If it is needed to display the intermediate state changes, it should be executed at client level.
+        Intermediate order state changes are not available.
 
 
       operationId: getOrdersByAccounts
@@ -2048,11 +2046,10 @@ paths:
           type: string
           description: |
             Start Date from which to pull older orders. `MM-DD-YYYY` format. Limited to 14 days prior to the current date.
-            Note that Pagination does not apply for requests that include this parameter.
           required: false
         - name: account_keys
           in: path
-          description: 1 or more Account Keys
+          description: 1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.
           type: array
           items:
             type: string
@@ -2062,7 +2059,7 @@ paths:
           type: string
           description: |
             Conveys the number of order items to return in the request. (Default page size is 600).
-            Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.
+            Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.  Pagination applies to current and historical orders separately when a value for since is specified.
           required: false
         - name: pageNum
           in: query
