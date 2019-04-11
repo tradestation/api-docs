@@ -2024,7 +2024,8 @@ paths:
         Get Account Orders
       description: |
         Returns the Orders for the given accounts sorted descending, most recent order first.
-        Intermediate order state changes are not available.
+        
+        Note: Intermediate order state changes are not available.
 
 
       operationId: getOrdersByAccounts
@@ -2059,7 +2060,7 @@ paths:
           type: string
           description: |
             Conveys the number of order items to return in the request. (Default page size is 600).
-            Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.  Pagination applies to current and historical orders separately when a value for since is specified.
+            Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.  Pagination applies to current and historical orders separately when a value for "since" is specified.
           required: false
         - name: pageNum
           in: query
