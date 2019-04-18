@@ -3707,6 +3707,9 @@ definitions:
                 type: number
             DayTradeExcess:
                 description: (Equities) (Buying Power Available - Buying Power Used) / Buying Power Multiplier, (Futures) (Cash + UnrealizedGains) - Buying Power Used
+                type: number            
+            DayTradeOpenOrderMargin:
+                description: (Futures) Money field representing the current amount of money reserved for open orders.
                 type: number
             DayTrades:
                 description: (Equities) The number of day trades placed in the account within the previous 4 trading days. A day trade refers to buying then selling or selling short then buying to cover the same security on the same trading day.
@@ -3874,6 +3877,9 @@ definitions:
                 description: Indicates the value of real-time buying power.
             RealTimeCostOfPositions:
                 description: (Equities) Total real-time cost of all open positions. Positions are based on the actual entry price.
+                type: number
+            RealTimeDayTradeMargin:
+                description: (Futures) Money field representing the current total amount of futures day trade margin.
                 type: number
             RealTimeDayTradingMarginableEquitiesBuyingPower:
                 description: (Equities) The intraday buying power for trading marginable equities.
