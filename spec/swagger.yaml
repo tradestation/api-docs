@@ -4058,7 +4058,7 @@ definitions:
             ContractExpireDate:
                 minLength: 1
                 type: string
-                description: Contract expiration date for orders specified in contracts.
+                description: Contract expiration date for positions specified in contracts.
             ConversionRate:
                 type: number
                 description: The currency conversion rate that is used in order to convert from the currency of the symbol to the currency of the account.
@@ -4121,7 +4121,7 @@ definitions:
                 description: The requested number of shares or contracts for a particular order.
             RequiredMargin:
                 type: number
-                description: The margin account balance denominated in the account currency required for entering and maintaining a position on margin.
+                description: (Forex) The margin account balance denominated in the account currency required for entering and maintaining a position on margin.
             SettlePrice:
                 type: number
                 description: The average price at which a contract trades, calculated at both the open and close of each trading day, and it is important because it determines whether a trader is required to post additional margins.
