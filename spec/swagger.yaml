@@ -4076,6 +4076,10 @@ definitions:
                 minLength: 1
                 type: string
                 description: The base currency of the symbol.
+            DayTradeMargin:
+                minLength: 1
+                type: string
+                description: (Futures) DayTradeMargin used on open positions.  Currently only calculated for futures positions.  Other asset classes will have a 0 for this value.
             Description:
                 minLength: 1
                 type: string
