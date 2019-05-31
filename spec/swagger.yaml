@@ -3361,7 +3361,7 @@ definitions:
                 type: number
                 description: 'The maximum price a commodity futures contract may be traded for the current session.'
             MaxPriceDisplay:
-                type: number
+                type: string
                 description: 'MaxPrice formatted for display.'
             MinMove:
                 type: number
@@ -3370,7 +3370,7 @@ definitions:
                 type: number
                 description: 'The minimum price a commodity futures contract may be traded for the current session.'
             MinPriceDisplay:
-                type: number
+                type: string
                 description: 'MinPrice formatted for display.'
             NameExt:
                 type: string
@@ -4076,6 +4076,10 @@ definitions:
                 minLength: 1
                 type: string
                 description: The base currency of the symbol.
+            DayTradeMargin:
+                minLength: 1
+                type: string
+                description: (Futures) DayTradeMargin used on open positions.  Currently only calculated for futures positions.  Other asset classes will have a 0 for this value.
             Description:
                 minLength: 1
                 type: string
@@ -4083,7 +4087,7 @@ definitions:
             DisplayName:
                 minLength: 1
                 type: string
-                description: The friendly name of the TradeStation account that is being used for a particular position.
+                description: DO NOT USE - Marked for deprecation. 
             InitialMargin:
                 type: number
                 description: The margin account balance denominated in the account currency required for entering a position on margin.
