@@ -505,9 +505,9 @@ securityDefinitions:
 
       {
 
-          "RefreshToken": "eGlhc2xvTTVJaEdXMWs4VjhraWx4bk5QMHJMaA==",
-          "expires_in": 29367,
-          "token": "eGlhc2xvozT2IxWnVITmdwGVFPQ==",
+          "refresh_token": "eGlhc2xvTTVJaEdXMWs4VjhraWx4bk5QMHJMaA==",
+          "expires_in": 1200,
+          "access_token": "eGlhc2xvozT2IxWnVITmdwGVFPQ==",
           "token_type": "AccessToken",
           "userid": "testUser"
       }
@@ -544,9 +544,8 @@ securityDefinitions:
       - Content-Length = Length of body information in UTF8
 
       *Required form parameters:*
-      - grant_type:  "refresh_token" is the expected valur for this grant type
-      - client_id: The client application’s API key
-      - redirect_uri: A valid Uri
+      - grant_type:  "refresh_token" is the expected value for this grant type
+      - client_id: The client application’s API key      
       - refresh_token: The Refresh Token value generated when to original Access token was requested.
       - client_secret: The secret for the client application’s API Key
       - response_type: "token" is the expected value for the response type.
