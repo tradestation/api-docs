@@ -940,7 +940,7 @@ paths:
       summary: |
         Get Quote
       description: |
-        Gets the latest Level2 Quote for the given Symbol
+        Gets the latest Level 1 Quote for the given Symbol
       operationId: getQuotes
       tags:
         - marketdata
