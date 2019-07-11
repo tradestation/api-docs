@@ -3569,7 +3569,7 @@ definitions:
         properties:
             Alias:
                 type: string
-                description: 'User defined name.'
+                description: 'A user specified name that identifies a TradeStation account.'
             AltId:
                 type: string
                 description: 'TradeStation Alternate ID.'
@@ -3653,7 +3653,7 @@ definitions:
         properties:
             Alias:
                 type: string
-                description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
+                description: A user specified name that identifies a TradeStation account.
             BODAccountBalance:
                 description: (Equities) Deprecated. The amount of cash in the account at the beginning of the day. Redundant with BODNetCash.
                 type: number
@@ -4011,7 +4011,7 @@ definitions:
             AccountID:
                 minLength: 1
                 type: string
-                description: Internal ID for the TradeStation account that is being used for a particular order.
+                description: TradeStation account that holds the position.
             AccountMarketValue:
                 type: number
                 description: The actual market value denominated in the account currency of the open position.
@@ -4023,7 +4023,7 @@ definitions:
                 description: The total cost denominated in the account currency of the open position.
             Alias:
                 type: string
-                description: TradeStation only field. A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
+                description: A user specified name that identifies a TradeStation account.
             AskPrice:
                 type: number
                 description: The price at which a security, futures contract, or other financial instrument is offered for sale.
@@ -4067,6 +4067,9 @@ definitions:
             ConversionRate:
                 type: number
                 description: The currency conversion rate that is used in order to convert from the currency of the symbol to the currency of the account.
+            CostBasisCalculation:
+                type: string
+                description: Only applies to margin accounts based in Japan. When set to 'FSA' an additional property, UnrealizedExpenses, will be included in the payload.  For other account types, the value will always be 'None'
             Country:
                 minLength: 1
                 type: string
@@ -4116,6 +4119,9 @@ definitions:
             MarketValue:
                 type: number
                 description: The actual market value denominated in the symbol currency of the open position. This value is updated in real-time.
+            MarkToMarketPrice:
+                type: number
+                description: Only applies to equity and option positions.  When AssetType is 'EQ' or 'OP', this value will be included in the payload to convey the cost-basis price for a position. This is used to calculate the profit and loss incurred during the current session.
             OpenProfitLoss:
                 type: number
                 description: The unrealized profit or loss denominated in the symbol currency on the position held, calculated based on the average price of the position.
@@ -4149,9 +4155,15 @@ definitions:
                 minLength: 1
                 type: string
                 description: Time the position was placed.
+            TodaysProfitLoss:
+                type: number
+                description: Only applies to equity and option positions.  When AssetType is 'EQ' or 'OP', this value will be included in the payload to convey the unrealized profit or loss denominated in the account currency on the position held, calculated using the MarkToMarketPrice.
             TotalCost:
                 type: number
                 description: The total cost denominated in the account currency of the open position.
+            UnrealizedExpenses:
+                type: number
+                description: Only applies to margin accounts based in Japan.  When CostBasisCalculation is to 'FSA', UnrealizedExpenses, will be included in the payload, and will convey interest expenses and buy order commissions.
         required:
         - AccountID
         - AccountMarketValue
@@ -4168,6 +4180,7 @@ definitions:
         - BigPointValue
         - ContractExpireDate
         - ConversionRate
+        - CostBasisCalculation
         - Country
         - Currency
         - Description
@@ -4179,6 +4192,7 @@ definitions:
         - LongShort
         - MaintenanceMargin
         - MarketValue
+        - MarkToMarketPrice
         - OpenProfitLoss
         - OpenProfitLossPercent
         - OpenProfitLossQty
@@ -4189,6 +4203,7 @@ definitions:
         - StrikePriceDisplay
         - Symbol
         - TimeStamp
+        - TodaysProfitLoss
         - TotalCost
         type: object
     minItems: 1
@@ -4220,7 +4235,7 @@ definitions:
                     - Add Liquidity
             Alias:
                 type: string
-                description: TradeStation only field.  A user can assign an Alias to an account so as to more easily identify an account. This will display instead of the standard 8 digit account number.
+                description: A user specified name that identifies a TradeStation account.
             AssetType:
                 minLength: 1
                 type: string
@@ -4244,6 +4259,9 @@ definitions:
             ConversionRate:
                 type: number
                 description: Conversion rate used to translate the position’s market value and PNL from symbol currency to account currency.
+            CostBasisCalculation:
+                type: string
+                description: Only applies to margin accounts based in Japan. When set to 'FSA' an additional property, RealizedExpenses, will be included in the payload.  For other account types, the value will always be 'None'
             Country:
                 type: string
                 description: The country of origin for the symbol.
@@ -4364,7 +4382,7 @@ definitions:
                         TimeExecuted:
                             minLength: 1
                             type: string
-                            description: Time the order was placed.
+                            description: The time the order was filled or canceled.
                         Type:
                             minLength: 1
                             type: string
@@ -4407,7 +4425,7 @@ definitions:
                 uniqueItems: true
             LimitPrice:
                 type: number
-                description: The limit price for Limit orders.
+                description: The limit price for Limit and Stop Limit orders.
             LimitPriceText:
                 minLength: 1
                 type: string
@@ -4426,13 +4444,16 @@ definitions:
                 description: ID of the current order.
             Originator:
                 type: number
-                description: Account name that generates the order.
+                description: Identifies the TradeStation account that originated a particular order.
             Quantity:
                 type: number
-                description: Gets the quantity of shares or contracts requested for the order.
+                description: The requested number of shares or contracts for a particular order.
             QuantityLeft:
                 type: number
-                description: Gets the number of unfilled shares or contracts for the current order.
+                description: In a partially filled order, this is the number of shares or contracts that were unfilled.
+            RealizedExpenses:
+                type: number
+                description: Only applies to margin accounts based in Japan.  When CostBasisCalculation is to 'FSA', RealizedExpenses, will be included in the payload, and will convey realized interest expenses and commissions for closing orders.
             RejectReason:
                 type: string
                 description: If an order has been rejected, this will display the rejection reason.
@@ -4523,6 +4544,7 @@ definitions:
         - CommissionFee
         - ContractExpireDate
         - ConversionRate
+        - CostBasisCalculation
         - Denomination
         - DisplayType
         - Duration
