@@ -4365,7 +4365,18 @@ definitions:
                         Side:
                             minLength: 1
                             type: string
-                            description: Identifies whether the order is a buy or sell.
+                            description: |
+                              Identifies whether the order is a buy or sell.
+
+                              * `T` Sell Short
+                              * `C` Buy to Cover
+                              * `B` Buy
+                              * `S` Sell
+                            enum:
+                              - T
+                              - C
+                              - B
+                              - S
                         StopPrice:
                             type: number
                             description: The stop price for stop orders.
@@ -4386,10 +4397,12 @@ definitions:
                         Type:
                             minLength: 1
                             type: string
-                            description: Type of order
+                            description: Type of order.
                             enum:
                                 - Sell
                                 - Buy
+                                - Buy to Cover
+                                - Sell Short
                         Year:
                             type: number
                             description: Represents the expiration year if the order is an option.
@@ -4533,6 +4546,9 @@ definitions:
                 enum:
                     - Sell
                     - Buy
+                    - Buy to Cover
+                    - Sell Short
+
             UnbundledRouteFee:
                 type: number
                 description: Will contain a value if the order has received a routing fee.
