@@ -3349,9 +3349,15 @@ definitions:
           minLength: 1
           type: string
           description: Last price formatted for display.
+        LastSize:
+          type: number
+          description: Number of contracts/shares last traded.
         LastTradingDate:
           type: string
           description: The final day that a futures contract may trade or be closed out before the delivery of the underlying asset or cash settlement must occur.
+        LastVenue:
+          type: string
+          description: Exchange name of last trade.
         Low:
           type: number
           description: Lowest price of stock.
@@ -3466,6 +3472,8 @@ definitions:
         - PreviousClosePriceDisplay
         - Last
         - LastPriceDisplay
+        - LastSize
+        - LastVenue
         - Ask
         - AskPriceDisplay
         - AskSize
@@ -4130,7 +4138,10 @@ definitions:
           description: The actual market value denominated in the symbol currency of the open position. This value is updated in real-time.
         MarkToMarketPrice:
           type: number
-          description: 'Only applies to equity and option positions.  When AssetType is ''EQ'' or ''OP'', this value will be included in the payload to convey the cost-basis price for a position. This is used to calculate the profit and loss incurred during the current session.'
+          description: |
+            The "MarkToMarket" price is a weighted average price.  The "weight" given to each price in the calculation of the average is the number of shares.  Sales or short positions have negative weights.  Purchases or long positions have positive weights.  All shares entered on prior days are valued at the preceding day's closing price.  All shares bought or sold today are valued at the price at which the shares were bought or sold today.
+
+            The value of "Today's Profit/Loss" (of the shares in an open position) is the difference between the current market price and the "MarkToMarket" price, multiplied by the number of shares currently held.
         OpenProfitLoss:
           type: number
           description: 'The unrealized profit or loss denominated in the symbol currency on the position held, calculated based on the average price of the position.'

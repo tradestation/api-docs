@@ -30,6 +30,7 @@ Developer Workflow
 ### Install
 
 1. Install [Node JS](https://nodejs.org/)
+    + Node JS 11.x or earlier version is recommended, there is a known compatibility issue with Gulp 3.x and Node 12.x (or later).
 2. Clone repo and `cd`
     + Run `npm install`
 

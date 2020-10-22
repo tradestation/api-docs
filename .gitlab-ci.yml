@@ -10,6 +10,5 @@ test:
     - npm install -f
     - npm test
   tags:
-    - k8s
-    - linux
+    - nite
   image: 116738426468.dkr.ecr.us-east-2.amazonaws.com/runners/node:nvm-ubuntu    
