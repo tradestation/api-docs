@@ -3453,6 +3453,13 @@ definitions:
         Volume:
           type: number
           description: The number of shares or contracts traded in a security or an entire market during a given period of time.
+        VWAP:
+          type: number
+          description: |
+            VWAP (Volume Weighted Average Price) is a measure of the price at which the majority of a given day's trading in a given security took place. It is calculated by adding the dollars traded for the average price of the bar throughout the day ("avgprice" x "number of shares traded" per bar) and dividing by the total shares traded for the day. The VWAP is calculated throughout the day by the TradeStation data-network.
+        VWAPDisplay:
+          type: string
+          description: VWAP formatted for display.
       required:
         - Symbol
         - SymbolRoot
@@ -3505,6 +3512,8 @@ definitions:
         - DataFeed
         - Restrictions
         - TradeTime
+        - VWAP
+        - VWAPDisplay
       type: object
     minItems: 1
     type: array
