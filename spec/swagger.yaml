@@ -4703,23 +4703,8 @@ definitions:
       Route:
         minLength: 1
         type: string
-        enum:
-          - Intelligent
-          - AMEX
-          - ARCA
-          - AUTO
-          - BATS
-          - BTRD
-          - BYX
-          - CTDL
-          - EDGA
-          - EDGX
-          - GFLO
-          - MIXI
-          - NITE
-          - NQBX
-          - NSDQ
-          - NYSE
+        description: |
+          Must be UPPERCASE. Valid values can be obtained from [Retrieve Available Exchanges](#operation/getExchanges)
       Symbol:
         description: Must be UPPERCASE
         minLength: 1
@@ -4902,85 +4887,8 @@ definitions:
       Route:
         minLength: 1
         type: string
-        enum:
-          - Intelligent
-          - AMEX
-          - ARCA
-          - AUTO
-          - BATS
-          - BEAR
-          - BOX
-          - BYX
-          - CFE
-          - CME
-          - CNX
-          - CSFB
-          - CSRS
-          - CSRX
-          - CTDL
-          - EDGA
-          - EDGX
-          - EURX
-          - IBFX
-          - ICE
-          - ICEB
-          - ICEE
-          - IEXG
-          - KCG
-          - NQBX
-          - NSDQ
-          - NYSE
-          - SIG
-          - SOHO
-          - WEX2
-          - WEX
         description: |
-          Must be UPPERCASE
-          * AMEX - `AMEX` - `EQ`
-          * ARCA - `ARCX` - `EQ`
-          * BATS - `BATS` - `EQ`
-          * BEAR - `SuperDOT` - `EQ`
-          * BOX - `BOX` - `OP`
-          * BYX - `BYX` - `EQ`
-          * CFE - `CFE` - `FU`
-          * CME - `CBOT` - `FU`
-          * CME - `CME` - `FU`
-          * CME - `COMEX` - `FU`
-          * CME - `NYMEX` - `FU`
-          * CNX - `Current Spot FX` - `FX`
-          * CSFB - `CSFB` - `EQ`
-          * CSRS - `CSRS` - `EQ`
-          * CSRS - `TWAP-ALGO` - `EQ`
-          * CSRS - `VWAP-ALGO` - `EQ`
-          * CSRX - `POV-ALGO` - `EQ`
-          * CTDL - `CDRG` - `EQ`
-          * EDGA - `EDGA` - `EQ`
-          * EDGX - `EDGX` - `EQ`
-          * EURX - `EUREX` - `FU`
-          * IBFX - `Interbank Fx` - `FX`
-          * ICE - `ICEUS` - `FU`
-          * ICEB - `ICEBS` - `FU`
-          * ICEE - `ICEEU` - `FU`
-          * IEXG - `IEX` - `EQ`
-          * KCG - `Knight Link` - `EQ`
-          * NQBX - `NQBX` - `EQ`
-          * NSDQ - `NASDAQ Type 1 Retail Orders` - `EQ`
-          * NSDQ - `NSDQ` - `EQ`
-          * NYSE - `NYSE Type 1 Retail Orders` - `EQ`
-          * NYSE - `NYSE` - `EQ`
-          * SIG - `BATS` - `OP`
-          * SIG - `C2` - `OP`
-          * SIG - `EDGO` - `OP`
-          * SIG - `GMNI` - `OP`
-          * SIG - `ISE Mercury` - `OP`
-          * SIG - `MIAX` - `OP`
-          * SIG - `MPRL` - `OP`
-          * SIG - `Nasdaq BX` - `OP`
-          * SOHO - `SOHO` - `EQ`
-          * WEX - `Sweep-ALGO` - `OP`
-          * WEX - `SweepPI-ALGO` - `OP`
-          * WEX2 - `Sweep-ALGO` - `EQ`
-          * WEX2 - `SweepPI-ALGO` - `EQ`
+          Must be UPPERCASE. Valid values can be obtained from [Retrieve Available Exchanges](#operation/getExchanges)
       Symbol:
         description: Must be UPPERCASE
         minLength: 1
