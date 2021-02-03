@@ -167,7 +167,7 @@ info:
 
     For example:
     ```
-    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
+    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017
 
     HTTP/1.1 200 OK
     Date: Wed, 14 Jun 2017 01:17:36 GMT
@@ -232,7 +232,7 @@ info:
 
     Example of 2 JSON objects in 1 chunk:
     ```
-    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
+    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017
 
     HTTP/1.1 200 OK
     Date: Wed, 14 Jun 2017 01:17:36 GMT
@@ -250,7 +250,7 @@ info:
 
     Example of 1 JSON objects split across 2 chunks:
     ```
-    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017?access_token=…
+    GET https://sim.api.tradestation.com/v2/stream/barchart/$DJI/1/Minute/12-26-2016/01-24-2017
 
     HTTP/1.1 200 OK
     Date: Wed, 14 Jun 2017 01:17:36 GMT
@@ -423,7 +423,7 @@ securityDefinitions:
       with TradeStation directly and authorize the Client application to make
       calls on their behalf. Access Tokens obtained via the authorization code
       Grant Type can be refreshed, they will expire in 20 minutes of the time
-      issued.
+      issued. These access tokens are accepted in the HTTP `Authorization` header.
 
       **Step-by-Step**
 
@@ -512,7 +512,6 @@ securityDefinitions:
           "userid": "testUser"
       }
       ```
-
     type: oauth2
     flow: accessCode
     authorizationUrl: "https://api.tradestation.com/v2/security/authorize"
@@ -628,11 +627,6 @@ paths:
       tags:
         - marketdata
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: symbol
           in: path
           type: string
@@ -646,7 +640,7 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl "https://api.tradestation.com/v2/data/symbol/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbol/AMZN"
       responses:
         '200':
           description: symbol response
@@ -700,7 +694,7 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl "https://api.tradestation.com/v2/data/symbols/suggest/A?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbols/suggest/A"
       parameters:
         - name: $top
           in: query
@@ -711,11 +705,6 @@ paths:
           in: query
           type: string
           description: An OData filter to apply to the results
-          required: true
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
           required: true
         - name: text
           in: path
@@ -769,12 +758,11 @@ paths:
             - marketdata
         - OAuth2-Refresh-Token:
             - marketdata
+      x-code-samples:
+        - lang: shell
+          source: |
+            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbols/search?N=MSFT&C=Stock&Cnt=US"
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: criteria
           in: path
           type: string
@@ -953,13 +941,8 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl "https://api.tradestation.com/v2/data/quote/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/quote/AMZN"
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: symbols
           in: path
           description: 1 or more Symbol Names (comma-separated)
@@ -1025,16 +1008,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/changes/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/quote/changes/AMZN"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: symbols
           in: path
           description: 1 or more Symbol Names (comma-separated)
@@ -1107,16 +1085,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN?access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: symbols
           in: path
           description: 1 or more Symbol Names (comma-separated)
@@ -1178,16 +1151,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: SessionTemplate
           in: query
           description: 'United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.'
@@ -1278,16 +1246,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: SessionTemplate
           in: query
           description: 'United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.'
@@ -1383,16 +1346,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: SessionTemplate
           in: query
           description: 'United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.'
@@ -1490,16 +1448,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: SessionTemplate
           in: query
           description: 'United States (US) stock market session templates, that extend bars returned to include those outside of the regular trading session. Ignored for non-US equity symbols.'
@@ -1596,16 +1549,11 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Accept: application/vnd.tradestation.streams+json" "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost&access_token=1JUjFiNFFGWEdDM"
+            curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost"
       produces:
         - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: symbol
           in: path
           description: A Symbol Name
@@ -1674,12 +1622,10 @@ paths:
             - marketdata
         - OAuth2-Refresh-Token:
             - marketdata
-      parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
+      x-code-samples:
+        - lang: shell
+          source: |
+            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbollists"
       responses:
         '200':
           description: SymbolLists response
@@ -1727,11 +1673,6 @@ paths:
         - OAuth2-Refresh-Token:
             - marketdata
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: symbol_list_id
           in: path
           description: A valid Symbol List ID
@@ -1788,11 +1729,6 @@ paths:
         - OAuth2-Refresh-Token:
             - marketdata
       parameters:
-        - name: access_token
-          in: query
-          description: A valid OAuth2 token used to authorize access to the resource
-          type: string
-          required: true
         - name: symbol_list_id
           in: path
           description: A valid Symbol List ID
@@ -1849,11 +1785,6 @@ paths:
         - OAuth2-Refresh-Token:
             - readaccount
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: user_id
           in: path
           type: string
@@ -1912,11 +1843,6 @@ paths:
         - OAuth2-Refresh-Token:
             - readaccount
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: account_keys
           in: path
           description: '1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.'
@@ -1975,11 +1901,6 @@ paths:
         - OAuth2-Refresh-Token:
             - readaccount
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: account_keys
           in: path
           description: '1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.'
@@ -2048,11 +1969,6 @@ paths:
         - OAuth2-Refresh-Token:
             - readaccount
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: since
           in: query
           type: string
@@ -2165,11 +2081,6 @@ paths:
         - OAuth2-Refresh-Token:
             - trade
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: body
           in: body
           required: true
@@ -2222,11 +2133,6 @@ paths:
         - OAuth2-Refresh-Token:
             - trade
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: body
           in: body
           required: true
@@ -2279,11 +2185,6 @@ paths:
         - OAuth2-Refresh-Token:
             - trade
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: order_id
           in: path
           type: string
@@ -2338,11 +2239,6 @@ paths:
       tags:
         - order-execution
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: order_id
           in: path
           type: string
@@ -2430,11 +2326,6 @@ paths:
         - OAuth2-Refresh-Token:
             - trade
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: body
           in: body
           required: true
@@ -2521,11 +2412,6 @@ paths:
         - OAuth2-Refresh-Token:
             - trade
       parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
         - name: body
           in: body
           required: true
@@ -2579,12 +2465,6 @@ paths:
             - trade
         - OAuth2-Refresh-Token:
             - trade
-      parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
       responses:
         '200':
           description: Get Activation Triggers Response
@@ -2631,12 +2511,6 @@ paths:
       operationId: getExchanges
       tags:
         - order-execution
-      parameters:
-        - name: access_token
-          in: query
-          type: string
-          description: A valid OAuth2 token used to authorize access to the resource
-          required: true
       responses:
         '200':
           description: Get Exchange List
