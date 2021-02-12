@@ -37,3 +37,4 @@ node_modules
 
 # ide dingleberries
 .vscode
+.vs

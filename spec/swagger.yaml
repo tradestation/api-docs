@@ -3586,7 +3586,7 @@ definitions:
             type: object
             properties:
               Currency:
-                type: number
+                type: string
                 description: The base currency of the symbol.
               Profit:
                 type: number
