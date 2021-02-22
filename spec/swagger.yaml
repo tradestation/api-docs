@@ -5382,7 +5382,7 @@ definitions:
         maximum: 1
       bit6:
         type: integer
-        description: '`UPDATE_CORRECTION`:'
+        description: '`UPDATE_CORRECTION`: Set when there was an update due to a market correction'
         minimum: 0
         maximum: 1
       bit7:
@@ -5392,17 +5392,17 @@ definitions:
         maximum: 1
       bit8:
         type: integer
-        description: '`EXTENDED_BAR`'
+        description: '`EXTENDED_BAR`: Set when the bar is linked with an extended transaction linked with the primary stream (i.e. Conversions)'
         minimum: 0
         maximum: 1
       bit19:
         type: integer
-        description: '`PREV_DAY_CORRECTION`'
+        description: '`PREV_DAY_CORRECTION`: Set when there was an update due to prev.day correction'
         minimum: 0
         maximum: 1
       bit23:
         type: integer
-        description: '`AFTER_MARKET_CORRECTION`'
+        description: '`AFTER_MARKET_CORRECTION`: Set when there was an update due to an after market correction'
         minimum: 0
         maximum: 1
       bit24:
@@ -5412,17 +5412,17 @@ definitions:
         maximum: 1
       bit25:
         type: integer
-        description: '`EMPTY_BAR`'
+        description: '`EMPTY_BAR`: Set when the bar is an empty bar – no market data for the bar period'
         minimum: 0
         maximum: 1
       bit26:
         type: integer
-        description: '`BACKFILL_DATA`'
+        description: '`BACKFILL_DATA`: Set when the bar is sent during backfill historical processing'
         minimum: 0
         maximum: 1
       bit27:
         type: integer
-        description: '`ARCHIVE_DATA`'
+        description: '`ARCHIVE_DATA`: Set when the bar is sent during archive historical processing'
         minimum: 0
         maximum: 1
       bit28:
