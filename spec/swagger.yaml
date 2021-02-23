@@ -1010,7 +1010,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/quote/changes/AMZN"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: symbols
@@ -1087,7 +1086,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/quote/snapshots/AMZN"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: symbols
@@ -1153,7 +1151,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016?SessionTemplate=USEQPreAndPost"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: SessionTemplate
@@ -1248,7 +1245,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/12-01-2016/12-16-2016?SessionTemplate=USEQPreAndPost"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: SessionTemplate
@@ -1348,7 +1344,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute/25/12-01-2016?SessionTemplate=USEQPreAndPost"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: SessionTemplate
@@ -1450,7 +1445,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/barchart/AMZN/5/Minute?SessionTemplate=USEQPreAndPost&daysBack=1&lastDate=12-01-2016"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: SessionTemplate
@@ -1537,7 +1531,7 @@ paths:
       summary: |
         Stream Tick Bars
       description: |
-        Streams tick bars data from a number of bars back, each bar returned separated by interval number of ticks.
+        Streams tick bars data for the regular session from a number of bars back, each bar returned separated by interval number of ticks.
       operationId: streamTickBars
       tags:
         - marketdata
@@ -1551,7 +1545,6 @@ paths:
           source: |
             curl -H "Accept: application/vnd.tradestation.streams+json" -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/stream/tickbars/AMZN/5/10?SessionTemplate=USEQPreAndPost"
       produces:
-        - text/plain
         - application/vnd.tradestation.streams+json
       parameters:
         - name: symbol
@@ -5469,7 +5462,7 @@ definitions:
         description: Epoch timestamp.
       TotalVolume:
         type: number
-        description: The total volume of all securities trading on a specific exchange.
+        description: The total volume of shares or contracts.
     required:
       - TimeStamp
       - Status
