@@ -2543,9 +2543,6 @@ paths:
 
 definitions:
   Error:
-    required:
-      - StatusCode
-      - Message
     properties:
       TraceId:
         type: string
@@ -2557,9 +2554,6 @@ definitions:
         type: string
     type: object
   BarchartError400:
-    required:
-      - StatusCode
-      - Message
     properties:
       StatusCode:
         type: integer
@@ -2570,9 +2564,6 @@ definitions:
           - Not a valid date.
           - Not a valid number.
   BarchartError404:
-    required:
-      - StatusCode
-      - Message
     properties:
       StatusCode:
         type: integer
@@ -2743,23 +2734,6 @@ definitions:
       Underlying:
         type: string
         description: The financial instrument on which an option contract is based or derived.
-    required:
-      - Category
-      - Currency
-      - Description
-      - DisplayType
-      - Exchange
-      - ExchangeID
-      - ExpirationDate
-      - FutureType
-      - LotSize
-      - MinMove
-      - Name
-      - OptionType
-      - PointValue
-      - Root
-      - StrikePrice
-      - Underlying
     type: object
 
 ##############################################################################
@@ -2874,22 +2848,6 @@ definitions:
         StrikePrice:
           type: number
           description: Displays strike price of an options contract; For Options symbols only.
-      required:
-        - Category
-        - Country
-        - Currency
-        - Description
-        - Exchange
-        - ExchangeID
-        - ExpirationDate
-        - FutureType
-        - LotSize
-        - MinMove
-        - Name
-        - OptionType
-        - PointValue
-        - Root
-        - StrikePrice
       type: object
     minItems: 0
     type: array
@@ -3039,24 +2997,6 @@ definitions:
         Underlying:
           type: string
           description: The financial instrument on which an option contract is based or derived.
-      required:
-        - Category
-        - Country
-        - Currency
-        - Description
-        - DisplayType
-        - Exchange
-        - ExchangeID
-        - ExpirationDate
-        - FutureType
-        - LotSize
-        - MinMove
-        - Name
-        - OptionType
-        - PointValue
-        - Root
-        - StrikePrice
-        - Underlying
       type: object
     minItems: 1
     type: array
@@ -3327,60 +3267,6 @@ definitions:
         VWAPDisplay:
           type: string
           description: VWAP formatted for display.
-      required:
-        - Symbol
-        - SymbolRoot
-        - Underlying
-        - Description
-        - AssetType
-        - Exchange
-        - FractionalDisplay
-        - DisplayType
-        - Open
-        - OpenPriceDisplay
-        - High
-        - HighPriceDisplay
-        - Low
-        - LowPriceDisplay
-        - PreviousClose
-        - PreviousClosePriceDisplay
-        - Last
-        - LastPriceDisplay
-        - LastSize
-        - LastVenue
-        - Ask
-        - AskPriceDisplay
-        - AskSize
-        - Bid
-        - BidPriceDisplay
-        - BidSize
-        - NetChange
-        - NetChangePct
-        - High52Week
-        - High52WeekTimeStamp
-        - High52WeekPriceDisplay
-        - Low52Week
-        - Low52WeekTimeStamp
-        - Low52WeekPriceDisplay
-        - Volume
-        - PreviousVolume
-        - Currency
-        - CountryCode
-        - StrikePrice
-        - StrikePriceDisplay
-        - NameExt
-        - MinMove
-        - TickSizeTier
-        - PointValue
-        - Close
-        - ClosePriceDisplay
-        - DailyOpenInterest
-        - IsDelayed
-        - DataFeed
-        - Restrictions
-        - TradeTime
-        - VWAP
-        - VWAPDisplay
       type: object
     minItems: 1
     type: array
@@ -3424,13 +3310,6 @@ definitions:
         minLength: 1
         type: string
         description: Thrid Level of Symbol List Hierarchy.
-    required:
-      - Category
-      - ID
-      - Name
-      - Path
-      - RootCategory
-      - Subcategory
     type: object
   SymbolListSymbolsDefinition:
     description: ''
@@ -3448,10 +3327,6 @@ definitions:
           minLength: 1
           type: string
           description: A unique series of letters assigned to a security for trading purposes.
-      required:
-        - Description
-        - Exchange
-        - Name
       type: object
     minItems: 1
     type: array
@@ -3525,14 +3400,6 @@ definitions:
           minLength: 1
           type: string
           description: String value for Status attribute.
-      required:
-        - Alias
-        - DisplayName
-        - IsStockLocateEligible
-        - Key
-        - Name
-        - Type
-        - TypeDescription
       type: object
     minItems: 1
     type: array
@@ -3587,10 +3454,6 @@ definitions:
               Symbol:
                 type: string
                 description: The name identifying the financial instrument for which the data is displayed.
-            required:
-              - Currency
-              - Profit
-              - Symbol
           type: array
         Commission:
           description: (Futures) The brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.
@@ -3685,30 +3548,6 @@ definitions:
               TodayRealTimeUnrealizedProfitLoss:
                 type: number
                 description: Indicates the value of today's real-time unrealized profit or loss.
-            required:
-              - BODAccountCashBalance
-              - BODCashBalance
-              - Commission
-              - Currency
-              - RealTimeAccountCashBalance
-              - RealTimeAccountMarginRequirement
-              - RealTimeAccountRealizedProfitLoss
-              - RealTimeAccountUnrealizedProfitLoss
-              - RealTimeCashBalance
-              - RealTimeRealizedProfitLoss
-              - RealTimeUnrealizedProfitLoss
-              - ToAccountConversionRate
-              - AccountOpenOrderInitMargin
-              - BODAccountOpenTradeEquity
-              - BODAccountSecurities
-              - BODOpenTradeEquity
-              - BODSecurities
-              - OpenOrderInitMargin
-              - RealTimeAccountInitMargin
-              - RealTimeAccountMaintenanceMargin
-              - RealTimeInitMargin
-              - RealTimeMaintenanceMargin
-              - TodayRealTimeUnrealizedProfitLoss
           minItems: 1
           type: array
           uniqueItems: true
@@ -3860,36 +3699,6 @@ definitions:
         UnsettledFund:
           description: (Equities) Funds received by TradeStation that are not settled from a transaction in the account.
           type: number
-      required:
-        - Alias
-        - BODEquity
-        - BODNetCash
-        - ClosedPositions
-        - DisplayName
-        - Key
-        - MarketValue
-        - Name
-        - RealTimeAccountBalance
-        - RealTimeBuyingPower
-        - RealTimeEquity
-        - RealTimeRealizedProfitLoss
-        - RealTimeUnrealizedGains
-        - RealTimeUnrealizedProfitLoss
-        - Status
-        - StatusDescription
-        - Type
-        - TypeDescription
-        - UnclearedDeposit
-        - BODOpenTradeEquity
-        - Commission
-        - Currency
-        - CurrencyDetails
-        - OpenOrderMargin
-        - RealTimeInitialMargin
-        - RealTimeMaintenanceMargin
-        - RealTimeTradeEquity
-        - SecurityOnDeposit
-        - TodayRealTimeTradeEquity
       type: object
     minItems: 1
     type: array
@@ -4060,47 +3869,6 @@ definitions:
         UnrealizedExpenses:
           type: number
           description: 'Only applies to margin accounts based in Japan.  When CostBasisCalculation is to ''FSA'', UnrealizedExpenses, will be included in the payload, and will convey interest expenses and buy order commissions.'
-      required:
-        - AccountID
-        - AccountMarketValue
-        - AccountOpenProfitLoss
-        - AccountTotalCost
-        - Alias
-        - AskPrice
-        - AskPriceDisplay
-        - AssetType
-        - AveragePrice
-        - AveragePriceDisplay
-        - BidPrice
-        - BidPriceDisplay
-        - BigPointValue
-        - ContractExpireDate
-        - ConversionRate
-        - CostBasisCalculation
-        - Country
-        - Currency
-        - Description
-        - DisplayName
-        - InitialMargin
-        - Key
-        - LastPrice
-        - LastPriceDisplay
-        - LongShort
-        - MaintenanceMargin
-        - MarketValue
-        - MarkToMarketPrice
-        - OpenProfitLoss
-        - OpenProfitLossPercent
-        - OpenProfitLossQty
-        - Quantity
-        - RequiredMargin
-        - SettlePrice
-        - StrikePrice
-        - StrikePriceDisplay
-        - Symbol
-        - TimeStamp
-        - TodaysProfitLoss
-        - TotalCost
       type: object
     minItems: 1
     type: array
@@ -4302,33 +4070,6 @@ definitions:
               Year:
                 type: number
                 description: Represents the expiration year if the order is an option.
-            required:
-              - Ask
-              - BaseSymbol
-              - Bid
-              - ExecPrice
-              - ExecQuantity
-              - ExpireDate
-              - Leaves
-              - LegNumber
-              - LimitPrice
-              - LimitPriceDisplay
-              - Month
-              - OpenOrClose
-              - OrderID
-              - OrderType
-              - PointValue
-              - PriceUsedForBuyingPower
-              - PutOrCall
-              - Quantity
-              - Side
-              - StopPrice
-              - StopPriceDisplay
-              - StrikePrice
-              - Symbol
-              - TimeExecuted
-              - Type
-              - Year
           minItems: 1
           type: array
           uniqueItems: true
@@ -4448,43 +4189,6 @@ definitions:
         UnbundledRouteFee:
           type: number
           description: Will contain a value if the order has received a routing fee.
-      required:
-        - AccountID
-        - AdvancedOptions
-        - Alias
-        - AssetType
-        - CommissionFee
-        - ContractExpireDate
-        - ConversionRate
-        - CostBasisCalculation
-        - Denomination
-        - DisplayType
-        - Duration
-        - ExecuteQuantity
-        - FilledCanceled
-        - FilledPrice
-        - FilledPriceText
-        - GroupName
-        - Legs
-        - LimitPrice
-        - LimitPriceText
-        - MinMove
-        - OrderID
-        - Originator
-        - Quantity
-        - QuantityLeft
-        - RejectReason
-        - Routing
-        - Spread
-        - Status
-        - StatusDescription
-        - StopPrice
-        - StopPriceText
-        - Symbol
-        - TimeStamp
-        - TriggeredBy
-        - Type
-        - UnbundledRouteFee
       type: object
     minItems: 1
     type: array
@@ -5106,12 +4810,6 @@ definitions:
       ShowOnlyQuantity:
         type: integer
         description: Equity and Futures Orders; Number of shares to submit to market at a time for this order
-    required:
-      - Route
-      - Duration
-      - Account
-      - OrderConfirmId
-      - EstimatedPrice
 
 ##############################################################################
   GroupOrderConfirmRequestDefinition:
@@ -5163,9 +4861,6 @@ definitions:
         enum:
           - Ok
           - Failed
-    required:
-      - Message
-      - OrderStatus
 
 ##############################################################################
   GroupOrderRequestDefinition:
@@ -5239,10 +4934,6 @@ definitions:
       Name:
         minLength: 1
         type: string
-    required:
-      - Description
-      - Key
-      - Name
     type: object
 
 ##############################################################################
@@ -5266,10 +4957,6 @@ definitions:
       Name:
         minLength: 1
         type: string
-    required:
-      - AssetType
-      - Id
-      - Name
     type: object
  
 ##############################################################################
@@ -5321,22 +5008,6 @@ definitions:
       UpVolume:
         type: number
         description: The volume of securities with a current price that is above the previous day`s close.
-    required:
-      - Close
-      - DownTicks
-      - DownVolume
-      - High
-      - Low
-      - Open
-      - Status
-      - TimeStamp
-      - TotalTicks
-      - TotalVolume
-      - UnchangedTicks
-      - UnchangedVolume
-      - UpTicks
-      - UpVolume
-      - OpenInterest
     type: object
 
 ##############################################################################
@@ -5428,24 +5099,6 @@ definitions:
         description: '`END_OF_HISTORY_STREAM`: Set on a bar to convey to consumer that all historical bars have been sent.  Historical bars are not guaranteed to be returned in order'
         minimum: 0
         maximum: 1
-    required:
-      - bit0
-      - bit1
-      - bit2
-      - bit3
-      - bit4
-      - bit5
-      - bit6
-      - bit7
-      - bit8
-      - bit19
-      - bit23
-      - bit24
-      - bit25
-      - bit26
-      - bit27
-      - bit28
-      - bit29
     type: object
 ##############################################################################
   TickbarDefinition:
@@ -5463,9 +5116,4 @@ definitions:
       TotalVolume:
         type: number
         description: The total volume of shares or contracts.
-    required:
-      - TimeStamp
-      - Status
-      - Close
-      - TotalVolume
     type: object
