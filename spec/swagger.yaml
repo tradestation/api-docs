@@ -630,7 +630,7 @@ paths:
         - name: symbol
           in: path
           type: string
-          description: Symbol to lookup
+          description: Symbol to lookup.
           required: true
       security:
         - OAuth2-Auth-Code:
@@ -643,7 +643,7 @@ paths:
             curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbol/AMZN"
       responses:
         '200':
-          description: symbol response
+          description: Symbol Response
           schema:
             $ref: '#/definitions/SymbolDefinition'
         '400':
@@ -659,7 +659,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -682,7 +682,7 @@ paths:
         Suggest Symbols
       description: |
         Suggests symbols semantically based upon partial input of symbol name,
-        company name, or description
+        company name, or description. Does not return Options symbols.
       operationId: suggestsymbols
       tags:
         - marketdata
@@ -699,21 +699,24 @@ paths:
         - name: $top
           in: query
           type: integer
-          description: The top number of results to return
-          required: true
+          description: The top number of results to return.
+          required: false
         - name: $filter
           in: query
           type: string
-          description: An OData filter to apply to the results
-          required: true
+          description: |-
+            An OData filter to apply to the results. Supports the `eq` and `neq` filter opeators. E.g. `AAP?$filter=Category%20neq%20%27Stock%27`.
+            Valid values are: `Category` (`Stock`, `Index`, `Future`, `Forex`), `Country` (E.g. `United States`, `GB`) `Currency` (E.g. `USD`, `AUD`),
+            and `Exchange` (E.g. `NYSE`).
+          required: false
         - name: text
           in: path
           type: string
-          description: Symbol text for suggestion
+          description: Symbol text for suggestion. Partial input of a symbol name, company name, or description.
           required: true
       responses:
         '200':
-          description: symbol suggest response
+          description: Symbol Suggest
           schema:
             $ref: '#/definitions/SymbolSuggestDefinition'
         '400':
@@ -890,7 +893,7 @@ paths:
           required: true
       responses:
         '200':
-          description: symbol search response
+          description: Symbol Search Response
           schema:
             $ref: '#/definitions/SymbolSearchDefinition'
         '400':
@@ -906,7 +909,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -929,7 +932,7 @@ paths:
       summary: |
         Get Quote
       description: |
-        Gets the latest Level 1 Quote for the given Symbol
+        Gets the latest Level 1 Quote for the given Symbol.
       operationId: getQuotes
       tags:
         - marketdata
@@ -945,7 +948,7 @@ paths:
       parameters:
         - name: symbols
           in: path
-          description: 1 or more Symbol Names (comma-separated)
+          description: 1 or more Symbol Names (comma-separated).
           type: array
           items:
             type: string
@@ -953,7 +956,7 @@ paths:
           required: true
       responses:
         '200':
-          description: Quote response
+          description: Quote Response
           schema:
             $ref: '#/definitions/QuoteDefinition'
         '400':
@@ -969,7 +972,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1029,7 +1032,7 @@ paths:
           required: true
       responses:
         '200':
-          description: Quote Stream response
+          description: Quote Stream Response
           schema:
             $ref: '#/definitions/QuoteDefinition'
         '400':
@@ -1090,7 +1093,7 @@ paths:
       parameters:
         - name: symbols
           in: path
-          description: 1 or more Symbol Names (comma-separated)
+          description: 1 or more Symbol Names (comma-separated).
           type: array
           items:
             type: string
@@ -1098,7 +1101,7 @@ paths:
           required: true
       responses:
         '200':
-          description: Quote Stream response
+          description: Quote Stream Response
           schema:
             $ref: '#/definitions/QuoteDefinition'
         '400':
@@ -1114,7 +1117,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1165,7 +1168,7 @@ paths:
           required: false
         - name: symbol
           in: path
-          description: A Symbol Name
+          description: A Symbol Name.
           type: string
           required: true
         - name: interval
@@ -1187,12 +1190,12 @@ paths:
           required: true
         - name: startDate
           in: path
-          description: 'The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600'
+          description: 'The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600.'
           type: string
           required: true
       responses:
         '200':
-          description: Barchart response
+          description: Barchart Response
           schema:
             $ref: '#/definitions/BarchartDefinition'
         '400':
@@ -1208,7 +1211,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/BarchartError404'
         '500':
@@ -1259,7 +1262,7 @@ paths:
           required: false
         - name: symbol
           in: path
-          description: A Symbol Name
+          description: A Symbol name.
           type: string
           required: true
         - name: interval
@@ -1281,17 +1284,17 @@ paths:
           required: true
         - name: startDate
           in: path
-          description: 'The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600'
+          description: 'The starting date to begin streaming bars from. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600.'
           type: string
           required: true
         - name: endDate
           in: path
-          description: 'The ending date for bars streamed. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600'
+          description: 'The ending date for bars streamed. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600.'
           type: string
           required: true
       responses:
         '200':
-          description: Barchart response
+          description: Barchart Response
           schema:
             $ref: '#/definitions/BarchartDefinition'
         '400':
@@ -1307,7 +1310,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/BarchartError404'
         '500':
@@ -1358,7 +1361,7 @@ paths:
           required: false
         - name: symbol
           in: path
-          description: A Symbol Name
+          description: A Symbol name.
           type: string
           required: true
         - name: interval
@@ -1380,7 +1383,7 @@ paths:
           required: true
         - name: barsBack
           in: path
-          description: 'The number of bars to stream, going back from time 00:00:00 of the day specified in lastDate'
+          description: 'The number of bars to stream, going back from time 00:00:00 of the day specified in lastDate.'
           type: integer
           minimum: 1
           maximum: 57600
@@ -1392,7 +1395,7 @@ paths:
           required: true
       responses:
         '200':
-          description: Barchart response
+          description: Barchart Response
           schema:
             $ref: '#/definitions/BarchartDefinition'
         '400':
@@ -1408,7 +1411,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/BarchartError404'
         '500':
@@ -1459,7 +1462,7 @@ paths:
           required: false
         - name: symbol
           in: path
-          description: A Symbol Name
+          description: A Symbol name.
           type: string
           required: true
         - name: interval
@@ -1487,12 +1490,12 @@ paths:
           required: true
         - name: lastDate
           in: query
-          description: 'The date to use as the end point when getting days back. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600'
+          description: 'The date to use as the end point when getting days back. Date is of form MM-DD-YYYY, and optionally can specify a starting time with format MM-DD-YYYYt08:00:00 and even further UTC offset with format MM-DD-YYYYt12:00:00-0600.'
           type: string
           required: false
       responses:
         '200':
-          description: Barchart response
+          description: Barchart Response
           schema:
             $ref: '#/definitions/BarchartDefinition'
         '400':
@@ -1508,7 +1511,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/BarchartError404'
         '500':
@@ -1554,21 +1557,21 @@ paths:
           required: true
         - name: interval
           in: path
-          description: Interval for each bar returned (in ticks)
+          description: Interval for each bar returned (in ticks).
           type: integer
           minimum: 1
           maximum: 64999
           required: true
         - name: barsBack
           in: path
-          description: 'The number of bars to stream, going back from current time'
+          description: The number of bars to stream, going back from current time.
           type: integer
           minimum: 1
           maximum: 10
           required: true
       responses:
         '200':
-          description: Tickbar response
+          description: Tickbar Response
           schema:
             $ref: '#/definitions/TickbarDefinition'
         '400':
@@ -1584,7 +1587,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol not found
+          description: Symbol Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1606,7 +1609,7 @@ paths:
       summary: |
         Get all Symbol Lists
       description: |
-        Gets a list of all Symbol Lists
+        Gets a list of all Symbol Lists.
       operationId: getSymbolLists
       tags:
         - marketdata
@@ -1621,7 +1624,7 @@ paths:
             curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbollists"
       responses:
         '200':
-          description: SymbolLists response
+          description: SymbolLists Response
           schema:
             $ref: '#/definitions/SymbolListsDefinition'
         '400':
@@ -1668,12 +1671,12 @@ paths:
       parameters:
         - name: symbol_list_id
           in: path
-          description: A valid Symbol List ID
+          description: A valid Symbol List ID.
           type: string
           required: true
       responses:
         '200':
-          description: SymbolList response
+          description: SymbolList Response
           schema:
             $ref: '#/definitions/SymbolListDefinition'
         '400':
@@ -1689,7 +1692,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol List not found
+          description: Symbol List Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1712,7 +1715,7 @@ paths:
       summary: |
         Get Symbols in a Symbol List
       description: |
-        Gets the Symbols for a specific Symbol List
+        Gets the Symbols for a specific Symbol List.
       operationId: getSymbolListSymbolsByID
       tags:
         - marketdata
@@ -1724,12 +1727,12 @@ paths:
       parameters:
         - name: symbol_list_id
           in: path
-          description: A valid Symbol List ID
+          description: A valid Symbol List ID.
           type: string
           required: true
       responses:
         '200':
-          description: SymbolList Symbols response
+          description: SymbolList Symbols Response
           schema:
             $ref: '#/definitions/SymbolListSymbolsDefinition'
         '400':
@@ -1745,7 +1748,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Symbol List not found
+          description: Symbol List Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1768,7 +1771,7 @@ paths:
       summary: |
         Get User Accounts
       description: |
-        Returns all accounts for the given user
+        Returns all accounts for the given user.
       operationId: getAccountsByUserID
       tags:
         - brokerage
@@ -1781,7 +1784,7 @@ paths:
         - name: user_id
           in: path
           type: string
-          description: User ID for Accounts Lookup
+          description: User ID for Accounts Lookup.
           required: true
       responses:
         '200':
@@ -1801,7 +1804,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: User not found
+          description: User Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1826,7 +1829,7 @@ paths:
       summary: |
         Get Account Balances
       description: |
-        Returns the Balance for the given accounts
+        Returns the Balance for the given accounts.
       operationId: getBalancesByAccounts
       tags:
         - brokerage
@@ -1838,7 +1841,7 @@ paths:
       parameters:
         - name: account_keys
           in: path
-          description: '1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.'
+          description: 1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.
           type: array
           items:
             type: string
@@ -1861,7 +1864,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Account not found
+          description: Account Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -1884,7 +1887,7 @@ paths:
       summary: |
         Get Account Positions
       description: |
-        Returns the Positions for the given accounts
+        Returns the Positions for the given accounts.
       operationId: getPositionsByAccounts
       tags:
         - brokerage
@@ -1896,7 +1899,7 @@ paths:
       parameters:
         - name: account_keys
           in: path
-          description: '1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.'
+          description: 1 to 25 account keys can be specified, comma separated. Recommended batch size is 10.
           type: array
           items:
             type: string
@@ -1927,7 +1930,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Account not found
+          description: Account Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -2008,7 +2011,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
         '404':
-          description: Account not found
+          description: Account Not Found
           schema:
             $ref: '#/definitions/Error'
         '500':
@@ -2181,7 +2184,7 @@ paths:
         - name: order_id
           in: path
           type: string
-          description: An existing Order ID
+          description: An existing Order ID.
           required: true
       responses:
         '200':
@@ -2216,8 +2219,7 @@ paths:
       summary: |
         Update Order
       description: |
-        Updates (Cancels & Replaces) an open order. You cannot update an order
-        that has been filled.
+        Updates (Cancels & Replaces) an open order. You cannot update an order that has been filled.
 
         Rules:
 
@@ -2235,7 +2237,7 @@ paths:
         - name: order_id
           in: path
           type: string
-          description: An existing Order ID
+          description: An existing Order ID.
           required: true
         - name: body
           in: body
@@ -2585,7 +2587,6 @@ definitions:
     description: Symbol metadata
     properties:
       Category:
-        minLength: 1
         type: string
         description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
       Country:
@@ -2596,7 +2597,6 @@ definitions:
           - DE
           - CA
       Currency:
-        minLength: 1
         type: string
         description: Displays the type of base currency for the selected symbol.
         enum:
@@ -2614,7 +2614,6 @@ definitions:
           - SEK
           - SGD
       Description:
-        minLength: 1
         type: string
         description: Displays the full name of the symbol.
       DisplayType:
@@ -2650,7 +2649,6 @@ definitions:
         type: string
         description: Element that references error.
       Exchange:
-        minLength: 1
         type: string
         description: Name of exchange where this symbol is traded in.
         enum:
@@ -2670,7 +2668,6 @@ definitions:
         type: number
         description: A unique numerical identifier for the Exchange.
       ExpirationDate:
-        minLength: 1
         type: string
         description: Displays the expiration date for a futures or options contract in UTC formatted time.
       ExpirationType:
@@ -2683,40 +2680,36 @@ definitions:
           * E - End of the month
           * "" - The term not be identified
       FutureType:
-        minLength: 1
         type: string
         description: Displays the type of future contract the symbol represents
-      IndustryCode:
-        type: string
-        description: (Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.
-      IndustryName:
-        type: string
-        description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
+      # IndustryCode:
+      #   type: string
+      #   description: (Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.
+      # IndustryName:
+      #   type: string
+      #   description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
     # Pending to be documented. It's comment-out due to information not available when descriptions were added to fields.
     #IsPreferredExchange:
     #    type: boolean
     #    description: '(Japan Only)'
-      LotSize:
-        type: number
-        description: (Japan Only) The currency amount associated with a lot (contract) in the specified account.
+      # LotSize:
+      #   type: number
+      #   description: (Japan Only) The currency amount associated with a lot (contract) in the specified account.
       MinMove:
         type: number
         description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
       Name:
-        minLength: 1
         type: string
         description: A unique series of letters assigned to a security for trading purposes.
       OptionType:
-        minLength: 1
         type: string
         description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
       PointValue:
         type: number
         description: Symbol`s point value.
       Root:
-        minLength: 1
         type: string
-        description: 'Displays the symbol of the stock on the stock exchange.'
+        description: 'The Symbol root.'
         # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
         #SectionClassCode:
         #    type: string
@@ -2725,9 +2718,9 @@ definitions:
         #SectionClassName:
         #    type: string
         #    description: '(Japan Only)'
-      SectorName:
-        type: string
-        description: (Japan Only) Displays the assigned economic sector to which the equity symbol belongs.
+      # SectorName:
+      #   type: string
+      #   description: (Japan Only) Displays the assigned economic sector to which the equity symbol belongs.
       StrikePrice:
         type: number
         description: Displays strike price of an options contract; For Options symbols only.
@@ -2743,11 +2736,9 @@ definitions:
     items:
       properties:
         Category:
-          minLength: 1
           type: string
           description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
         Country:
-          minLength: 1
           type: string
           description: The country of the exchange where the symbol is listed.
           enum:
@@ -2755,7 +2746,6 @@ definitions:
             - DE
             - CA
         Currency:
-          minLength: 1
           type: string
           description: Displays the type of base currency for the selected symbol.
           enum:
@@ -2773,124 +2763,6 @@ definitions:
             - SEK
             - SGD
         Description:
-          minLength: 1
-          type: string
-          description: Displays the full name of the symbol.
-        Error:
-          type: string
-          description: Element that references error.
-        Exchange:
-          minLength: 1
-          type: string
-          description: Name of exchange where this symbol is traded in.
-        ExchangeID:
-          type: number
-          description: A unique numerical identifier for the Exchange.
-        ExpirationDate:
-          minLength: 1
-          type: string
-          description: Displays the expiration date for a futures or options contract in UTC formatted time.
-        ExpirationType:
-          type: string
-          description: |
-            For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
-            * W - Weekly
-            * M - Monthly
-            * Q - Quartely
-            * E - End of the month
-            * "" - The term not be identified
-        FutureType:
-          minLength: 1
-          type: string
-          description: Displays the type of future contract the symbol represents.
-        IndustryCode:
-          type: string
-          description: (Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.
-        IndustryName:
-          type: string
-          description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
-            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
-            #IsPreferredExchange:
-            #    type: boolean
-            #    description: '(Japan Only)'
-        LotSize:
-          type: number
-          description: (Japan Only) The currency amount associated with a lot (contract) in the specified account.
-        MinMove:
-          type: number
-          description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
-        Name:
-          minLength: 1
-          type: string
-          description: A unique series of letters assigned to a security for trading purposes.
-        OptionType:
-          minLength: 1
-          type: string
-          description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
-        PointValue:
-          type: number
-          description: Symbol`s point value.
-        Root:
-          minLength: 1
-          type: string
-          description: Displays the symbol of the stock on the stock exchange.
-            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
-            #SectionClassCode:
-            #    type: string
-            #    description: '(Japan Only)'
-            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
-            #SectionClassName:
-            #    type: string
-            #    description: '(Japan Only)'
-        SectorName:
-          type: string
-          description: (Japan Only) Displays the assigned economic sector to which the equity symbol belongs.
-        StrikePrice:
-          type: number
-          description: Displays strike price of an options contract; For Options symbols only.
-      type: object
-    minItems: 0
-    type: array
-    uniqueItems: true
-
-##############################################################################
-
-  SymbolSearchDefinition:
-    description: ''
-    items:
-      properties:
-        Category:
-          minLength: 1
-          type: string
-          description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
-        Country:
-          minLength: 1
-          type: string
-          description: The country of the exchange where the symbol is listed.
-          enum:
-            - US
-            - DE
-            - CA
-        Currency:
-          minLength: 1
-          type: string
-          description: Displays the type of base currency for the selected symbol.
-          enum:
-            - USD
-            - AUD
-            - CAD
-            - CHF
-            - DKK
-            - EUR
-            - DBP
-            - HKD
-            - JPY
-            - NOK
-            - NZD
-            - SEK
-            - SGD
-        Description:
-          minLength: 1
           type: string
           description: Displays the full name of the symbol.
         DisplayType:
@@ -2926,14 +2798,12 @@ definitions:
           type: string
           description: Element that references error.
         Exchange:
-          minLength: 1
           type: string
           description: Name of exchange where this symbol is traded in.
         ExchangeID:
           type: number
           description: A unique numerical identifier for the Exchange.
         ExpirationDate:
-          minLength: 1
           type: string
           description: Displays the expiration date for a futures or options contract in UTC formatted time.
         ExpirationType:
@@ -2946,38 +2816,170 @@ definitions:
             * E - End of the month
             * "" - The term not be identified
         FutureType:
-          minLength: 1
           type: string
           description: Displays the type of future contract the symbol represents.
-        IndustryCode:
-          type: string
-          description: (Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.
-        IndustryName:
-          type: string
-          description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
+        # IndustryCode:
+        #   type: string
+        #   description: (Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.
+        # IndustryName:
+        #   type: string
+        #   description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #IsPreferredExchange:
             #    type: boolean
             #    description: '(Japan Only)'
-        LotSize:
-          type: number
-          description: (Japan Only) The currency amount associated with a lot (contract) in the specified account.
+        # LotSize:
+        #   type: number
+        #   description: (Japan Only) The currency amount associated with a lot (contract) in the specified account.
         MinMove:
           type: number
           description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
         Name:
-          minLength: 1
           type: string
           description: A unique series of letters assigned to a security for trading purposes.
         OptionType:
-          minLength: 1
           type: string
           description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
         PointValue:
           type: number
           description: Symbol`s point value.
         Root:
-          minLength: 1
+          type: string
+          description: Displays the symbol of the stock on the stock exchange.
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassCode:
+            #    type: string
+            #    description: '(Japan Only)'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #SectionClassName:
+            #    type: string
+            #    description: '(Japan Only)'
+        # SectorName:
+        #   type: string
+        #   description: (Japan Only) Displays the assigned economic sector to which the equity symbol belongs.
+        StrikePrice:
+          type: number
+          description: Displays strike price of an options contract; For Options symbols only.
+      type: object
+    minItems: 0
+    type: array
+    uniqueItems: true
+
+##############################################################################
+
+  SymbolSearchDefinition:
+    description: ''
+    items:
+      properties:
+        Category:
+          type: string
+          description: 'The type of financial instrument that the symbol represents, such as a stock, index, or mutual fund.'
+        Country:
+          type: string
+          description: The country of the exchange where the symbol is listed.
+          enum:
+            - US
+            - DE
+            - CA
+        Currency:
+          type: string
+          description: Displays the type of base currency for the selected symbol.
+          enum:
+            - USD
+            - AUD
+            - CAD
+            - CHF
+            - DKK
+            - EUR
+            - DBP
+            - HKD
+            - JPY
+            - NOK
+            - NZD
+            - SEK
+            - SGD
+        Description:
+          type: string
+          description: Displays the full name of the symbol.
+        DisplayType:
+          type: number
+          description: |
+            Symbol's price display type based on the following list:
+
+            * `0` "Automatic" Not used
+            * `1` 0 Decimals => 1
+            * `2` 1 Decimals => .1
+            * `3` 2 Decimals => .01
+            * `4` 3 Decimals => .001
+            * `5` 4 Decimals => .0001
+            * `6` 5 Decimals => .00001
+            * `7` Simplest Fraction
+            * `8` 1/2-Halves => .5
+            * `9` 1/4-Fourths => .25
+            * `10` 1/8-Eights => .125
+            * `11` 1/16-Sixteenths => .0625
+            * `12` 1/32-ThirtySeconds => .03125
+            * `13` 1/64-SixtyFourths => .015625
+            * `14` 1/128-OneTwentyEigths => .0078125
+            * `15` 1/256-TwoFiftySixths => .003906250
+            * `16` 10ths and Quarters => .025
+            * `17` 32nds and Halves => .015625
+            * `18` 32nds and Quarters => .0078125
+            * `19` 32nds and Eights => .00390625
+            * `20` 32nds and Tenths => .003125
+            * `21` 64ths and Halves => .0078125
+            * `22` 64ths and Tenths => .0015625
+            * `23` 6 Decimals => .000001
+        Error:
+          type: string
+          description: Element that references error.
+        Exchange:
+          type: string
+          description: Name of exchange where this symbol is traded in.
+        ExchangeID:
+          type: number
+          description: A unique numerical identifier for the Exchange.
+        ExpirationDate:
+          type: string
+          description: Displays the expiration date for a futures or options contract in UTC formatted time.
+        ExpirationType:
+          type: string
+          description: |
+            For options only. It indicates whether the option is a monthly, weekly, quarterly or end of month expiration.
+            * W - Weekly
+            * M - Monthly
+            * Q - Quartely
+            * E - End of the month
+            * "" - The term not be identified
+        FutureType:
+          type: string
+          description: Displays the type of future contract the symbol represents.
+        # IndustryCode:
+        #   type: string
+        #   description: (Japan Only) Displays a digit code that categorize companies by the type of business activities they engage in.
+        # IndustryName:
+        #   type: string
+        #   description: '(Japan Only) Displays the Reuters assigned industry name to which the equity symbol belongs.'
+            # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
+            #IsPreferredExchange:
+            #    type: boolean
+            #    description: '(Japan Only)'
+        # LotSize:
+        #   type: number
+        #   description: (Japan Only) The currency amount associated with a lot (contract) in the specified account.
+        MinMove:
+          type: number
+          description: 'Multiplying factor using the display type to determine the minimum price increment the asset trades in. For options the MinMove may vary. If the MinMove is negative, then the MinMove is dependent on the price. The whole number portion of the min move is the threshold. The leftmost two digits to the right of the decimal (X.XXXX) indicate the min move beneath the threshold, and the rightmost two digits (X.XXXX) indicate the min move above the threshold.'
+        Name:
+          type: string
+          description: A unique series of letters assigned to a security for trading purposes.
+        OptionType:
+          type: string
+          description: 'Displays the type of options contract the symbol represents. Valid options include: Puts, Calls.'
+        PointValue:
+          type: number
+          description: Symbol`s point value.
+        Root:
           type: string
           description: 'Displays the symbol of the stock on the stock exchange.'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
@@ -2988,9 +2990,9 @@ definitions:
             #SectionClassName:
             #    type: string
             #    description: '(Japan Only)'
-        SectorName:
-          type: string
-          description: (Japan Only) Displays the assigned economic sector to which the equity symbol belongs.
+        # SectorName:
+        #   type: string
+        #   description: (Japan Only) Displays the assigned economic sector to which the equity symbol belongs.
         StrikePrice:
           type: number
           description: Displays strike price of an options contract; For Options symbols only.
@@ -3012,14 +3014,12 @@ definitions:
           type: number
           description: 'The price at which a security, futures contract, or other financial instrument is offered for sale.'
         AskPriceDisplay:
-          minLength: 1
           type: string
           description: Ask price formatted for display.
         AskSize:
           type: number
           description: The number of trading units that prospective sellers are prepared to sell.
         AssetType:
-          minLength: 1
           type: string
           description: The name of asset type for a symbol
           enum:
@@ -3033,7 +3033,6 @@ definitions:
           type: number
           description: The highest price a prospective buyer is prepared to pay at a particular time for a trading unit of a given symbol.
         BidPriceDisplay:
-          minLength: 1
           type: string
           description: Bid price formatted for display.
         BidSize:
@@ -3043,15 +3042,12 @@ definitions:
           type: number
           description: The net Realized Profit or Loss denominated in the symbol currency for the current trading session. This value includes any gain or loss as a result of closing a position during the current trading session
         ClosePriceDisplay:
-          minLength: 1
           type: string
           description: Daily running close price formatted for display.
         CountryCode:
-          minLength: 1
           type: string
           description: The country of the exchange where the symbol is listed.
         Currency:
-          minLength: 1
           type: string
           description: The base currency of the symbol.
           enum:
@@ -3072,11 +3068,9 @@ definitions:
           type: number
           description: 'The total number of open or outstanding (not closed or delivered) options and/or futures contracts that exist on a given day, delivered on a particular day.'
         DataFeed:
-          minLength: 1
           type: string
           description: The data quote feed provider.
         Description:
-          minLength: 1
           type: string
           description: Displays the full name of the symbol.
         DisplayType:
@@ -3112,11 +3106,9 @@ definitions:
           type: string
           description: Error message received from exchange or Tradestation.
         Exchange:
-          minLength: 1
           type: string
           description: Name of exchange where this symbol is traded in.
         ExpirationDate:
-          minLength: 1
           type: string
           description: The UTC expiration date of a contract in ISO 8601 date format (yyyy-mm-dd). Valid only on options and futures symbols. For other categories this field is empty.
         FirstNoticeDate:
@@ -3135,15 +3127,12 @@ definitions:
           type: number
           description: The highest price of the past 52 weeks. This is a grid-based indicator.
         High52WeekPriceDisplay:
-          minLength: 1
           type: string
           description: High52Week price formatted for display.
         High52WeekTimeStamp:
-          minLength: 1
           type: string
           description: Date and time of the highest price in the past 52 week.
         HighPriceDisplay:
-          minLength: 1
           type: string
           description: High price formatted for display.
         IsDelayed:
@@ -3153,7 +3142,6 @@ definitions:
           type: number
           description: The last price at which the symbol traded.
         LastPriceDisplay:
-          minLength: 1
           type: string
           description: Last price formatted for display.
         LastSize:
@@ -3172,15 +3160,12 @@ definitions:
           type: number
           description: The lowest price of the past 52 weeks.
         Low52WeekPriceDisplay:
-          minLength: 1
           type: string
           description: Low52Week price formatted for display.
         Low52WeekTimeStamp:
-          minLength: 1
           type: string
           description: Date and time of the lowest price of the past 52 weeks.
         LowPriceDisplay:
-          minLength: 1
           type: string
           description: Low price formatted for display.
         MaxPrice:
@@ -3211,7 +3196,6 @@ definitions:
           type: number
           description: 'The unrealized profit or loss denominated in the symbol currency on the position held, calculated based on the average price of the position.'
         OpenPriceDisplay:
-          minLength: 1
           type: string
           description: Open price formatted for display.
         PointValue:
@@ -3221,7 +3205,6 @@ definitions:
           type: number
           description: The closing price of the previous day.
         PreviousClosePriceDisplay:
-          minLength: 1
           type: string
           description: PreviousClose price formatted for display.
         PreviousVolume:
@@ -3236,22 +3219,18 @@ definitions:
           type: number
           description: The price at which the underlying contract will be delivered in the event an option is exercised.
         StrikePriceDisplay:
-          minLength: 1
           type: string
           description: StrikePrice formatted for display.
         Symbol:
-          minLength: 1
           type: string
           description: The name identifying the financial instrument for which the data is displayed.
         SymbolRoot:
-          minLength: 1
           type: string
           description: The symbol used to identify the option`s financial instrument for a specific underlying asset that is traded on the various trading exchanges.
         TickSizeTier:
           type: number
           description: Trading increment based on a level group.
         TradeTime:
-          minLength: 1
           type: string
           description: Trade execution time.
         Underlying:
@@ -3287,27 +3266,21 @@ definitions:
     description: ''
     properties:
       Category:
-        minLength: 1
         type: string
         description: Second Level of Symbol List Hierarchy.
       ID:
-        minLength: 1
         type: string
         description: Unique symbol list identifier.
       Name:
-        minLength: 1
         type: string
         description: Symbol List Name.
       Path:
-        minLength: 1
         type: string
         description: Full hierarchy path including name.
       RootCategory:
-        minLength: 1
         type: string
         description: First Level of Symbol List Hierarchy.
       Subcategory:
-        minLength: 1
         type: string
         description: Thrid Level of Symbol List Hierarchy.
     type: object
@@ -3316,15 +3289,12 @@ definitions:
     items:
       properties:
         Description:
-          minLength: 1
           type: string
           description: Displays the full name of the symbol.
         Exchange:
-          minLength: 1
           type: string
           description: Name of exchange where this symbol is traded in.
         Name:
-          minLength: 1
           type: string
           description: A unique series of letters assigned to a security for trading purposes.
       type: object
@@ -3342,7 +3312,6 @@ definitions:
           type: string
           description: TradeStation Alternate ID.
         DisplayName:
-          minLength: 1
           type: string
           description: Set to Alternate ID if it exists otherwise will be the TradeStation Account ID
         IsStockLocateEligible:
@@ -3352,11 +3321,9 @@ definitions:
           type: number
           description: Account Identifier.
         Name:
-          minLength: 1
           type: string
           description: Account Name.
         Type:
-          minLength: 1
           type: string
           description: |
             Type of the account:
@@ -3366,7 +3333,6 @@ definitions:
             * `F` Futures
             * `D` DVP
         TypeDescription:
-          minLength: 1
           type: string
           description: Name of the type of the account.
           enum:
@@ -3375,7 +3341,6 @@ definitions:
             - DVP
             - Futures
         Status:
-          minLength: 1
           type: string
           description: |
             Status of a specific account.
@@ -3397,7 +3362,6 @@ definitions:
             - R
             - D
         StatusDescription:
-          minLength: 1
           type: string
           description: String value for Status attribute.
       type: object
@@ -3472,7 +3436,6 @@ definitions:
           type: boolean
         Currency:
           description: (Futures) The base currency of the symbol.
-          minLength: 1
           type: string
         CurrencyDetails:
           description: (Futures) Currency details of the symbol.
@@ -3503,7 +3466,6 @@ definitions:
                 type: number
                 description: The actual brokerage commission cost and routing fees (if applicable) for a trade based on the number of shares or contracts.
               Currency:
-                minLength: 1
                 type: string
                 description: The base currency of the symbol.
               OpenOrderInitMargin:
@@ -3552,7 +3514,6 @@ definitions:
           type: array
           uniqueItems: true
         DisplayName:
-          minLength: 1
           type: string
           description: The friendly name of the specific TradeStation account.
         Key:
@@ -3562,7 +3523,6 @@ definitions:
           type: number
           description: Market value of open positions.
         Name:
-          minLength: 1
           type: string
           description: name of the account.
         OptionApprovalLevel:
@@ -3647,7 +3607,6 @@ definitions:
           description: (Futures) The value of special securities that are deposited by the customer with the clearing firm for the sole purpose of increasing purchasing power in their trading account. This number will be reset daily by the account balances clearing file. The entire value of this field will increase purchasing power.
           type: number
         Status:
-          minLength: 1
           type: string
           description: |
             Status of a specific account.
@@ -3669,14 +3628,12 @@ definitions:
             - R
             - D
         StatusDescription:
-          minLength: 1
           type: string
           description: String value for Status attribute.
         TodayRealTimeTradeEquity:
           description: (Futures) The unrealized P/L for today. Unrealized P/L - BODOpenTradeEquity
           type: number
         Type:
-          minLength: 1
           type: string
           description: |
             The type of the account.
@@ -3690,7 +3647,6 @@ definitions:
             - D
             - F
         TypeDescription:
-          minLength: 1
           type: string
           description: String value for Type Attribute.
         UnclearedDeposit:
@@ -3711,7 +3667,6 @@ definitions:
     items:
       properties:
         AccountID:
-          minLength: 1
           type: string
           description: TradeStation account that holds the position.
         AccountMarketValue:
@@ -3730,11 +3685,9 @@ definitions:
           type: number
           description: 'The price at which a security, futures contract, or other financial instrument is offered for sale.'
         AskPriceDisplay:
-          minLength: 1
           type: string
           description: Formatted text representation of the AskPrice for easy display
         AssetType:
-          minLength: 1
           type: string
           description: |
             Indicates the asset type of the position
@@ -3749,21 +3702,18 @@ definitions:
           type: number
           description: Average price of all positions for the current symbol.
         AveragePriceDisplay:
-          minLength: 1
           type: string
           description: String value for AveragePrice attribute.
         BidPrice:
           type: number
           description: The highest price a prospective buyer is prepared to pay at a particular time for a trading unit of a given symbol.
         BidPriceDisplay:
-          minLength: 1
           type: string
           description: Formatted text representation of the BidPrice for easy display
         BigPointValue:
           type: number
           description: Dollar value for a one point movement.
         ContractExpireDate:
-          minLength: 1
           type: string
           description: Contract expiration date for positions specified in contracts.
         ConversionRate:
@@ -3773,23 +3723,18 @@ definitions:
           type: string
           description: 'Only applies to margin accounts based in Japan. When set to ''FSA'' an additional property, UnrealizedExpenses, will be included in the payload.  For other account types, the value will always be ''None'''
         Country:
-          minLength: 1
           type: string
           description: The country of the exchange where the symbol is listed.
         Currency:
-          minLength: 1
           type: string
           description: The base currency of the symbol.
         DayTradeMargin:
-          minLength: 1
           type: string
           description: (Futures) DayTradeMargin used on open positions.  Currently only calculated for futures positions.  Other asset classes will have a 0 for this value.
         Description:
-          minLength: 1
           type: string
           description: Displays the full name of the symbol.
         DisplayName:
-          minLength: 1
           type: string
           description: DO NOT USE - Marked for deprecation.
         InitialMargin:
@@ -3802,11 +3747,9 @@ definitions:
           type: number
           description: The last price at which the symbol traded.
         LastPriceDisplay:
-          minLength: 1
           type: string
           description: Formatted text representation of the LastPrice for easy display
         LongShort:
-          minLength: 1
           type: string
           description: |
             Specifies if the position is Long or Short.
@@ -3849,15 +3792,12 @@ definitions:
           type: number
           description: 'The strike price is the stated price per share or per contract for which the underlying asset may be purchased, or sold, by the option holder upon exercise of the option contract.'
         StrikePriceDisplay:
-          minLength: 1
           type: string
           description: Formatted text representation of the StrikePrice for easy display
         Symbol:
-          minLength: 1
           type: string
           description: Symbol of the current position.
         TimeStamp:
-          minLength: 1
           type: string
           description: Time the position was placed.
         TodaysProfitLoss:
@@ -3880,7 +3820,6 @@ definitions:
     items:
       properties:
         AccountID:
-          minLength: 1
           type: string
           description: ID that identifies a specific TradeStation account that is being used for a particular order.
         AdvancedOptions:
@@ -3901,7 +3840,6 @@ definitions:
           type: string
           description: A user specified name that identifies a TradeStation account.
         AssetType:
-          minLength: 1
           type: string
           description: |
             * FU = Future
@@ -3917,7 +3855,6 @@ definitions:
           type: number
           description: Commission paid in an order.
         ContractExpireDate:
-          minLength: 1
           type: string
           description: Displays the contract expiration date for orders specified in contracts.
         ConversionRate:
@@ -3930,7 +3867,6 @@ definitions:
           type: string
           description: The country of origin for the symbol.
         Denomination:
-          minLength: 1
           type: string
           description: Currency used to complete the order.
         DisplayName:
@@ -3940,21 +3876,18 @@ definitions:
           type: number
           description: Number of decimal points to display for the price.
         Duration:
-          minLength: 1
           type: string
           description: The amount of time for which an order is valid.
         ExecuteQuantity:
           type: number
           description: Number of shares that have been executed.
         FilledCanceled:
-          minLength: 1
           type: string
           description: The time the order was filled or canceled.
         FilledPrice:
           type: number
           description: 'At the top level, this is the average fill price. For expanded levels, this is the actual execution price.'
         FilledPriceText:
-          minLength: 1
           type: string
           description: String value for FilledPrice attribute.
         GroupName:
@@ -3991,21 +3924,18 @@ definitions:
                 type: number
                 description: The limit price for Limit orders
               LimitPriceDisplay:
-                minLength: 1
                 type: string
                 description: String value for LimitPrice attribute.
               Month:
                 type: number
                 description: Expiration month for options or futures.
               OpenOrClose:
-                minLength: 1
                 type: string
                 description: Identifies whether the order is an Opening or Closing trade.
               OrderID:
                 type: number
                 description: ID of the current order.
               OrderType:
-                minLength: 1
                 type: string
                 description: |
                   Identifies the order type of the order.
@@ -4027,7 +3957,6 @@ definitions:
                 type: number
                 description: Number of shares or contracts being purchased.
               Side:
-                minLength: 1
                 type: string
                 description: |
                   Identifies whether the order is a buy or sell.
@@ -4051,15 +3980,12 @@ definitions:
                 type: number
                 description: 'For an option order, the strike price for the Put or Call.'
               Symbol:
-                minLength: 1
                 type: string
                 description: Symbol to trade.
               TimeExecuted:
-                minLength: 1
                 type: string
                 description: The time the order was filled or canceled.
               Type:
-                minLength: 1
                 type: string
                 description: Type of order
                 enum:
@@ -4077,7 +4003,6 @@ definitions:
           type: number
           description: The limit price for Limit and Stop Limit orders.
         LimitPriceText:
-          minLength: 1
           type: string
           description: String value of LimitPrice attribute.
         MarketActivationRules:
@@ -4108,7 +4033,6 @@ definitions:
           type: string
           description: 'If an order has been rejected, this will display the rejection reason.'
         Routing:
-          minLength: 1
           type: string
           description: Identifies the routing selection made by the customer when placing the order.
         ShowOnlyQuantity:
@@ -4118,7 +4042,6 @@ definitions:
           type: string
           description: The spread type for an option order.
         Status:
-          minLength: 1
           type: string
           description: |
             * OPN, ACK, UCN = Open Orders -- New order request pending, cancel request pending.
@@ -4147,18 +4070,15 @@ definitions:
             - LAT
             - DON
         StatusDescription:
-          minLength: 1
           description: Description for Status attribute.
           type: string
         StopPrice:
           type: number
           description: The stop price for stop orders.
         StopPriceText:
-          minLength: 1
           type: string
           description: String value for StopPrice attribute.
         Symbol:
-          minLength: 1
           type: string
           description: Symbol to trade.
         TimeActivationRules:
@@ -4168,7 +4088,6 @@ definitions:
           description: |
             Set of time-based activation rules that must be met before order is sent to the exchange.
         TimeStamp:
-          minLength: 1
           type: string
           description: Time the order was placed.
         TrailingStop:
@@ -4177,7 +4096,6 @@ definitions:
           type: string
           description: Will display a value if a stop limit or stop market order has been triggered.
         Type:
-          minLength: 1
           type: string
           description: Type of order.
           enum:
@@ -4200,12 +4118,10 @@ definitions:
       AccountKey:
         description: |
           Must be a valid Account Key for that user and Asset Type
-        minLength: 1
         type: string
       AdvancedOptions:
         $ref: '#/definitions/AdvancedOptionsDefinition'
       AssetType:
-        minLength: 1
         type: string
         enum:
           - EQ
@@ -4245,23 +4161,18 @@ definitions:
           * 1 or 1 MIN - 1 minute; expires after the 1 minute
           * 3 or 3 MIN - 3 minutes; expires after the 3 minutes
           * 5 or 5 MIN - 5 minutes; expires after the 5 minutes
-        minLength: 1
       GTDDate:
         description: |
           Date that Order is valid through. Input Format: MM/DD/YYYY
           Required for orders with Duration = GTD.
-        minLength: 1
         maxLength: 10
         type: string
         format: mmddyyyy
       LimitPrice:
-        minLength: 1
         type: string
       StopPrice:
-        minLength: 1
         type: string
       OrderType:
-        minLength: 1
         type: string
         enum:
           - Limit
@@ -4269,16 +4180,13 @@ definitions:
           - StopLimit
           - StopMarket
       Quantity:
-        minLength: 1
         type: string
       Route:
-        minLength: 1
         type: string
         description: |
           Must be UPPERCASE. Valid values can be obtained from [Retrieve Available Exchanges](#operation/getExchanges)
       Symbol:
         description: Must be UPPERCASE
-        minLength: 1
         type: string
       TradeAction:
         type: string
@@ -4292,7 +4200,6 @@ definitions:
           * BUYTOCLOSE - `options`
           * SELLTOOPEN - `options`
           * SELLTOCLOSE - `options`
-        minLength: 1
         enum:
           - BUY
           - SELL
@@ -4307,7 +4214,6 @@ definitions:
           type: object
           properties:
             Type:
-              minLength: 1
               type: string
               enum:
                 - NORMAL
@@ -4330,13 +4236,10 @@ definitions:
           properties:
             Symbol:
               description: Must be UPPERCASE
-              minLength: 1
               type: string
             Quantity:
-              minLength: 1
               type: string
             TradeAction:
-              minLength: 1
               type: string
               enum:
                 - BUY
@@ -4376,12 +4279,10 @@ definitions:
       AccountKey:
         description: |
           Must be a valid Account Key for that user and Asset Type
-        minLength: 1
         type: string
       AdvancedOptions:
         $ref: '#/definitions/AdvancedOptionsDefinition'
       AssetType:
-        minLength: 1
         type: string
         enum:
           - EQ
@@ -4421,31 +4322,25 @@ definitions:
           * 1 or 1 MIN - 1 minute; expires after the 1 minute
           * 3 or 3 MIN - 3 minutes; expires after the 3 minutes
           * 5 or 5 MIN - 5 minutes; expires after the 5 minutes
-        minLength: 1
       GTDDate:
         description: |
           Date that Order is valid through. Input Format: MM/DD/YYYY
           Required for orders with Duration = GTD.
-        minLength: 1
         maxLength: 10
         type: string
         format: mmddyyyy
       LimitPrice:
-        minLength: 1
         type: string
       StopPrice:
-        minLength: 1
         type: string
       OrderConfirmId:
         description: |
           A unique identifier regarding an order used to prevent duplicates.
 
           Must be unique per API key, per order, per user.
-        minLength: 1
         maxLength: 25
         type: string
       OrderType:
-        minLength: 1
         type: string
         enum:
           - Limit
@@ -4453,16 +4348,13 @@ definitions:
           - StopLimit
           - StopMarket
       Quantity:
-        minLength: 1
         type: string
       Route:
-        minLength: 1
         type: string
         description: |
           Must be UPPERCASE. Valid values can be obtained from [Retrieve Available Exchanges](#operation/getExchanges)
       Symbol:
         description: Must be UPPERCASE
-        minLength: 1
         type: string
       TradeAction:
         type: string
@@ -4476,7 +4368,6 @@ definitions:
           * BUYTOCLOSE - `options`
           * SELLTOOPEN - `options`
           * SELLTOCLOSE - `options`
-        minLength: 1
         enum:
           - BUY
           - SELL
@@ -4491,7 +4382,6 @@ definitions:
           type: object
           properties:
             Type:
-              minLength: 1
               type: string
               enum:
                 - NORMAL
@@ -4514,13 +4404,10 @@ definitions:
           properties:
             Symbol:
               description: Must be UPPERCASE
-              minLength: 1
               type: string
             Quantity:
-              minLength: 1
               type: string
             TradeAction:
-              minLength: 1
               type: string
               enum:
                 - BUY
@@ -4559,19 +4446,14 @@ definitions:
     description: ''
     properties:
       LimitPrice:
-        minLength: 1
         type: string
       StopPrice:
-        minLength: 1
         type: string
       OrderType:
-        minLength: 1
         type: string
       Quantity:
-        minLength: 1
         type: string
       Symbol:
-        minLength: 1
         type: string
       AdvancedOptions:
         $ref: '#/definitions/CancelReplaceAdvancedOptionsDefinition'
@@ -4824,7 +4706,6 @@ definitions:
       Type:
         description: |
           Indicates how Order Execution should treat this group of orders.
-        minLength: 1
         type: string
         enum:
           - NORMAL
@@ -4875,7 +4756,6 @@ definitions:
       Type:
         description: |
           Indicates how Order Execution should treat this group of orders.
-        minLength: 1
         type: string
         enum:
           - NORMAL
@@ -4900,10 +4780,8 @@ definitions:
     description: 'The trigger type allows you to specify the type of tick, number, and pattern of ticks that will trigger a specific row of an activation rule.'
     properties:
       Description:
-        minLength: 1
         type: string
       Key:
-        minLength: 1
         type: string
         description: |
           * STT - Single Trade Tick; One trade tick must print within your stop price to trigger your stop.
@@ -4932,7 +4810,6 @@ definitions:
           - TBA
           - TAB
       Name:
-        minLength: 1
         type: string
     type: object
 
@@ -4942,7 +4819,6 @@ definitions:
     description: Returns a list of valid exchanges that a client can specify when posting an order.
     properties:
       AssetType:
-        minLength: 1
         type: string
         description: |
           Indicates the asset type of the exchange.
@@ -4952,10 +4828,8 @@ definitions:
           - EQ
           - OP
       Id:
-        minLength: 1
         type: string
       Name:
-        minLength: 1
         type: string
     type: object
  
@@ -4987,7 +4861,6 @@ definitions:
       Status:
         $ref: '#/definitions/StatusDefinition'
       TimeStamp:
-        minLength: 1
         type: string
         description: Epoch timestamp.
       TotalTicks:
@@ -5110,7 +4983,6 @@ definitions:
       Status:
         $ref: '#/definitions/StatusDefinition'
       TimeStamp:
-        minLength: 1
         type: string
         description: Epoch timestamp.
       TotalVolume:
