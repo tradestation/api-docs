@@ -788,7 +788,7 @@ paths:
               - `Forex` or `FX`
 
             `Cnt`: Country where the symbol is traded in. (Optional) Possible values:
-              - `ALL` if not presented (Default)
+              - `ALL` if not specified (Default)
               - `US`
               - `DE`
               - `CA`
@@ -804,7 +804,7 @@ paths:
               - `false` (Default)
 
             `Cnt`: Country where the symbol is traded in. (Optional) Possible values:
-              - `ALL` if not presented (Default)
+              - `ALL` if not specified (Default)
               - `US`
               - `DE`
               - `CA`
@@ -876,7 +876,7 @@ paths:
               - `true`
 
             `Cnt`: Country where the symbol is traded in. (Optional) Possible values:
-              - `ALL` if not presented (Default)
+              - `ALL` if not specified (Default)
               - `US`
               - `DE`
               - `CA`
@@ -2845,7 +2845,7 @@ definitions:
           description: Symbol`s point value.
         Root:
           type: string
-          description: Displays the symbol of the stock on the stock exchange.
+          description: The Symbol root.
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #SectionClassCode:
             #    type: string
@@ -2981,7 +2981,7 @@ definitions:
           description: Symbol`s point value.
         Root:
           type: string
-          description: 'Displays the symbol of the stock on the stock exchange.'
+          description: 'The Symbol root.'
             # Pending to be documented. It's comment-out due to the information was not available when descriptions were added to fields.
             #SectionClassCode:
             #    type: string
