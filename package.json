@@ -1,6 +1,9 @@
 {
   "name": "TradeStation-openapi-spec",
   "version": "0.0.1",
+  "engines": {
+    "node": "<=11.15.0"
+  },
   "dependencies": {
     "bower": "^1.8.8",
     "connect": "^3.4.1",
