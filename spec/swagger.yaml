@@ -948,7 +948,7 @@ paths:
       parameters:
         - name: symbols
           in: path
-          description: 1 or more Symbol Names (comma-separated).
+          description: 1 or more Symbol Names (comma-separated), limited to 50 symbols per request.
           type: array
           items:
             type: string
@@ -1017,7 +1017,7 @@ paths:
       parameters:
         - name: symbols
           in: path
-          description: 1 or more Symbol Names (comma-separated)
+          description: 1 or more Symbol Names (comma-separated), limited to 50 symbols per request.
           type: array
           items:
             type: string
@@ -1025,7 +1025,7 @@ paths:
           required: true
         - name: Transfer-Encoding
           in: header
-          description: a header with the value of `Chunked` must be passed to streaming resources
+          description: a header with the value of `Chunked` must be passed to streaming resources.
           type: string
           enum:
             - Chunked
@@ -1093,7 +1093,7 @@ paths:
       parameters:
         - name: symbols
           in: path
-          description: 1 or more Symbol Names (comma-separated).
+          description: 1 or more Symbol Names (comma-separated), limited to 50 symbols per request.
           type: array
           items:
             type: string
