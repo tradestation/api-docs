@@ -4184,7 +4184,8 @@ definitions:
       Route:
         type: string
         description: |
-          Must be UPPERCASE. Valid values can be obtained from [Retrieve Available Exchanges](#operation/getExchanges)
+          The route of the order. For Stocks and Options, Route value will default to `Intelligent` if no value is set.
+          Must be UPPERCASE. Routes can be obtained from [Retrieve Available Exchanges](#operation/getExchanges).
       Symbol:
         description: Must be UPPERCASE
         type: string
@@ -4352,7 +4353,8 @@ definitions:
       Route:
         type: string
         description: |
-          Must be UPPERCASE. Valid values can be obtained from [Retrieve Available Exchanges](#operation/getExchanges)
+          The route of the order. For Stocks and Options, Route value will default to `Intelligent` if no value is set.
+          Must be UPPERCASE. Routes can be obtained from [Retrieve Available Exchanges](#operation/getExchanges).
       Symbol:
         description: Must be UPPERCASE
         type: string
