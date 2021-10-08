@@ -764,7 +764,7 @@ paths:
       x-code-samples:
         - lang: shell
           source: |
-            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbols/search?N=MSFT&C=Stock&Cnt=US"
+            curl -H "Authorization: Bearer 1JUjFiNFFGWEdDM" "https://api.tradestation.com/v2/data/symbols/search/N=MSFT&C=Stock&Cnt=US"
       parameters:
         - name: criteria
           in: path
