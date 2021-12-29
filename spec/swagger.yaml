@@ -4,7 +4,7 @@ info:
   title: Tradestation API
   description: |
     This document describes the resources that make up the official TradeStation
-    API. If you have any problems or requests please contact [support](mailto:webapi@tradestation.com).
+    API. If you have any problems or requests please contact [support](mailto:clientservices@tradestation.com).
 
     Overview
     ========
@@ -391,7 +391,7 @@ info:
 
   contact:
     name: TradeStation API Team
-    email: webapi@tradestation.com
+    email: clientservices@tradestation.com
     url: https://developer.tradestation.com/webapi
   license:
     name: Services Agreement For Application Developers
