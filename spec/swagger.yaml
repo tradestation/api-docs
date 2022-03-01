@@ -94,7 +94,7 @@ info:
     --------------
 
     The TradeStation API offers HTTP Streaming responses for some specialized
-    resources including intraday barcharts, quote changes, and quote snapshots.
+    resources including barcharts, quote changes, option chains, and option spread quotes (including single options). 
     These streams conform to RFC2616 for HTTP/1.1 Streaming with some slight
     modifications.
 
