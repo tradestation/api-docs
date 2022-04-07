@@ -1992,12 +1992,6 @@ paths:
             Conveys the page number to return, given a set of orders and a page size.
             Note that an empty set will be returned for a pageNum/pageSize combination that doesn't contain orders.
           required: false
-        - name: orderTag
-          in: query
-          type: string
-          description: |
-            A user-defined string that can be used to identify and filter orders.
-          required: false
       responses:
         '200':
           description: |
@@ -4023,9 +4017,6 @@ definitions:
         OrderID:
           type: number
           description: ID of the current order.
-        OrderTag:
-          type: string
-          description: A user-defined string that can be used to identify and filter orders.
         Originator:
           type: number
           description: Identifies the TradeStation account that originated a particular order.
@@ -4388,10 +4379,6 @@ definitions:
           - BUYTOCLOSE
           - SELLTOOPEN
           - SELLTOCLOSE
-      OrderTag:
-        type: string
-        description: |
-          A user-defined string that can be used to identify and filter orders.
       OSOs:
         items:
           type: object
@@ -4757,10 +4744,6 @@ definitions:
         enum:
           - Ok
           - Failed
-      OrderTag:
-        type: string
-        description: A user-defined string that can be used to identify and filter orders.
-
 
 ##############################################################################
   GroupOrderRequestDefinition:
