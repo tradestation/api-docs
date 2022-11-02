@@ -9,7 +9,7 @@
     "connect": "^3.4.1",
     "cors": "^2.7.1",
     "deploy-to-gh-pages": "^1.1.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-connect": "^4.2.0",
     "gulp-util": "^3.0.7",
     "natives": "^1.1.6",
