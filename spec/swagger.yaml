@@ -2770,7 +2770,7 @@ definitions:
           description: |
             Symbol's price display type based on the following list:
 
-            * `0` "Automatic" Not used
+            * `0` "Automatic" => .00 (should be handled as 2 decimals)
             * `1` 0 Decimals => 1
             * `2` 1 Decimals => .1
             * `3` 2 Decimals => .01
