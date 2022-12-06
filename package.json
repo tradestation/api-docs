@@ -10,7 +10,7 @@
     "cors": "^2.7.1",
     "deploy-to-gh-pages": "^1.1.0",
     "gulp": "^3.9.1",
-    "gulp-connect": "^4.2.0",
+    "gulp-connect": "^5.7.0",
     "gulp-util": "^3.0.7",
     "natives": "^1.1.6",
     "portfinder": "^1.0.3",
