@@ -3565,7 +3565,7 @@ definitions:
           type: number
           description: Indicates the value of real-time buying power.
         RealTimeCostOfPositions:
-          description: (Equities) Total real-time cost of all open positions. Positions are based on the actual entry price.
+          description: (Equities) The cost used to calculate today's P/L.
           type: number
         RealTimeDayTradeMargin:
           description: (Futures) Money field representing the current total amount of futures day trade margin.
