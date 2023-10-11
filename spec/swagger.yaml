@@ -1164,6 +1164,7 @@ paths:
             - USEQPre
             - USEQPost
             - USEQPreAndPost
+            - USEQ24Hour
             - Default
           required: false
         - name: symbol
@@ -1258,6 +1259,7 @@ paths:
             - USEQPre
             - USEQPost
             - USEQPreAndPost
+            - USEQ24Hour
             - Default
           required: false
         - name: symbol
@@ -1357,6 +1359,7 @@ paths:
             - USEQPre
             - USEQPost
             - USEQPreAndPost
+            - USEQ24Hour
             - Default
           required: false
         - name: symbol
@@ -1458,6 +1461,7 @@ paths:
             - USEQPre
             - USEQPost
             - USEQPreAndPost
+            - USEQ24Hour
             - Default
           required: false
         - name: symbol
