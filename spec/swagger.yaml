@@ -387,15 +387,11 @@ info:
   version: "20160101"
   x-logo:
     url: 'ts-logo.png'
-  termsOfService: http://elasticbeanstalk-us-east-1-525856068889.s3.amazonaws.com/wp-content/uploads/2014/03/Guidelines_For_Acceptance.pdf
 
   contact:
     name: TradeStation API Team
     email: clientservices@tradestation.com
     url: https://developer.tradestation.com/webapi
-  license:
-    name: Services Agreement For Application Developers
-    url: https://s3.amazonaws.com/elasticbeanstalk-us-east-1-525856068889/wp-content/uploads/2016/02/Agreement-for-WebAPI-Developers_v5C.pdf
 
 ##############################################################################
 host: api.tradestation.com
