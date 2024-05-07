@@ -3378,7 +3378,7 @@ definitions:
         Alias:
           type: string
           description: A user specified name that identifies a TradeStation account.
-        BODAccountBalance:
+        BODAccountBalance (Deprecated):
           description: (Equities) Deprecated. The amount of cash in the account at the beginning of the day. Redundant with BODNetCash.
           type: number
         BODDayTradingMarginableEquitiesBuyingPower:
@@ -4871,12 +4871,12 @@ definitions:
       TotalVolume:
         type: number
         description: The total volume of all securities trading on a specific exchange.
-      UnchangedTicks:
+      UnchangedTicks (Deprecated):
         type: number
-        description: The number of securities with a current price that is the same as the previous day`s close
-      UnchangedVolume:
+        description: This field is deprecated, and its value will always be zero.
+      UnchangedVolume (Deprecated):
         type: number
-        description: The volume of securities with a current price that is the same as the previous day`s close.
+        description: This field is deprecated, and its value will always be zero.
       UpTicks:
         type: number
         description: 'A trade made at a price greater than the previous trade price, or at a price equal to the previous trade price.'
