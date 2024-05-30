@@ -4339,7 +4339,7 @@ definitions:
           A unique identifier regarding an order used to prevent duplicates.
 
           Must be unique per API key, per order, per user.
-        maxLength: 25
+        maxLength: 22
         type: string
       OrderType:
         type: string
