@@ -20,7 +20,7 @@
   },
   "private": true,
   "scripts": {
-    "deploy": "npm run build && deploy-to-gh-pages --update web_deploy",
+    "deploy": "npm run build && deploy-to-gh-pages --update web_deploy --repo tradestation/api-docs",
     "build": "node ./scripts/build.js",
     "swagger": "swagger-repo",
     "test": "swagger-repo validate",
