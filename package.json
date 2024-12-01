@@ -14,7 +14,7 @@
     "gulp-util": "^3.0.7",
     "natives": "^1.1.6",
     "portfinder": "^1.0.3",
-    "shelljs": "^0.7.0",
+    "shelljs": "^0.8.5",
     "swagger-repo": "^1.0.0",
     "swagger-ui": "git+https://swagger-api@github.com/swagger-api/swagger-ui.git#64dc306"
   },
